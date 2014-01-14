@@ -42,9 +42,7 @@ from bb.ui.crumbs.hobwidget import hwc, HobButton, HobAltButton
 from bb.ui.crumbs.persistenttooltip import PersistentTooltip
 import bb.ui.crumbs.utils
 from bb.ui.crumbs.hig.crumbsmessagedialog import CrumbsMessageDialog
-from bb.ui.crumbs.hig.advancedsettingsdialog import AdvancedSettingsDialog
 from bb.ui.crumbs.hig.deployimagedialog import DeployImageDialog
-from bb.ui.crumbs.hig.layerselectiondialog import LayerSelectionDialog
 from bb.ui.crumbs.hig.parsingwarningsdialog import ParsingWarningsDialog
 from bb.ui.crumbs.hig.propertydialog import PropertyDialog
 
@@ -851,9 +849,6 @@ class Builder(gtk.Window):
         self.image_configuration_page.machine_combo.child.set_sensitive(sensitive)
         self.image_configuration_page.image_combo.set_sensitive(sensitive)
         self.image_configuration_page.image_combo.child.set_sensitive(sensitive)
-        self.image_configuration_page.layer_button.set_sensitive(sensitive)
-        self.image_configuration_page.layer_info_icon.set_sensitive(sensitive)
-        self.image_configuration_page.view_adv_configuration_button.set_sensitive(sensitive)
         self.image_configuration_page.config_build_button.set_sensitive(sensitive)
 
         self.recipe_details_page.set_sensitive(sensitive)
@@ -1169,27 +1164,6 @@ class Builder(gtk.Window):
 
         dialog.run()
 
-    def show_layer_selection_dialog(self):
-        dialog = LayerSelectionDialog(title = "Layers",
-                     layers = copy.deepcopy(self.configuration.layers),
-                     layers_non_removable = copy.deepcopy(self.configuration.layers_non_removable),
-                     all_layers = self.parameters.all_layers,
-                     parent = self,
-                     flags = gtk.DIALOG_MODAL
-                         | gtk.DIALOG_DESTROY_WITH_PARENT
-                         | gtk.DIALOG_NO_SEPARATOR)
-        button = dialog.add_button("Cancel", gtk.RESPONSE_NO)
-        HobAltButton.style_button(button)
-        button = dialog.add_button("OK", gtk.RESPONSE_YES)
-        HobButton.style_button(button)
-        response = dialog.run()
-        if response == gtk.RESPONSE_YES:
-            self.configuration.layers = dialog.layers
-            # DO refresh layers
-            if dialog.layers_changed:
-                self.update_config_async()
-        dialog.destroy()
-
     def get_image_extension(self):
         image_extension = {}
         for type in self.parameters.image_types:
@@ -1198,32 +1172,6 @@ class Builder(gtk.Window):
                 image_extension[type] = ext.split(' ')
 
         return image_extension
-
-    def show_adv_settings_dialog(self, tab=None):
-        dialog = AdvancedSettingsDialog(title = "Advanced configuration",
-            configuration = copy.deepcopy(self.configuration),
-            all_image_types = self.parameters.image_types,
-            all_package_formats = self.parameters.all_package_formats,
-            all_distros = self.parameters.all_distros,
-            all_sdk_machines = self.parameters.all_sdk_machines,
-            max_threads = self.parameters.max_threads,
-            parent = self,
-            flags = gtk.DIALOG_MODAL
-                    | gtk.DIALOG_DESTROY_WITH_PARENT
-                    | gtk.DIALOG_NO_SEPARATOR)
-        button = dialog.add_button("Cancel", gtk.RESPONSE_NO)
-        HobAltButton.style_button(button)
-        button = dialog.add_button("Save", gtk.RESPONSE_YES)
-        HobButton.style_button(button)
-        dialog.set_save_button(button)
-        response = dialog.run()
-        settings_changed = False
-        if response == gtk.RESPONSE_YES:
-            self.configuration = dialog.configuration
-            self.configuration.save(self.handler, True) # remember settings
-            settings_changed = dialog.settings_changed
-        dialog.destroy()
-        return response == gtk.RESPONSE_YES, settings_changed
 
     def reparse_post_adv_settings(self):
         if not self.configuration.curr_mach:

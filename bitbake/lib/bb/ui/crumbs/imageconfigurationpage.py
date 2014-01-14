@@ -171,18 +171,6 @@ class ImageConfigurationPage (HobPage):
         self.machine_combo = gtk.combo_box_new_text()
         self.machine_combo.connect("changed", self.machine_combo_changed_cb)
 
-        icon_file = hic.ICON_LAYERS_DISPLAY_FILE
-        hover_file = hic.ICON_LAYERS_HOVER_FILE
-        self.layer_button = HobImageButton("Layers", "Add support for machines, software, etc.",
-                                icon_file, hover_file)
-        self.layer_button.connect("clicked", self.layer_button_clicked_cb)
-
-        markup = "Layers are a powerful mechanism to extend the Yocto Project "
-        markup += "with your own functionality.\n"
-        markup += "For more on layers, check the <a href=\""
-        markup += "http://www.yoctoproject.org/docs/current/dev-manual/"
-        markup += "dev-manual.html#understanding-and-using-layers\">reference manual</a>."
-        self.layer_info_icon = HobInfoButton("<b>Layers</b>" + "*" + markup, self.get_parent())
         self.progress_bar = HobProgressBar()
         self.stop_button = HobAltButton("Stop")
         self.stop_button.connect("clicked", self.stop_button_clicked_cb)
@@ -192,8 +180,6 @@ class ImageConfigurationPage (HobPage):
         self.gtable.attach(self.machine_title, 0, 40, 0, 4)
         self.gtable.attach(self.machine_title_desc, 0, 40, 4, 6)
         self.gtable.attach(self.machine_combo, 0, 12, 7, 10)
-        self.gtable.attach(self.layer_button, 14, 36, 7, 12)
-        self.gtable.attach(self.layer_info_icon, 36, 40, 7, 11)
         if show_progress_bar:
             #self.gtable.attach(self.progress_box, 0, 40, 15, 18)
             self.gtable.attach(self.progress_bar, 0, 37, 15, 18)
@@ -230,14 +216,6 @@ class ImageConfigurationPage (HobPage):
         self.image_desc.set_justify(gtk.JUSTIFY_LEFT)
         self.image_desc.set_line_wrap(True)
 
-        # button to view recipes
-        icon_file = hic.ICON_RCIPE_DISPLAY_FILE
-        hover_file = hic.ICON_RCIPE_HOVER_FILE
-        self.view_adv_configuration_button = HobImageButton("Advanced configuration",
-                                                                 "Select image types, package formats, etc",
-                                                                 icon_file, hover_file)        
-        self.view_adv_configuration_button.connect("clicked", self.view_adv_configuration_button_clicked_cb)
-
         self.image_separator = gtk.HSeparator()
 
     def combo_separator_func(self, model, iter, user_data):
@@ -250,7 +228,6 @@ class ImageConfigurationPage (HobPage):
         self.gtable.attach(self.image_title_desc, 0, 40, 18+self.warning_shift, 22+self.warning_shift)
         self.gtable.attach(self.image_combo, 0, 12, 23+self.warning_shift, 26+self.warning_shift)
         self.gtable.attach(self.image_desc, 0, 12, 27+self.warning_shift, 33+self.warning_shift)
-        self.gtable.attach(self.view_adv_configuration_button, 14, 36, 23+self.warning_shift, 28+self.warning_shift)
         self.gtable.attach(self.image_separator, 0, 40, 35+self.warning_shift, 36+self.warning_shift)
 
     def create_config_build_button(self):
@@ -503,21 +480,6 @@ class ImageConfigurationPage (HobPage):
             self.show_baseimg_selected()
 
         self._image_combo_connect_signal()
-
-    def layer_button_clicked_cb(self, button):
-        # Create a layer selection dialog
-        self.builder.show_layer_selection_dialog()
-
-    def view_adv_configuration_button_clicked_cb(self, button):
-        # Create an advanced settings dialog
-        response, settings_changed = self.builder.show_adv_settings_dialog()
-        if not response:
-            return
-        if settings_changed:
-            self.builder.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-            self.builder.wait(0.1) #wait for adv_settings_dialog to terminate
-            self.builder.reparse_post_adv_settings()
-            self.builder.window.set_cursor(None)
 
     def just_bake_button_clicked_cb(self, button):
         self.builder.parsing_warnings = []
