@@ -1,6 +1,7 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI += "file://modules.conf"
+# modules.conf file is missing
+#SRC_URI += "file://modules.conf"
 
 IMAGE_INSTALL = "initramfs-live-boot busybox base-passwd udev"
 
