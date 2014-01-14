@@ -69,17 +69,10 @@ class HobHandler(gobject.GObject):
          "package-populated"       : (gobject.SIGNAL_RUN_LAST,
                                       gobject.TYPE_NONE,
                                      ()),
-         "network-passed"          : (gobject.SIGNAL_RUN_LAST,
-                                      gobject.TYPE_NONE,
-                                     ()),
-         "network-failed"          : (gobject.SIGNAL_RUN_LAST,
-                                      gobject.TYPE_NONE,
-                                     ()),
     }
 
-    (GENERATE_CONFIGURATION, GENERATE_RECIPES, GENERATE_PACKAGES, GENERATE_IMAGE, POPULATE_PACKAGEINFO, SANITY_CHECK, NETWORK_TEST) = range(7)
-    (SUB_PATH_LAYERS, SUB_FILES_DISTRO, SUB_FILES_MACH, SUB_FILES_SDKMACH, SUB_MATCH_CLASS, SUB_PARSE_CONFIG, SUB_SANITY_CHECK,
-     SUB_GNERATE_TGTS, SUB_GENERATE_PKGINFO, SUB_BUILD_RECIPES, SUB_BUILD_IMAGE, SUB_NETWORK_TEST) = range(12)
+    (GENERATE_CONFIGURATION, GENERATE_RECIPES, GENERATE_PACKAGES, GENERATE_IMAGE, POPULATE_PACKAGEINFO, SANITY_CHECK) = range(6)
+    (SUB_FILES_MACH, SUB_PARSE_CONFIG, SUB_SANITY_CHECK, SUB_GNERATE_TGTS, SUB_GENERATE_PKGINFO, SUB_BUILD_RECIPES, SUB_BUILD_IMAGE) = range(7)
 
     def __init__(self, server, recipe_model, package_model):
         super(HobHandler, self).__init__()
@@ -112,6 +105,7 @@ class HobHandler(gobject.GObject):
             self.generating = False
 
     def runCommand(self, commandline):
+        print("run command " + str(commandline))
         try:
             result, error = self.server.runCommand(commandline)
             if error:
@@ -136,16 +130,8 @@ class HobHandler(gobject.GObject):
                 self.emit("command-succeeded", self.initcmd)
             return
 
-        if next_command == self.SUB_PATH_LAYERS:
-            self.runCommand(["findConfigFilePath", "bblayers.conf"])
-        elif next_command == self.SUB_FILES_DISTRO:
-            self.runCommand(["findConfigFiles", "DISTRO"])
-        elif next_command == self.SUB_FILES_MACH:
+        if next_command == self.SUB_FILES_MACH:
             self.runCommand(["findConfigFiles", "MACHINE"])
-        elif next_command == self.SUB_FILES_SDKMACH:
-            self.runCommand(["findConfigFiles", "MACHINE-SDK"])
-        elif next_command == self.SUB_MATCH_CLASS:
-            self.runCommand(["findFilesMatchingInDir", "rootfs_", "classes"])
         elif next_command == self.SUB_PARSE_CONFIG:
             self.runCommand(["enableDataTracking"])
             self.runCommand(["parseConfigurationFiles", "conf/.hob.conf", ""])
@@ -156,8 +142,6 @@ class HobHandler(gobject.GObject):
             self.runCommand(["triggerEvent", "bb.event.RequestPackageInfo()"])
         elif next_command == self.SUB_SANITY_CHECK:
             self.runCommand(["triggerEvent", "bb.event.SanityCheck()"])
-        elif next_command == self.SUB_NETWORK_TEST:
-            self.runCommand(["triggerEvent", "bb.event.NetworkTest()"])
         elif next_command == self.SUB_BUILD_RECIPES:
             self.clear_busy()
             self.building = True
@@ -285,12 +269,6 @@ class HobHandler(gobject.GObject):
             self.emit("parsing-completed", message)
             if isinstance(event, bb.event.ParseCompleted):
                 self.parsing = False
-        elif isinstance(event, bb.event.NetworkTestFailed):
-            self.emit("network-failed")
-            self.run_next_command()
-        elif isinstance(event, bb.event.NetworkTestPassed):
-            self.emit("network-passed")
-            self.run_next_command()
 
         if self.error_msg and not self.commands_async:
             self.display_error()
@@ -311,87 +289,6 @@ class HobHandler(gobject.GObject):
         inherits = inherits + " " + bbclass
         self.set_var_in_file("INHERIT", inherits, ".hob.conf")
 
-    def set_bblayers(self, bblayers):
-        self.set_var_in_file("BBLAYERS", " ".join(bblayers), "bblayers.conf")
-
-    def set_machine(self, machine):
-        if machine:
-            self.early_assign_var_in_file("MACHINE", machine, "local.conf")
-
-    def set_sdk_machine(self, sdk_machine):
-        self.set_var_in_file("SDKMACHINE", sdk_machine, "local.conf")
-
-    def set_image_fstypes(self, image_fstypes):
-        self.set_var_in_file("IMAGE_FSTYPES", image_fstypes, "local.conf")
-
-    def set_distro(self, distro):
-        self.set_var_in_file("DISTRO", distro, "local.conf")
-
-    def set_package_format(self, format):
-        package_classes = ""
-        for pkgfmt in format.split():
-            package_classes += ("package_%s" % pkgfmt + " ")
-        self.set_var_in_file("PACKAGE_CLASSES", package_classes, "local.conf")
-
-    def set_bbthreads(self, threads):
-        self.set_var_in_file("BB_NUMBER_THREADS", threads, "local.conf")
-
-    def set_pmake(self, threads):
-        pmake = "-j %s" % threads
-        self.set_var_in_file("PARALLEL_MAKE", pmake, "local.conf")
-
-    def set_dl_dir(self, directory):
-        self.set_var_in_file("DL_DIR", directory, "local.conf")
-
-    def set_sstate_dir(self, directory):
-        self.set_var_in_file("SSTATE_DIR", directory, "local.conf")
-
-    def set_sstate_mirrors(self, url):
-        self.set_var_in_file("SSTATE_MIRRORS", url, "local.conf")
-
-    def set_extra_size(self, image_extra_size):
-        self.set_var_in_file("IMAGE_ROOTFS_EXTRA_SPACE", str(image_extra_size), "local.conf")
-
-    def set_rootfs_size(self, image_rootfs_size):
-        self.set_var_in_file("IMAGE_ROOTFS_SIZE", str(image_rootfs_size), "local.conf")
-
-    def set_incompatible_license(self, incompat_license):
-        self.set_var_in_file("INCOMPATIBLE_LICENSE", incompat_license, "local.conf")
-
-    def set_extra_setting(self, extra_setting):
-        self.set_var_in_file("EXTRA_SETTING", extra_setting, "local.conf")
-
-    def set_extra_config(self, extra_setting):
-        old_extra_setting = ast.literal_eval(self.runCommand(["getVariable", "EXTRA_SETTING"]) or "{}")
-        if extra_setting:
-            self.set_var_in_file("EXTRA_SETTING", extra_setting, "local.conf")
-        else:
-            self.remove_var_from_file("EXTRA_SETTING")
-
-        #remove not needed settings from conf
-        for key in old_extra_setting:
-            if key not in extra_setting:
-                self.remove_var_from_file(key)
-        for key in extra_setting.keys():
-            value = extra_setting[key]
-            self.set_var_in_file(key, value, "local.conf")
-
-    def set_http_proxy(self, http_proxy):
-        self.set_var_in_file("http_proxy", http_proxy, "local.conf")
-
-    def set_https_proxy(self, https_proxy):
-        self.set_var_in_file("https_proxy", https_proxy, "local.conf")
-
-    def set_ftp_proxy(self, ftp_proxy):
-        self.set_var_in_file("ftp_proxy", ftp_proxy, "local.conf")
-
-    def set_socks_proxy(self, socks_proxy):
-        self.set_var_in_file("all_proxy", socks_proxy, "local.conf")
-
-    def set_cvs_proxy(self, host, port):
-        self.set_var_in_file("CVS_PROXY_HOST", host, "local.conf")
-        self.set_var_in_file("CVS_PROXY_PORT", port, "local.conf")
-
     def request_package_info(self):
         self.commands_async.append(self.SUB_GENERATE_PKGINFO)
         self.run_next_command(self.POPULATE_PACKAGEINFO)
@@ -400,17 +297,9 @@ class HobHandler(gobject.GObject):
         self.commands_async.append(self.SUB_SANITY_CHECK)
         self.run_next_command(self.SANITY_CHECK)
 
-    def trigger_network_test(self):
-        self.commands_async.append(self.SUB_NETWORK_TEST)
-        self.run_next_command(self.NETWORK_TEST)
-
     def generate_configuration(self):
         self.commands_async.append(self.SUB_PARSE_CONFIG)
-        self.commands_async.append(self.SUB_PATH_LAYERS)
-        self.commands_async.append(self.SUB_FILES_DISTRO)
         self.commands_async.append(self.SUB_FILES_MACH)
-        self.commands_async.append(self.SUB_FILES_SDKMACH)
-        self.commands_async.append(self.SUB_MATCH_CLASS)
         self.run_next_command(self.GENERATE_CONFIGURATION)
 
     def generate_recipes(self):
@@ -506,118 +395,12 @@ class HobHandler(gobject.GObject):
     def get_parameters(self):
         # retrieve the parameters from bitbake
         params = {}
-        params["core_base"] = self.runCommand(["getVariable", "COREBASE"]) or ""
-        hob_layer = params["core_base"] + "/meta-hob"
-        params["layer"] = self.runCommand(["getVariable", "BBLAYERS"]) or ""
-        params["layers_non_removable"] = self.runCommand(["getVariable", "BBLAYERS_NON_REMOVABLE"]) or ""
-        if hob_layer not in params["layer"].split():
-            params["layer"] += (" " + hob_layer)
-        if hob_layer not in params["layers_non_removable"].split():
-            params["layers_non_removable"] += (" " + hob_layer)
-        params["dldir"] = self.runCommand(["getVariable", "DL_DIR"]) or ""
-        params["machine"] = self.runCommand(["getVariable", "MACHINE"]) or ""
-        params["distro"] = self.runCommand(["getVariable", "DISTRO"]) or "defaultsetup"
-        params["pclass"] = self.runCommand(["getVariable", "PACKAGE_CLASSES"]) or ""
-        params["sstatedir"] = self.runCommand(["getVariable", "SSTATE_DIR"]) or ""
-        params["sstatemirror"] = self.runCommand(["getVariable", "SSTATE_MIRRORS"]) or ""
-
-        num_threads = self.runCommand(["getCpuCount"])
-        if not num_threads:
-            num_threads = 1
-            max_threads = 65536
-        else:
-            try:
-                num_threads = int(num_threads)
-                max_threads = 16 * num_threads
-            except:
-                num_threads = 1
-                max_threads = 65536
-        params["max_threads"] = max_threads
-
-        bbthread = self.runCommand(["getVariable", "BB_NUMBER_THREADS"])
-        if not bbthread:
-            bbthread = num_threads
-        else:
-            try:
-                bbthread = int(bbthread)
-            except:
-                bbthread = num_threads
-        params["bbthread"] = bbthread
-
-        pmake = self.runCommand(["getVariable", "PARALLEL_MAKE"])
-        if not pmake:
-            pmake = num_threads
-        elif isinstance(pmake, int):
-            pass
-        else:
-            try:
-                pmake = int(pmake.lstrip("-j "))
-            except:
-                pmake = num_threads
-        params["pmake"] = "-j %s" % pmake
-
         params["image_addr"] = self.runCommand(["getVariable", "DEPLOY_DIR_IMAGE"]) or ""
-
-        image_extra_size = self.runCommand(["getVariable", "IMAGE_ROOTFS_EXTRA_SPACE"])
-        if not image_extra_size:
-            image_extra_size = 0
-        else:
-            try:
-                image_extra_size = int(image_extra_size)
-            except:
-                image_extra_size = 0
-        params["image_extra_size"] = image_extra_size
-
-        image_rootfs_size = self.runCommand(["getVariable", "IMAGE_ROOTFS_SIZE"])
-        if not image_rootfs_size:
-            image_rootfs_size = 0
-        else:
-            try:
-                image_rootfs_size = int(image_rootfs_size)
-            except:
-                image_rootfs_size = 0
-        params["image_rootfs_size"] = image_rootfs_size
-
-        image_overhead_factor = self.runCommand(["getVariable", "IMAGE_OVERHEAD_FACTOR"])
-        if not image_overhead_factor:
-            image_overhead_factor = 1
-        else:
-            try:
-                image_overhead_factor = float(image_overhead_factor)
-            except:
-                image_overhead_factor = 1
-        params['image_overhead_factor'] = image_overhead_factor
-
-        params["incompat_license"] = self._remove_redundant(self.runCommand(["getVariable", "INCOMPATIBLE_LICENSE"]) or "")
-        params["sdk_machine"] = self.runCommand(["getVariable", "SDKMACHINE"]) or self.runCommand(["getVariable", "SDK_ARCH"]) or ""
-
-        params["image_fstypes"] = self._remove_redundant(self.runCommand(["getVariable", "IMAGE_FSTYPES"]) or "")
-
         params["image_types"] = self._remove_redundant(self.runCommand(["getVariable", "IMAGE_TYPES"]) or "")
-
-        params["conf_version"] = self.runCommand(["getVariable", "CONF_VERSION"]) or ""
-        params["lconf_version"] = self.runCommand(["getVariable", "LCONF_VERSION"]) or ""
-
         params["runnable_image_types"] = self._remove_redundant(self.runCommand(["getVariable", "RUNNABLE_IMAGE_TYPES"]) or "")
         params["runnable_machine_patterns"] = self._remove_redundant(self.runCommand(["getVariable", "RUNNABLE_MACHINE_PATTERNS"]) or "")
         params["deployable_image_types"] = self._remove_redundant(self.runCommand(["getVariable", "DEPLOYABLE_IMAGE_TYPES"]) or "")
         params["kernel_image_type"] = self.runCommand(["getVariable", "KERNEL_IMAGETYPE"]) or ""
-        params["tmpdir"] = self.runCommand(["getVariable", "TMPDIR"]) or ""
-        params["distro_version"] = self.runCommand(["getVariable", "DISTRO_VERSION"]) or ""
-        params["target_os"] = self.runCommand(["getVariable", "TARGET_OS"]) or ""
-        params["target_arch"] = self.runCommand(["getVariable", "TARGET_ARCH"]) or ""
-        params["tune_pkgarch"] = self.runCommand(["getVariable", "TUNE_PKGARCH"])  or ""
-        params["bb_version"] = self.runCommand(["getVariable", "BB_MIN_VERSION"]) or ""
-
-        params["default_task"] = self.runCommand(["getVariable", "BB_DEFAULT_TASK"]) or "build"
-
-        params["socks_proxy"] = self.runCommand(["getVariable", "all_proxy"]) or ""
-        params["http_proxy"] = self.runCommand(["getVariable", "http_proxy"]) or ""
-        params["ftp_proxy"] = self.runCommand(["getVariable", "ftp_proxy"]) or ""
-        params["https_proxy"] = self.runCommand(["getVariable", "https_proxy"]) or ""
-
-        params["cvs_proxy_host"] = self.runCommand(["getVariable", "CVS_PROXY_HOST"]) or ""
-        params["cvs_proxy_port"] = self.runCommand(["getVariable", "CVS_PROXY_PORT"]) or ""
 
         params["image_white_pattern"] = self.runCommand(["getVariable", "BBUI_IMAGE_WHITE_PATTERN"]) or ""
         params["image_black_pattern"] = self.runCommand(["getVariable", "BBUI_IMAGE_BLACK_PATTERN"]) or ""

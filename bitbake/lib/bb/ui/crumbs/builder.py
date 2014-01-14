@@ -93,39 +93,15 @@ class Configuration:
         self.curr_mach = ""
         self.selected_image = None
         # settings
-        self.curr_distro = ""
-        self.dldir = self.sstatedir = self.sstatemirror = ""
-        self.pmake = self.bbthread = 0
-        self.curr_package_format = ""
-        self.image_rootfs_size = self.image_extra_size = 0
-        self.image_overhead_factor = 1
-        self.incompat_license = ""
-        self.curr_sdk_machine = ""
-        self.conf_version = self.lconf_version = ""
-        self.extra_setting = {}
         self.toolchain_build = False
-        self.image_fstypes = ""
         self.image_size = None
         self.image_packages = []
-        # bblayers.conf
-        self.layers = []
         # image/recipes/packages
         self.clear_selection()
 
         self.user_selected_packages = []
 
         self.default_task = "build"
-
-        # proxy settings
-        self.enable_proxy = None
-        self.same_proxy = False
-        self.proxies = {
-            "http"  : [None, None, None, "", ""],  # protocol : [prot, user, passwd, host, port]
-            "https" : [None, None, None, "", ""],
-            "ftp"   : [None, None, None, "", ""],
-            "socks" : [None, None, None, "", ""],
-            "cvs"   : [None, None, None, "", ""],
-        }
 
     def clear_selection(self):
         self.selected_recipes = []
@@ -157,80 +133,10 @@ class Configuration:
         return Configuration.make_port_string(entry[4])
 
     def update(self, params):
-        # settings
-        self.curr_distro = params["distro"]
-        self.dldir = params["dldir"]
-        self.sstatedir = params["sstatedir"]
-        self.sstatemirror = params["sstatemirror"]
-        self.pmake = int(params["pmake"].split()[1])
-        self.bbthread = params["bbthread"]
-        self.curr_package_format = " ".join(params["pclass"].split("package_")).strip()
-        self.image_rootfs_size = params["image_rootfs_size"]
-        self.image_extra_size = params["image_extra_size"]
-        self.image_overhead_factor = params['image_overhead_factor']
-        self.incompat_license = params["incompat_license"]
-        self.curr_sdk_machine = params["sdk_machine"]
-        self.conf_version = params["conf_version"]
-        self.lconf_version = params["lconf_version"]
-        self.image_fstypes = params["image_fstypes"]
-        # self.extra_setting/self.toolchain_build
-        # bblayers.conf
-        self.layers = params["layer"].split()
-        self.layers_non_removable = params["layers_non_removable"].split()
-        self.default_task = params["default_task"]
-
-        # proxy settings
-        self.enable_proxy = params["http_proxy"] != "" or params["https_proxy"] != "" \
-            or params["ftp_proxy"] != "" or params["socks_proxy"] != "" \
-            or params["cvs_proxy_host"] != "" or params["cvs_proxy_port"] != ""
-        self.split_proxy("http", params["http_proxy"])
-        self.split_proxy("https", params["https_proxy"])
-        self.split_proxy("ftp", params["ftp_proxy"])
-        self.split_proxy("socks", params["socks_proxy"])
-        self.split_proxy("cvs", params["cvs_proxy_host"] + ":" + params["cvs_proxy_port"])
+        pass
 
     def save(self, handler, defaults=False):
-        # bblayers.conf
-        handler.set_var_in_file("BBLAYERS", self.layers, "bblayers.conf")
-        # local.conf
-        if not defaults:
-            handler.early_assign_var_in_file("MACHINE", self.curr_mach, "local.conf")
-        handler.set_var_in_file("DISTRO", self.curr_distro, "local.conf")
-        handler.set_var_in_file("DL_DIR", self.dldir, "local.conf")
-        handler.set_var_in_file("SSTATE_DIR", self.sstatedir, "local.conf")
-        sstate_mirror_list = self.sstatemirror.split("\\n ")
-        sstate_mirror_list_modified = []
-        for mirror in sstate_mirror_list:
-            if mirror != "":
-                mirror = mirror + "\\n"
-                sstate_mirror_list_modified.append(mirror)
-        handler.set_var_in_file("SSTATE_MIRRORS", sstate_mirror_list_modified, "local.conf")
-        handler.set_var_in_file("PARALLEL_MAKE", "-j %s" % self.pmake, "local.conf")
-        handler.set_var_in_file("BB_NUMBER_THREADS", self.bbthread, "local.conf")
-        handler.set_var_in_file("PACKAGE_CLASSES", " ".join(["package_" + i for i in self.curr_package_format.split()]), "local.conf")
-        handler.set_var_in_file("IMAGE_ROOTFS_SIZE", self.image_rootfs_size, "local.conf")
-        handler.set_var_in_file("IMAGE_EXTRA_SPACE", self.image_extra_size, "local.conf")
-        handler.set_var_in_file("INCOMPATIBLE_LICENSE", self.incompat_license, "local.conf")
-        handler.set_var_in_file("SDKMACHINE", self.curr_sdk_machine, "local.conf")
-        handler.set_var_in_file("CONF_VERSION", self.conf_version, "local.conf")
-        handler.set_var_in_file("LCONF_VERSION", self.lconf_version, "bblayers.conf")
-        handler.set_extra_config(self.extra_setting)
-        handler.set_var_in_file("TOOLCHAIN_BUILD", self.toolchain_build, "local.conf")
-        handler.set_var_in_file("IMAGE_FSTYPES", self.image_fstypes, "local.conf")
-        if not defaults:
-            # image/recipes/packages
-            handler.set_var_in_file("__SELECTED_IMAGE__", self.selected_image, "local.conf")
-            handler.set_var_in_file("DEPENDS", self.selected_recipes, "local.conf")
-            handler.set_var_in_file("IMAGE_INSTALL", self.user_selected_packages, "local.conf")
-        # proxy
-        handler.set_var_in_file("enable_proxy", self.enable_proxy, "local.conf")
-        handler.set_var_in_file("use_same_proxy", self.same_proxy, "local.conf")
-        handler.set_var_in_file("http_proxy", self.combine_proxy("http"), "local.conf")
-        handler.set_var_in_file("https_proxy", self.combine_proxy("https"), "local.conf")
-        handler.set_var_in_file("ftp_proxy", self.combine_proxy("ftp"), "local.conf")
-        handler.set_var_in_file("all_proxy", self.combine_proxy("socks"), "local.conf")
-        handler.set_var_in_file("CVS_PROXY_HOST", self.combine_host_only("cvs"), "local.conf")
-        handler.set_var_in_file("CVS_PROXY_PORT", self.combine_port_only("cvs"), "local.conf")
+        pass
 
     def __str__(self):
         s = "VERSION: '%s', BBLAYERS: '%s', MACHINE: '%s', DISTRO: '%s', DL_DIR: '%s'," % \
@@ -279,23 +185,13 @@ class Parameters:
         self.tune_pkgarch = ""
 
     def update(self, params):
-        self.max_threads = params["max_threads"]
-        self.core_base = params["core_base"]
         self.image_addr = params["image_addr"]
         self.image_types = params["image_types"].split()
         self.runnable_image_types = params["runnable_image_types"].split()
         self.runnable_machine_patterns = params["runnable_machine_patterns"].split()
         self.deployable_image_types = params["deployable_image_types"].split()
-        self.tmpdir = params["tmpdir"]
         self.image_white_pattern = params["image_white_pattern"]
         self.image_black_pattern = params["image_black_pattern"]
-        self.kernel_image_type = params["kernel_image_type"]
-        # for build log to show
-        self.bb_version = params["bb_version"]
-        self.target_arch = params["target_arch"]
-        self.target_os = params["target_os"]
-        self.distro_version = params["distro_version"]
-        self.tune_pkgarch = params["tune_pkgarch"]
 
 def hob_conf_filter(fn, data):
     if fn.endswith("/local.conf"):
@@ -520,7 +416,7 @@ class Builder(gtk.Window):
         self.configuration.selected_image = None
         self.switch_page(self.MACHINE_SELECTION)
         self.handler.init_cooker()
-        self.handler.set_extra_inherit("image_types")
+        self.handler.set_extra_inherit("image_types packageinfo")
         self.generate_configuration()
 
     def update_config_async(self):
@@ -675,44 +571,10 @@ class Builder(gtk.Window):
         self.previous_step = self.current_step
         self.current_step = next_step
 
-    def set_user_config_proxies(self):
-        if self.configuration.enable_proxy == True:
-            self.handler.set_http_proxy(self.configuration.combine_proxy("http"))
-            self.handler.set_https_proxy(self.configuration.combine_proxy("https"))
-            self.handler.set_ftp_proxy(self.configuration.combine_proxy("ftp"))
-            self.handler.set_socks_proxy(self.configuration.combine_proxy("socks"))
-            self.handler.set_cvs_proxy(self.configuration.combine_host_only("cvs"), self.configuration.combine_port_only("cvs"))
-        elif self.configuration.enable_proxy == False:
-            self.handler.set_http_proxy("")
-            self.handler.set_https_proxy("")
-            self.handler.set_ftp_proxy("")
-            self.handler.set_socks_proxy("")
-            self.handler.set_cvs_proxy("", "")
-
-    def set_user_config_extra(self):
-        self.handler.set_rootfs_size(self.configuration.image_rootfs_size)
-        self.handler.set_extra_size(self.configuration.image_extra_size)
-        self.handler.set_incompatible_license(self.configuration.incompat_license)
-        self.handler.set_sdk_machine(self.configuration.curr_sdk_machine)
-        self.handler.set_image_fstypes(self.configuration.image_fstypes)
-        self.handler.set_extra_config(self.configuration.extra_setting)
-        self.handler.set_extra_inherit("packageinfo image_types")
-        self.set_user_config_proxies()
-
     def set_user_config(self):
         self.handler.reset_cooker()
-        # set bb layers
-        self.handler.set_bblayers(self.configuration.layers)
-        # set local configuration
-        self.handler.set_machine(self.configuration.curr_mach)
-        self.handler.set_package_format(self.configuration.curr_package_format)
-        self.handler.set_distro(self.configuration.curr_distro)
-        self.handler.set_dl_dir(self.configuration.dldir)
-        self.handler.set_sstate_dir(self.configuration.sstatedir)
-        self.handler.set_sstate_mirrors(self.configuration.sstatemirror)
-        self.handler.set_pmake(self.configuration.pmake)
-        self.handler.set_bbthreads(self.configuration.bbthread)
-        self.set_user_config_extra()
+        self.handler.set_extra_inherit("packageinfo")
+        self.handler.set_extra_inherit("image_types")
 
     def update_recipe_model(self, selected_image, selected_recipes):
         self.recipe_model.set_selected_image(selected_image)

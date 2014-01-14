@@ -89,22 +89,6 @@ class BuildConfigurationTreeView(gtk.TreeView):
         vars.append(self.set_vars("Target arch:", src_params.target_arch))
         vars.append(self.set_vars("Target OS:", src_params.target_os))
         vars.append(self.set_vars("Machine:", src_config_info.curr_mach))
-        vars.append(self.set_vars("Distro:", src_config_info.curr_distro))
-        vars.append(self.set_vars("Distro version:", src_params.distro_version))
-        vars.append(self.set_vars("SDK machine:", src_config_info.curr_sdk_machine))
-        vars.append(self.set_vars("Tune features:", src_params.tune_pkgarch))
-        vars.append(self.set_vars("Layers:", src_config_info.layers))
-
-        for path in src_config_info.layers:
-            import os, os.path
-            if os.path.exists(path):
-                branch = bb.process.run('cd %s; git branch | grep "^* " | tr -d "* "' % path)[0]
-                if branch.startswith("fatal:"):
-                    branch = "(unknown)"
-                if branch:
-                    branch = branch.strip('\n')
-                    vars.append(self.set_vars("Branch:", branch))
-                break
 
         self.set_config_model(vars)
 

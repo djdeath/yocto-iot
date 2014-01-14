@@ -234,7 +234,6 @@ class ImageDetailsPage (HobPage):
         if self.build_succeeded:
             machine = self.builder.configuration.curr_mach
             base_image = self.builder.recipe_model.get_selected_image()
-            layers = self.builder.configuration.layers
             pkg_num = "%s" % len(self.builder.package_model.get_selected_packages())
             log_file = self.builder.current_logfile
         else:
@@ -342,7 +341,7 @@ class ImageDetailsPage (HobPage):
 
         # Machine, Image recipe and Layers
         layer_num_limit = 15
-        varlist = ["Machine: ", "Image recipe: ", "Layers: "]
+        varlist = ["Machine: ", "Image recipe: "]
         vallist = []
         self.setting_detail = None
         if self.build_succeeded:
@@ -353,22 +352,6 @@ class ImageDetailsPage (HobPage):
                 else:
                     base_image = self.builder.configuration.initial_selected_image + " (edited)"
             vallist.append(base_image)
-            i = 0
-            for layer in layers:
-                if i > layer_num_limit:
-                    break
-                varlist.append(" - ")
-                i += 1
-            vallist.append("")
-            i = 0
-            for layer in layers:
-                if i > layer_num_limit:
-                    break
-                elif i == layer_num_limit:
-                    vallist.append("and more...")
-                else:
-                    vallist.append(layer)
-                i += 1
 
             edit_config_button = HobAltButton("Edit configuration")
             edit_config_button.set_tooltip_text("Edit machine and image recipe")
