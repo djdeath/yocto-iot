@@ -54,25 +54,6 @@ class ImageConfigurationPage (HobPage):
 
     def create_visual_elements(self):
         # create visual elements
-        self.toolbar = gtk.Toolbar()
-        self.toolbar.set_orientation(gtk.ORIENTATION_HORIZONTAL)
-        self.toolbar.set_style(gtk.TOOLBAR_BOTH)
-
-        my_images_button = self.append_toolbar_button(self.toolbar,
-            "Images",
-            hic.ICON_IMAGES_DISPLAY_FILE,
-            hic.ICON_IMAGES_HOVER_FILE,
-            "Open previously built images",
-            self.my_images_button_clicked_cb)
-        settings_button = self.append_toolbar_button(self.toolbar,
-            "Settings",
-            hic.ICON_SETTINGS_DISPLAY_FILE,
-            hic.ICON_SETTINGS_HOVER_FILE,
-            "View additional build settings",
-            self.settings_button_clicked_cb)
-
-        self.config_top_button = self.add_onto_top_bar(self.toolbar)
-
         self.gtable = gtk.Table(40, 40, True)
         self.create_config_machine()
         self.create_config_baseimg()
@@ -91,7 +72,6 @@ class ImageConfigurationPage (HobPage):
 
     def _pack_components(self, pack_config_build_button = False):
         self._remove_all_widget()
-        self.pack_start(self.config_top_button, expand=False, fill=False)
         self.pack_start(self.group_align, expand=True, fill=True)
 
         self.box_group_area.pack_start(self.gtable, expand=True, fill=True)
@@ -547,13 +527,3 @@ class ImageConfigurationPage (HobPage):
         self.builder.configuration.initial_selected_image = self.builder.configuration.selected_image
         self.builder.show_recipes()
 
-    def my_images_button_clicked_cb(self, button):
-        self.builder.show_load_my_images_dialog()
-
-    def settings_button_clicked_cb(self, button):
-        # Create an advanced settings dialog
-        response, settings_changed = self.builder.show_simple_settings_dialog()
-        if not response:
-            return
-        if settings_changed:
-            self.builder.reparse_post_adv_settings()

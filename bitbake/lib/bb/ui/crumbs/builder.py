@@ -42,11 +42,9 @@ from bb.ui.crumbs.hobwidget import hwc, HobButton, HobAltButton
 from bb.ui.crumbs.persistenttooltip import PersistentTooltip
 import bb.ui.crumbs.utils
 from bb.ui.crumbs.hig.crumbsmessagedialog import CrumbsMessageDialog
-from bb.ui.crumbs.hig.simplesettingsdialog import SimpleSettingsDialog
 from bb.ui.crumbs.hig.advancedsettingsdialog import AdvancedSettingsDialog
 from bb.ui.crumbs.hig.deployimagedialog import DeployImageDialog
 from bb.ui.crumbs.hig.layerselectiondialog import LayerSelectionDialog
-from bb.ui.crumbs.hig.imageselectiondialog import ImageSelectionDialog
 from bb.ui.crumbs.hig.parsingwarningsdialog import ParsingWarningsDialog
 from bb.ui.crumbs.hig.propertydialog import PropertyDialog
 
@@ -855,7 +853,6 @@ class Builder(gtk.Window):
         self.image_configuration_page.image_combo.child.set_sensitive(sensitive)
         self.image_configuration_page.layer_button.set_sensitive(sensitive)
         self.image_configuration_page.layer_info_icon.set_sensitive(sensitive)
-        self.image_configuration_page.toolbar.set_sensitive(sensitive)
         self.image_configuration_page.view_adv_configuration_button.set_sensitive(sensitive)
         self.image_configuration_page.config_build_button.set_sensitive(sensitive)
 
@@ -1202,34 +1199,6 @@ class Builder(gtk.Window):
 
         return image_extension
 
-    def show_load_my_images_dialog(self):
-        image_extension = self.get_image_extension()
-        dialog = ImageSelectionDialog(self.parameters.image_addr, self.parameters.image_types,
-                                      "Open My Images", self,
-                                       gtk.FILE_CHOOSER_ACTION_SAVE, None,
-                                       image_extension)
-        button = dialog.add_button("Cancel", gtk.RESPONSE_NO)
-        HobAltButton.style_button(button)
-        button = dialog.add_button("Open", gtk.RESPONSE_YES)
-        HobButton.style_button(button)
-        response = dialog.run()
-        if response == gtk.RESPONSE_YES:
-            if not dialog.image_names:
-                lbl = "<b>No selections made</b>\nYou have not made any selections"
-                crumbs_dialog = CrumbsMessageDialog(self, lbl, gtk.STOCK_DIALOG_INFO)
-                button = crumbs_dialog.add_button("Close", gtk.RESPONSE_OK)
-                HobButton.style_button(button)
-                crumbs_dialog.run()
-                crumbs_dialog.destroy()
-                dialog.destroy()
-                return
-
-            self.parameters.image_addr = dialog.image_folder
-            self.parameters.image_names = dialog.image_names[:]
-            self.switch_page(self.MY_IMAGE_OPENED)
-
-        dialog.destroy()
-
     def show_adv_settings_dialog(self, tab=None):
         dialog = AdvancedSettingsDialog(title = "Advanced configuration",
             configuration = copy.deepcopy(self.configuration),
@@ -1253,42 +1222,6 @@ class Builder(gtk.Window):
             self.configuration = dialog.configuration
             self.configuration.save(self.handler, True) # remember settings
             settings_changed = dialog.settings_changed
-        dialog.destroy()
-        return response == gtk.RESPONSE_YES, settings_changed
-
-    def show_simple_settings_dialog(self, tab=None):
-        dialog = SimpleSettingsDialog(title = "Settings",
-            configuration = copy.deepcopy(self.configuration),
-            all_image_types = self.parameters.image_types,
-            all_package_formats = self.parameters.all_package_formats,
-            all_distros = self.parameters.all_distros,
-            all_sdk_machines = self.parameters.all_sdk_machines,
-            max_threads = self.parameters.max_threads,
-            parent = self,
-            flags = gtk.DIALOG_MODAL
-                    | gtk.DIALOG_DESTROY_WITH_PARENT
-                    | gtk.DIALOG_NO_SEPARATOR,
-            handler = self.handler)
-        button = dialog.add_button("Cancel", gtk.RESPONSE_NO)
-        HobAltButton.style_button(button)
-        button = dialog.add_button("Save", gtk.RESPONSE_YES)
-        HobButton.style_button(button)
-        if tab:
-            dialog.switch_to_page(tab)
-        response = dialog.run()
-        settings_changed = False
-        if response == gtk.RESPONSE_YES:
-            self.configuration = dialog.configuration
-            self.configuration.save(self.handler, True) # remember settings
-            settings_changed = dialog.settings_changed
-            if dialog.proxy_settings_changed:
-                self.set_user_config_proxies()
-        elif dialog.proxy_test_ran:
-            # The user might have modified the proxies in the "Proxy"
-            # tab, which in turn made the proxy settings modify in bb.
-            # If "Cancel" was pressed, restore the previous proxy
-            # settings inside bb.
-            self.set_user_config_proxies()
         dialog.destroy()
         return response == gtk.RESPONSE_YES, settings_changed
 
