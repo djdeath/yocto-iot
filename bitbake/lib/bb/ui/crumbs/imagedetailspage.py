@@ -108,7 +108,6 @@ class ImageDetailsPage (HobPage):
         self.image_store = []
         self.button_ids = {}
         self.details_bottom_buttons = gtk.HBox(False, 6)
-        self.image_saved = False
         self.create_visual_elements()
         self.name_field_template = ""
         self.description_field_template = ""
@@ -160,7 +159,7 @@ class ImageDetailsPage (HobPage):
         self.pack_start(self.group_align, expand=True, fill=True)
 
         self.build_result = None
-        if self.image_saved or (self.build_succeeded and self.builder.current_step == self.builder.IMAGE_GENERATING):
+        if self.build_succeeded and self.builder.current_step == self.builder.IMAGE_GENERATING:
             # building is the previous step
             icon = gtk.Image()
             pixmap_path = hic.ICON_INDI_CONFIRM_FILE
@@ -168,10 +167,7 @@ class ImageDetailsPage (HobPage):
             pix_buffer = gtk.gdk.pixbuf_new_from_file(pixmap_path)
             icon.set_from_pixbuf(pix_buffer)
             varlist = [""]
-            if self.image_saved:
-                vallist = ["Your image recipe has been saved"]
-            else:
-                vallist = ["Your image is ready"]
+            vallist = ["Your image is ready"]
             self.build_result = self.BuildDetailBox(varlist=varlist, vallist=vallist, icon=icon, color=color)
             self.box_group_area.pack_start(self.build_result, expand=False, fill=False)
 
@@ -244,9 +240,6 @@ class ImageDetailsPage (HobPage):
         self.box_group_area.pack_end(self.details_bottom_buttons, expand=False, fill=False)
 
         self.show_all()
-        if self.kernel_detail and (not is_runnable):
-            self.kernel_detail.hide()
-        self.image_saved = False
 
     def refresh_package_detail_box(self, image_size):
         self.package_detail.update_line_widgets("Total image size: ", image_size)
