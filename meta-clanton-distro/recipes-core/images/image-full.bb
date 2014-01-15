@@ -28,6 +28,7 @@ IMAGE_INSTALL += "strace"
 IMAGE_INSTALL += "ppp"
 IMAGE_INSTALL += "linuxptp"
 IMAGE_INSTALL += "libstdc++"
+IMAGE_INSTALL += "sysstat"
 
 IMAGE_INSTALL += "python python-modules python-numpy"
 IMAGE_INSTALL += "alsa-lib alsa-utils alsa-tools"
