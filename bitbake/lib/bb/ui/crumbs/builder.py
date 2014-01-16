@@ -43,7 +43,6 @@ from bb.ui.crumbs.persistenttooltip import PersistentTooltip
 import bb.ui.crumbs.utils
 from bb.ui.crumbs.hig.crumbsmessagedialog import CrumbsMessageDialog
 from bb.ui.crumbs.hig.deployimagedialog import DeployImageDialog
-from bb.ui.crumbs.hig.parsingwarningsdialog import ParsingWarningsDialog
 from bb.ui.crumbs.hig.propertydialog import PropertyDialog
 
 hobVer = 20120808
@@ -299,9 +298,6 @@ class Builder(gtk.Window):
         # Indicate whether the sanity check ran
         self.sanity_checked = False
 
-        # save parsing warnings
-        self.parsing_warnings = []
-
         # create visual elements
         self.create_visual_elements()
 
@@ -328,12 +324,10 @@ class Builder(gtk.Window):
         self.handler.connect("data-generated",           self.handler_data_generated_cb)
         self.handler.connect("command-succeeded",        self.handler_command_succeeded_cb)
         self.handler.connect("command-failed",           self.handler_command_failed_cb)
-        self.handler.connect("parsing-warning",          self.handler_parsing_warning_cb)
         self.handler.connect("sanity-failed",            self.handler_sanity_failed_cb)
         self.handler.connect("recipe-populated",         self.handler_recipe_populated_cb)
         self.handler.connect("package-populated",        self.handler_package_populated_cb)
 
-        self.handler.append_to_bbfiles("${TOPDIR}/recipes/images/*.bb")
         self.initiate_new_build_async()
 
         signal.signal(signal.SIGINT, self.event_handle_SIGINT)
@@ -414,20 +408,15 @@ class Builder(gtk.Window):
 
     def initiate_new_build_async(self):
         self.configuration.selected_image = None
-        self.switch_page(self.MACHINE_SELECTION)
         self.handler.init_cooker()
-        self.handler.set_extra_inherit("image_types packageinfo")
-        self.generate_configuration()
-
-    def update_config_async(self):
-        self.switch_page(self.MACHINE_SELECTION)
-        self.set_user_config()
+        self.handler.set_extra_inherit("image_types")
         self.generate_configuration()
 
     def sanity_check(self):
         self.handler.trigger_sanity_check()
 
     def populate_recipe_package_info_async(self):
+        self.configuration.curr_mach = self.handler.runCommand(["getVariable", "MACHINE"]) or "clanton"
         self.switch_page(self.RCPPKGINFO_POPULATING)
         # Parse recipes
         self.set_user_config()
@@ -604,17 +593,11 @@ class Builder(gtk.Window):
             self.parameters.all_distros = values
         elif which == "machine":
             self.parameters.all_machines = values
-            self.image_configuration_page.update_machine_combo()
         elif which == "machine-sdk":
             self.parameters.all_sdk_machines = values
 
     def handler_package_formats_updated_cb(self, handler, formats):
         self.parameters.all_package_formats = formats
-
-    def switch_to_image_configuration_helper(self):
-        self.sanity_check_page.stop()
-        self.switch_page(self.IMAGE_CONFIGURATION)
-        self.image_configuration_page.switch_machine_combo()
 
     def show_network_error_dialog_helper(self):
         self.sanity_check_page.stop()
@@ -635,7 +618,7 @@ class Builder(gtk.Window):
             else:
                 # Switch to the 'image configuration' page now, but we might need
                 # to wait for the minimum display time of the sanity check page
-                self.execute_after_sanity_check(self.switch_to_image_configuration_helper)
+                self.execute_after_sanity_check(self.populate_recipe_package_info_async)
         elif initcmd in [self.handler.GENERATE_RECIPES,
                          self.handler.GENERATE_PACKAGES,
                          self.handler.GENERATE_IMAGE]:
@@ -656,15 +639,6 @@ class Builder(gtk.Window):
         dialog = CrumbsMessageDialog(self, lbl, gtk.STOCK_DIALOG_ERROR, msg)
         button = dialog.add_button("Close", gtk.RESPONSE_OK)
         HobButton.style_button(button)
-        response = dialog.run()
-        dialog.destroy()
-
-    def show_warning_dialog(self):
-        dialog = ParsingWarningsDialog(title = "View warnings",
-                warnings = self.parsing_warnings,
-                parent = None,
-                flags = gtk.DIALOG_DESTROY_WITH_PARENT
-                       | gtk.DIALOG_NO_SEPARATOR)
         response = dialog.run()
         dialog.destroy()
 
@@ -691,9 +665,6 @@ class Builder(gtk.Window):
             self.show_error_dialog(msg)
         self.reset()
 
-    def handler_parsing_warning_cb(self, handler, warn_msg):
-        self.parsing_warnings.append(warn_msg)
-
     def handler_sanity_failed_cb(self, handler, msg, network_error):
         self.reset()
         if network_error:
@@ -707,8 +678,6 @@ class Builder(gtk.Window):
             self.reset()
 
     def window_sensitive(self, sensitive):
-        self.image_configuration_page.machine_combo.set_sensitive(sensitive)
-        self.image_configuration_page.machine_combo.child.set_sensitive(sensitive)
         self.image_configuration_page.image_combo.set_sensitive(sensitive)
         self.image_configuration_page.image_combo.child.set_sensitive(sensitive)
         self.image_configuration_page.config_build_button.set_sensitive(sensitive)
@@ -761,10 +730,8 @@ class Builder(gtk.Window):
         fraction = 0
         if message["eventname"] == "TreeDataPreparationStarted":
             fraction = 0.6 + fraction
-            self.image_configuration_page.stop_button.set_sensitive(False)
             self.image_configuration_page.update_progress_bar("Generating dependency tree", fraction)
         else:
-            self.image_configuration_page.stop_button.set_sensitive(True)
             self.image_configuration_page.update_progress_bar(message["title"], fraction)
 
     def handler_parsing_cb(self, handler, message):
@@ -1034,14 +1001,6 @@ class Builder(gtk.Window):
                 image_extension[type] = ext.split(' ')
 
         return image_extension
-
-    def reparse_post_adv_settings(self):
-        if not self.configuration.curr_mach:
-            self.update_config_async()
-        else:
-            self.configuration.clear_selection()
-            # DO reparse recipes
-            self.populate_recipe_package_info_async()
 
     def deploy_image(self, image_name):
         if not image_name:

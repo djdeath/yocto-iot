@@ -428,7 +428,7 @@ class ImageDetailsPage (HobPage):
                 self.builder.deploy_image(self.toggled_image)
 
     def build_new_button_clicked_cb(self, button):
-        self.builder.initiate_new_build_async()
+        self.builder.populate_recipe_package_info_async()
 
     def edit_packages_button_clicked_cb(self, button):
         self.builder.show_packages(ask=False)

@@ -47,7 +47,6 @@ class ImageConfigurationPage (HobPage):
         # or by manual. If by manual, all user's recipe selection and package selection are
         # cleared.
         self.machine_combo_changed_by_manual = True
-        self.stopping = False
         self.warning_shift = 0
         self.custom_image_selected = None
         self.create_visual_elements()
@@ -93,10 +92,9 @@ class ImageConfigurationPage (HobPage):
         self.show_all()
 
     def update_progress_bar(self, title, fraction, status=None):
-        if self.stopping == False:
-            self.progress_bar.update(fraction)
-            self.progress_bar.set_text(title)
-            self.progress_bar.set_rcstyle(status)
+        self.progress_bar.update(fraction)
+        self.progress_bar.set_text(title)
+        self.progress_bar.set_rcstyle(status)
 
     def show_info_populating(self):
         self._pack_components(pack_config_build_button = False)
@@ -119,78 +117,12 @@ class ImageConfigurationPage (HobPage):
         if self.builder.recipe_model.get_selected_image() == self.builder.recipe_model.__custom_image__:
             self.just_bake_button.hide()
 
-    def add_warnings_bar(self):
-        #create the warnings bar shown when recipes parsing generates warnings
-        color = HobColors.KHAKI
-        warnings_bar = gtk.EventBox()
-        warnings_bar.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse(color))
-        warnings_bar.set_flags(gtk.CAN_DEFAULT)
-        warnings_bar.grab_default()
-
-        build_stop_tab = gtk.Table(10, 20, True)
-        warnings_bar.add(build_stop_tab)
-
-        icon = gtk.Image()
-        icon_pix_buffer = gtk.gdk.pixbuf_new_from_file(hic.ICON_INDI_ALERT_FILE)
-        icon.set_from_pixbuf(icon_pix_buffer)
-        build_stop_tab.attach(icon, 0, 2, 0, 10)
-
-        label = gtk.Label()
-        label.set_alignment(0.0, 0.5)
-        warnings_nb = len(self.builder.parsing_warnings)
-        if warnings_nb == 1:
-            label.set_markup("<span size='x-large'><b>1 recipe parsing warning</b></span>")
-        else:
-            label.set_markup("<span size='x-large'><b>%s recipe parsing warnings</b></span>" % warnings_nb)
-        build_stop_tab.attach(label, 2, 12, 0, 10)
-
-        view_warnings_button = HobButton("View warnings")
-        view_warnings_button.connect('clicked', self.view_warnings_button_clicked_cb)
-        build_stop_tab.attach(view_warnings_button, 15, 19, 1, 9)
-
-        return warnings_bar
-
-    def disable_warnings_bar(self):
-        if self.builder.parsing_warnings:
-            if hasattr(self, 'warnings_bar'):
-                self.warnings_bar.hide_all()
-            self.builder.parsing_warnings = []
-
     def create_config_machine(self):
-        self.machine_title = gtk.Label()
-        self.machine_title.set_alignment(0.0, 0.5)
-        mark = "<span %s>Select a machine</span>" % self.span_tag('x-large', 'bold')
-        self.machine_title.set_markup(mark)
-
-        self.machine_title_desc = gtk.Label()
-        self.machine_title_desc.set_alignment(0.0, 0.5)
-        mark = ("<span %s>Your selection is the profile of the target machine for which you"
-        " are building the image.\n</span>") % (self.span_tag('medium'))
-        self.machine_title_desc.set_markup(mark)
-
-        self.machine_combo = gtk.combo_box_new_text()
-        self.machine_combo.connect("changed", self.machine_combo_changed_cb)
-
         self.progress_bar = HobProgressBar()
-        self.stop_button = HobAltButton("Stop")
-        self.stop_button.connect("clicked", self.stop_button_clicked_cb)
-        self.machine_separator = gtk.HSeparator()
 
     def set_config_machine_layout(self, show_progress_bar = False):
-        self.gtable.attach(self.machine_title, 0, 40, 0, 4)
-        self.gtable.attach(self.machine_title_desc, 0, 40, 4, 6)
-        self.gtable.attach(self.machine_combo, 0, 12, 7, 10)
         if show_progress_bar:
-            #self.gtable.attach(self.progress_box, 0, 40, 15, 18)
             self.gtable.attach(self.progress_bar, 0, 37, 15, 18)
-            self.gtable.attach(self.stop_button, 37, 40, 15, 18, 0, 0)
-        if self.builder.parsing_warnings:
-            self.warnings_bar = self.add_warnings_bar()
-            self.gtable.attach(self.warnings_bar, 0, 40, 14, 18)
-            self.warning_shift = 4
-        else:
-            self.warning_shift = 0
-        self.gtable.attach(self.machine_separator, 0, 40, 13, 14)
 
     def create_config_baseimg(self):
         self.image_title = gtk.Label()
@@ -247,72 +179,6 @@ class ImageConfigurationPage (HobPage):
         button_box.pack_end(self.edit_image_button, expand=False, fill=False)
 
         return button_box
-
-    def stop_button_clicked_cb(self, button):
-        self.stopping = True
-        self.progress_bar.set_text("Stopping recipe parsing")
-        self.progress_bar.set_rcstyle("stop")
-        self.builder.cancel_parse_sync()
-
-    def view_warnings_button_clicked_cb(self, button):
-        self.builder.show_warning_dialog()
-
-    def machine_combo_changed_idle_cb(self):
-        self.builder.window.set_cursor(None)
-
-    def machine_combo_changed_cb(self, machine_combo):
-        self.builder.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-        self.builder.wait(0.1) #wait for combo and cursor to update
-        self.stopping = False
-        self.builder.parsing_warnings = []
-        combo_item = machine_combo.get_active_text()
-        if not combo_item or combo_item == self.__dummy_machine__:
-            return
-
-        # remove __dummy_machine__ item from the store list after first user selection
-        # because it is no longer valid
-        combo_store = machine_combo.get_model()
-        if len(combo_store) and (combo_store[0][0] == self.__dummy_machine__):
-            machine_combo.remove_text(0)
-
-        self.builder.configuration.curr_mach = combo_item
-        if self.machine_combo_changed_by_manual:
-            self.builder.configuration.clear_selection()
-        # reset machine_combo_changed_by_manual
-        self.machine_combo_changed_by_manual = True
-
-        self.builder.configuration.selected_image = None
-
-        # Do reparse recipes
-        self.builder.populate_recipe_package_info_async()
-
-        glib.idle_add(self.machine_combo_changed_idle_cb)
-
-    def update_machine_combo(self):
-        self.disable_warnings_bar()
-        all_machines = [self.__dummy_machine__] + self.builder.parameters.all_machines
-
-        model = self.machine_combo.get_model()
-        model.clear()
-        for machine in all_machines:
-            self.machine_combo.append_text(machine)
-        self.machine_combo.set_active(0)
-
-    def switch_machine_combo(self):
-        self.disable_warnings_bar()
-        self.machine_combo_changed_by_manual = False
-        model = self.machine_combo.get_model()
-        active = 0
-        while active < len(model):
-            if model[active][0] == self.builder.configuration.curr_mach:
-                self.machine_combo.set_active(active)
-                return
-            active += 1
-
-        if model[0][0] != self.__dummy_machine__:
-            self.machine_combo.insert_text(0, self.__dummy_machine__)
-
-        self.machine_combo.set_active(0)
 
     def update_image_desc(self):
         desc = ""
@@ -482,7 +348,6 @@ class ImageConfigurationPage (HobPage):
         self._image_combo_connect_signal()
 
     def just_bake_button_clicked_cb(self, button):
-        self.builder.parsing_warnings = []
         self.builder.just_bake()
 
     def edit_image_button_clicked_cb(self, button):
