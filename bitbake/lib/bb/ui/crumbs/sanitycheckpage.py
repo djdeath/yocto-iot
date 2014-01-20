@@ -66,19 +66,19 @@ class SanityCheckPage (HobPage):
         # 'info' icon
         image = gtk.Image()
         image.set_from_file(hic.ICON_INFO_DISPLAY_FILE)
-        self.table.attach(image, sx, sx + 2, sy, sy + 3 )
+        self.table.attach(image, sx, sx + 3, sy, sy + 3 )
         image.show()
         # 'Checking' message
-        label = self.make_label('Hob is checking for correct build system setup')
-        self.table.attach(label, sx + 2, cols, sy, sy + 3, xpadding=5 )
+        label = self.make_label('Checking for correct build system setup')
+        self.table.attach(label, sx + 3, cols, sy, sy + 3, xpadding=5 )
         label.show()
         # 'Shouldn't take long' message.
         label = self.make_label("The check shouldn't take long.", False)
-        self.table.attach(label, sx + 2, cols, sy + 3, sy + 4, xpadding=5)
+        self.table.attach(label, sx + 3, cols, sy + 3, sy + 4, xpadding=5)
         label.show()
         # Progress bar
         self.progress_bar = HobProgressBar()
-        self.table.attach(self.progress_bar, sx + 2, cols - 3, sy + 5, sy + 7, xpadding=5)
+        self.table.attach(self.progress_bar, sx + 3, cols - 3, sy + 5, sy + 7, xpadding=5)
         self.progress_bar.show()
         # All done
         self.table.show()

@@ -35,19 +35,10 @@ from bb.ui.crumbs.hig.retrieveimagedialog import RetrieveImageDialog
 #
 class ImageConfigurationPage (HobPage):
 
-    __dummy_machine__ = "--select a machine--"
-    __dummy_image__   = "--select an image recipe--"
-    __custom_image__  = "Select from my image recipes"
-
     def __init__(self, builder):
         super(ImageConfigurationPage, self).__init__(builder, "Image configuration")
 
         self.image_combo_id = None
-        # we use machine_combo_changed_by_manual to identify the machine is changed by code
-        # or by manual. If by manual, all user's recipe selection and package selection are
-        # cleared.
-        self.machine_combo_changed_by_manual = True
-        self.warning_shift = 0
         self.custom_image_selected = None
         self.create_visual_elements()
 
@@ -85,12 +76,6 @@ class ImageConfigurationPage (HobPage):
             box.add(subbox)
             self.box_group_area.pack_end(box, False, False)
 
-    def show_machine(self):
-        self.progress_bar.reset()
-        self._pack_components(pack_config_build_button = False)
-        self.set_config_machine_layout(show_progress_bar = False)
-        self.show_all()
-
     def update_progress_bar(self, title, fraction, status=None):
         self.progress_bar.update(fraction)
         self.progress_bar.set_text(title)
@@ -114,41 +99,44 @@ class ImageConfigurationPage (HobPage):
         self.set_config_machine_layout(show_progress_bar = False)
         self.set_config_baseimg_layout()
         self.show_all()
-        if self.builder.recipe_model.get_selected_image() == self.builder.recipe_model.__custom_image__:
-            self.just_bake_button.hide()
 
     def create_config_machine(self):
         self.progress_bar = HobProgressBar()
 
     def set_config_machine_layout(self, show_progress_bar = False):
         if show_progress_bar:
-            self.gtable.attach(self.progress_bar, 0, 37, 15, 18)
+            self.gtable.attach(self.progress_bar, 0, 40, 15, 18)
 
     def create_config_baseimg(self):
         self.image_title = gtk.Label()
-        self.image_title.set_alignment(0, 1.0)
-        mark = "<span %s>Select an image recipe</span>" % self.span_tag('x-large', 'bold')
+        self.image_title.set_alignment(0, 0)
+        mark = "<span %s>Select an image to build</span>" % self.span_tag('x-large', 'bold')
         self.image_title.set_markup(mark)
-
-        self.image_title_desc = gtk.Label()
-        self.image_title_desc.set_alignment(0, 0.5)
-
-        mark = ("<span %s>Image recipes are a starting point for the type of image you want. "
-                "You can build them as \n"
-                "they are or edit them to suit your needs.\n</span>") % self.span_tag('medium')
-        self.image_title_desc.set_markup(mark)
 
         self.image_combo = gtk.combo_box_new_text()
         self.image_combo.set_row_separator_func(self.combo_separator_func, None)
         self.image_combo_id = self.image_combo.connect("changed", self.image_combo_changed_cb)
 
         self.image_desc = gtk.Label()
-        self.image_desc.set_alignment(0.0, 0.5)
+        self.image_desc.set_alignment(0, 0)
         self.image_desc.set_size_request(256, -1)
         self.image_desc.set_justify(gtk.JUSTIFY_LEFT)
         self.image_desc.set_line_wrap(True)
 
-        self.image_separator = gtk.HSeparator()
+        self.toolchain_checkbox = gtk.CheckButton("Build a matching toolchain")
+        self.toolchain_checkbox.set_active(self.builder.configuration.toolchain_build)
+
+        self.distro_title = gtk.Label()
+        self.distro_title.set_alignment(0, 0)
+        mark = "<span %s>Select a distro</span>" % self.span_tag('x-large', 'bold')
+        self.distro_title.set_markup(mark)
+
+        '''self.direct_checkbox = gtk.RadioButton(None, "Direct network connection")
+        self.direct_checkbox.set_active(not self.configuration.enable_proxy)
+
+        self.proxy_checkbox = gtk.RadioButton(self.direct_checkbox, "Manual proxy configuration")
+        self.proxy_checkbox.set_active(self.configuration.enable_proxy)
+        '''
 
     def combo_separator_func(self, model, iter, user_data):
         name = model.get_value(iter, 0)
@@ -156,11 +144,10 @@ class ImageConfigurationPage (HobPage):
             return True
 
     def set_config_baseimg_layout(self):
-        self.gtable.attach(self.image_title, 0, 40, 15+self.warning_shift, 17+self.warning_shift)
-        self.gtable.attach(self.image_title_desc, 0, 40, 18+self.warning_shift, 22+self.warning_shift)
-        self.gtable.attach(self.image_combo, 0, 12, 23+self.warning_shift, 26+self.warning_shift)
-        self.gtable.attach(self.image_desc, 0, 12, 27+self.warning_shift, 33+self.warning_shift)
-        self.gtable.attach(self.image_separator, 0, 40, 35+self.warning_shift, 36+self.warning_shift)
+        self.gtable.attach(self.image_title, 0, 40, 0, 3)
+        self.gtable.attach(self.image_combo, 0, 40, 4, 7)
+        self.gtable.attach(self.image_desc, 0, 40, 8, 12)
+        self.gtable.attach(self.toolchain_checkbox, 0, 40, 13, 16)
 
     def create_config_build_button(self):
         # Create the "Build packages" and "Build image" buttons at the bottom
@@ -172,9 +159,9 @@ class ImageConfigurationPage (HobPage):
         self.just_bake_button.connect("clicked", self.just_bake_button_clicked_cb)
         button_box.pack_end(self.just_bake_button, expand=False, fill=False)
 
-        # create button "Edit image recipe"
-        self.edit_image_button = HobAltButton("Edit image recipe")
-        self.edit_image_button.set_tooltip_text("Customize the recipes and packages to be included in your image")
+        # create button "Edit packages"
+        self.edit_image_button = HobAltButton("Edit packages")
+        self.edit_image_button.set_tooltip_text("Customize the packages to be included in your image")
         self.edit_image_button.connect("clicked", self.edit_image_button_clicked_cb)
         button_box.pack_end(self.edit_image_button, expand=False, fill=False)
 
@@ -199,40 +186,9 @@ class ImageConfigurationPage (HobPage):
     def image_combo_changed_cb(self, combo):
         self.builder.window_sensitive(False)
         selected_image = self.image_combo.get_active_text()
-        if selected_image == self.__custom_image__:
-            topdir = self.builder.get_topdir()
-            images_dir = topdir + "/recipes/images/"
-            self.builder.ensure_dir(images_dir)
-
-            dialog = RetrieveImageDialog(images_dir, "Select from my image recipes",
-                            self.builder, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT)
-            response = dialog.run()
-            if response == gtk.RESPONSE_OK:
-                image_name = dialog.get_filename()
-                head, tail = os.path.split(image_name)
-                selected_image = os.path.splitext(tail)[0]
-                self.custom_image_selected = selected_image
-                self.update_image_combo(self.builder.recipe_model, selected_image)
-            else:
-                selected_image = self.__dummy_image__
-                self.update_image_combo(self.builder.recipe_model, None)
-            dialog.destroy()
-        else:
-            if self.custom_image_selected:
-                self.custom_image_selected = None
-                self.update_image_combo(self.builder.recipe_model, selected_image)
-
-        if not selected_image or (selected_image == self.__dummy_image__):
-            self.builder.window_sensitive(True)
-            self.just_bake_button.hide()
-            self.edit_image_button.hide()
-            return
-
-        # remove __dummy_image__ item from the store list after first user selection
-        # because it is no longer valid
-        combo_store = combo.get_model()
-        if len(combo_store) and (combo_store[0][0] == self.__dummy_image__):
-            combo.remove_text(0)
+        if self.custom_image_selected:
+            self.custom_image_selected = None
+            self.update_image_combo(self.builder.recipe_model, selected_image)
 
         self.builder.customized = False
 
@@ -247,9 +203,6 @@ class ImageConfigurationPage (HobPage):
         self.builder.package_model.reset()
 
         self.show_baseimg_selected()
-
-        if selected_image == self.builder.recipe_model.__custom_image__:
-            self.just_bake_button.hide()
 
         glib.idle_add(self.image_combo_changed_idle_cb, selected_image, selected_recipes, selected_packages)
 
@@ -286,14 +239,6 @@ class ImageConfigurationPage (HobPage):
         self._image_combo_disconnect_signal()
         model = self.image_combo.get_model()
         model.clear()
-        # Set a indicator text to combo store when first open
-        if not selected_image:
-            self.image_combo.append_text(self.__dummy_image__)
-            cnt = cnt + 1
-
-        self.image_combo.append_text(self.__custom_image__)
-        self.image_combo.append_text("--Separator--")
-        cnt = cnt + 2
 
         topdir = self.builder.get_topdir()
         # append and set active
@@ -301,8 +246,6 @@ class ImageConfigurationPage (HobPage):
             path = image_model.get_path(it)
             it = image_model.iter_next(it)
             image_name = image_model[path][recipe_model.COL_NAME]
-            if image_name == self.builder.recipe_model.__custom_image__:
-                continue
 
             if black_pattern:
                 allow = True
@@ -319,26 +262,11 @@ class ImageConfigurationPage (HobPage):
             else:
                 allow = True
 
-            file_name = image_model[path][recipe_model.COL_FILE]
-            if file_name and topdir in file_name:
-                allow = False
-
             if allow:
                 self.image_combo.append_text(image_name)
                 if image_name == selected_image:
                     active = cnt
                 cnt = cnt + 1
-        self.image_combo.append_text(self.builder.recipe_model.__custom_image__)
-
-        if selected_image == self.builder.recipe_model.__custom_image__:
-            active = cnt
-
-        if self.custom_image_selected:
-            self.image_combo.append_text("--Separator--")
-            self.image_combo.append_text(self.custom_image_selected)
-            cnt = cnt + 2
-            if self.custom_image_selected == selected_image:
-                active = cnt
 
         self.image_combo.set_active(active)
 
@@ -347,10 +275,15 @@ class ImageConfigurationPage (HobPage):
 
         self._image_combo_connect_signal()
 
+    def update_conf(self):
+        self.builder.configuration.toolchain_build = self.toolchain_checkbox.get_active()
+
     def just_bake_button_clicked_cb(self, button):
+        self.update_conf()
         self.builder.just_bake()
 
     def edit_image_button_clicked_cb(self, button):
+        self.update_conf()
         self.builder.configuration.initial_selected_image = self.builder.configuration.selected_image
         self.builder.show_recipes()
 

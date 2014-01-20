@@ -92,7 +92,7 @@ class Configuration:
         self.curr_mach = ""
         self.selected_image = None
         # settings
-        self.toolchain_build = False
+        self.toolchain_build = True
         self.image_size = None
         self.image_packages = []
         # image/recipes/packages
@@ -337,6 +337,7 @@ class Builder(gtk.Window):
         self.set_icon_name("applications-development")
         self.set_resizable(True)
 
+        '''
         try:
             window_width = self.get_screen().get_width()
             window_height = self.get_screen().get_height()
@@ -347,6 +348,9 @@ class Builder(gtk.Window):
         if window_width >= hwc.MAIN_WIN_WIDTH:
             window_width = hwc.MAIN_WIN_WIDTH
             window_height = hwc.MAIN_WIN_HEIGHT
+        '''
+        window_width = 500
+        window_height = 550
         self.set_size_request(window_width, window_height)
 
         self.vbox = gtk.VBox(False, 0)
