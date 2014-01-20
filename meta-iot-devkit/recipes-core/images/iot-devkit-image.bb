@@ -43,6 +43,10 @@ IMAGE_INSTALL += "bluez4"
 
 IMAGE_INSTALL += "avahi"
 
+IMAGE_INSTALL += "gcc"
+IMAGE_INSTALL += "gdb"
+IMAGE_INSTALL += "binutils"
+
 # Opencv relies on libav which has a commercial license restriction,
 # so we can't just build without adding LICENSE_FLAGS_WHITELIST = "commercial"
 # to our local.conf
