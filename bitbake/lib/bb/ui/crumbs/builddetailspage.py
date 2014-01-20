@@ -31,70 +31,6 @@ from bb.ui.crumbs.runningbuild import BuildFailureTreeView
 from bb.ui.crumbs.hobpages import HobPage
 from bb.ui.crumbs.hobcolor import HobColors
 
-class BuildConfigurationTreeView(gtk.TreeView):
-    def __init__ (self):
-        gtk.TreeView.__init__(self)
-        self.set_rules_hint(False)
-        self.set_headers_visible(False)
-        self.set_property("hover-expand", True)
-        self.get_selection().set_mode(gtk.SELECTION_SINGLE)
-
-        # The icon that indicates whether we're building or failed.
-        renderer0 = gtk.CellRendererText()
-        renderer0.set_property('font-desc', pango.FontDescription('courier bold 12'))
-        col0 = gtk.TreeViewColumn ("Name", renderer0, text=0)
-        self.append_column (col0)
-
-        # The message of configuration.
-        renderer1 = HobWarpCellRendererText(col_number=1)
-        col1 = gtk.TreeViewColumn ("Values", renderer1, text=1)
-        self.append_column (col1)
-
-    def set_vars(self, key="", var=[""]):
-        d = {}
-        if type(var) == str:
-            d = {key: [var]}
-        elif type(var) == list and len(var) > 1:
-            #create the sub item line
-            l = []
-            text = ""
-            for item in var:
-                text = " - " + item
-                l.append(text)
-            d = {key: var}
-
-        return d
-
-    def set_config_model(self, show_vars):
-        listmodel = gtk.TreeStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
-        parent = None
-        for var in show_vars:
-            for subitem in var.items():
-                name = subitem[0]
-                is_parent = True
-                for value in subitem[1]:
-                    if is_parent:
-                        parent = listmodel.append(parent, (name, value))
-                        is_parent = False
-                    else:
-                        listmodel.append(parent, (None, value))
-                    name = "     - "
-                parent = None
-        # renew the tree model after get the configuration messages
-        self.set_model(listmodel)
-
-    def show(self, src_config_info, src_params):
-        vars = []
-        vars.append(self.set_vars("BB version:", src_params.bb_version))
-        vars.append(self.set_vars("Target arch:", src_params.target_arch))
-        vars.append(self.set_vars("Target OS:", src_params.target_os))
-        vars.append(self.set_vars("Machine:", src_config_info.curr_mach))
-
-        self.set_config_model(vars)
-
-    def reset(self):
-        self.set_model(None)
-
 #
 # BuildDetailsPage
 #
@@ -114,9 +50,6 @@ class BuildDetailsPage (HobPage):
         self.vbox = gtk.VBox(False, 12)
 
         self.progress_box = gtk.VBox(False, 12)
-        self.task_status = gtk.Label("\n") # to ensure layout is correct
-        self.task_status.set_alignment(0.0, 0.5)
-        self.progress_box.pack_start(self.task_status, expand=False, fill=False)
         self.progress_hbox = gtk.HBox(False, 6)
         self.progress_box.pack_end(self.progress_hbox, expand=True, fill=True)
         self.progress_bar = HobProgressBar()
@@ -126,27 +59,11 @@ class BuildDetailsPage (HobPage):
         self.stop_button.set_sensitive(False)
         self.progress_hbox.pack_end(self.stop_button, expand=False, fill=False)
 
-        self.notebook = HobNotebook()
-        self.config_tv = BuildConfigurationTreeView()
-        self.scrolled_view_config = gtk.ScrolledWindow ()
-        self.scrolled_view_config.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
-        self.scrolled_view_config.add(self.config_tv)
-        self.notebook.append_page(self.scrolled_view_config, "Build configuration")
-
-        self.failure_tv = BuildFailureTreeView()
-        self.failure_model = self.builder.handler.build.model.failure_model()
-        self.failure_tv.set_model(self.failure_model)
-        self.scrolled_view_failure = gtk.ScrolledWindow ()
-        self.scrolled_view_failure.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
-        self.scrolled_view_failure.add(self.failure_tv)
-        self.notebook.append_page(self.scrolled_view_failure, "Issues")
-
         self.build_tv = RunningBuildTreeView(readonly=True, hob=True)
         self.build_tv.set_model(self.builder.handler.build.model)
         self.scrolled_view_build = gtk.ScrolledWindow ()
         self.scrolled_view_build.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
         self.scrolled_view_build.add(self.build_tv)
-        self.notebook.append_page(self.scrolled_view_build, "Log")
 
         self.builder.handler.build.model.connect_after("row-changed", self.scroll_to_present_row, self.scrolled_view_build.get_vadjustment(), self.build_tv)
 
@@ -155,24 +72,8 @@ class BuildDetailsPage (HobPage):
         self.back_button.connect("clicked", self.back_button_clicked_cb)
         self.button_box.pack_start(self.back_button, expand=False, fill=False)
 
-    def update_build_status(self, current, total, task):
-        recipe_path, recipe_task = task.split(", ")
-        recipe = os.path.basename(recipe_path).rstrip(".bb")
-        tsk_msg = "<b>Running task %s of %s:</b> %s\n<b>Recipe:</b> %s" % (current, total, recipe_task, recipe)
-        self.task_status.set_markup(tsk_msg)
-        self.stop_button.set_sensitive(True)
-
     def reset_build_status(self):
-        self.task_status.set_markup("\n") # to ensure layout is correct
         self.endpath = (0,)
-
-    def show_issues(self):
-        self.num_of_issues += 1
-        self.notebook.show_indicator_icon("Issues", self.num_of_issues)
-
-    def reset_issues(self):
-        self.num_of_issues = 0
-        self.notebook.hide_indicator_icon("Issues")
 
     def _remove_all_widget(self):
         children = self.vbox.get_children() or []
@@ -267,15 +168,13 @@ class BuildDetailsPage (HobPage):
         self.box_group_area.pack_start(self.build_fail_bar, expand=False, fill=False)
         self.box_group_area.pack_start(self.vbox, expand=True, fill=True)
 
-        self.vbox.pack_start(self.notebook, expand=True, fill=True)
+        self.vbox.pack_start(self.scrolled_view_build, expand=True, fill=True)
         self.show_all()
-        self.notebook.set_page("Issues")
         self.back_button.hide()
 
     def add_build_stop_top_bar(self, action, log_file=None):
         color = HobColors.LIGHT_GRAY
         build_stop_top = gtk.EventBox()
-        #build_stop_top.set_size_request(-1, 200)
         build_stop_top.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse(color))
         build_stop_top.set_flags(gtk.CAN_DEFAULT)
         build_stop_top.grab_default()
@@ -313,7 +212,6 @@ class BuildDetailsPage (HobPage):
 
         attach_pos = (24 if log_file else 14)
         build_button = HobAltButton("Build new image")
-        #build_button.set_size_request(-1, 40)
         build_button.set_tooltip_text("Create a new image from scratch")
         build_button.connect('clicked', self.new_image_button_clicked_cb)
         build_stop_tab.attach(build_button, attach_pos, attach_pos + 9, 6, 9)
@@ -329,7 +227,7 @@ class BuildDetailsPage (HobPage):
         self.box_group_area.pack_start(self.build_stop_bar, expand=False, fill=False)
         self.box_group_area.pack_start(self.vbox, expand=True, fill=True)
 
-        self.vbox.pack_start(self.notebook, expand=True, fill=True)
+        self.vbox.pack_start(self.scrolled_view_build, expand=True, fill=True)
         self.show_all()
         self.back_button.hide()
         return action_button
@@ -347,18 +245,15 @@ class BuildDetailsPage (HobPage):
         self.box_group_area.pack_start(self.vbox, expand=True, fill=True)
 
         self.progress_bar.reset()
-        self.config_tv.reset()
         self.vbox.pack_start(self.progress_box, expand=False, fill=False)
 
-        self.vbox.pack_start(self.notebook, expand=True, fill=True)
+        self.vbox.pack_start(self.scrolled_view_build, expand=True, fill=True)
 
         self.box_group_area.pack_end(self.button_box, expand=False, fill=False)
         self.show_all()
-        self.notebook.set_page("Log")
         self.back_button.hide()
 
         self.reset_build_status()
-        self.reset_issues()
 
     def update_progress_bar(self, title, fraction, status=None):
         self.progress_bar.update(fraction)
@@ -388,9 +283,6 @@ class BuildDetailsPage (HobPage):
                 # check the gtk.adjustment position is at end boundary or not
                 if (v_adj.upper <= v_adj.page_size) or (v_adj.value == v_adj.upper - v_adj.page_size):
                     treeview.scroll_to_cell(path)
-
-    def show_configurations(self, configurations, params):
-        self.config_tv.show(configurations, params)
 
     def failure_primary_action_button_clicked_cb(self, button, action):
         if "Edit recipes" in action:

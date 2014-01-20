@@ -55,9 +55,6 @@ class HobPage (gtk.VBox):
         # the top button occupies 1/7 of the page height
         # setup an event box
         eventbox = gtk.EventBox()
-        style = eventbox.get_style().copy()
-        style.bg[gtk.STATE_NORMAL] = eventbox.get_colormap().alloc_color(HobColors.LIGHT_GRAY, False, False)
-        eventbox.set_style(style)
         eventbox.set_size_request(-1, 88)
 
         hbox = gtk.HBox()

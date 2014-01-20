@@ -280,9 +280,10 @@ class ImageConfigurationPage (HobPage):
     def update_conf(self):
         self.builder.configuration.toolchain_build = self.toolchain_checkbox.get_active()
         if self.full_checkbox.get_active() == True:
-            self.builder.handler.set_distro("clanton-full")
+            self.builder.parameters.distro = "clanton-full"
         else:
-            self.builder.handler.set_distro("clanton-tiny")
+            self.builder.parameters.distro = "clanton-tiny"
+        self.builder.handler.set_distro(self.builder.parameters.distro)
 
     def just_bake_button_clicked_cb(self, button):
         self.update_conf()

@@ -222,6 +222,9 @@ class ImageDetailsPage (HobPage):
         label = self.create_label("<span weight='bold' font_desc='12'>Distro</span>")
         self.box_group_area.pack_start(label, expand=False, fill=True)
 
+        label = self.create_label("<span font_desc='12'>%s</span>" % self.builder.parameters.distro)
+        self.box_group_area.pack_start(label, expand=False, fill=True)
+
         label = self.create_label("<span weight='bold' font_desc='12'>Packages included</span>")
         self.box_group_area.pack_start(label, expand=False, fill=True)
 
@@ -234,7 +237,7 @@ class ImageDetailsPage (HobPage):
         label = self.create_label("<span font_desc='12'>" + image_name + " (" + default_image_size + ")</span>")
         self.box_group_area.pack_start(label, expand=False, fill=True)
 
-        label = self.create_label("<span font_desc='12'>Root file system files are stored in\t%s</span>" % image_addr)
+        label = self.create_label("<span font_desc='12'>Root file system files are stored in\n%s</span>" % image_addr)
         self.box_group_area.pack_start(label, expand=False, fill=True)
 
         self.box_group_area.pack_end(self.details_bottom_buttons, expand=False, fill=False)

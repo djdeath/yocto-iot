@@ -166,6 +166,7 @@ class Parameters:
         self.runnable_machine_patterns = []
         self.deployable_image_types = []
         self.tmpdir = ""
+        self.distro = ""
 
         self.all_machines = []
         self.all_package_formats = []
@@ -770,7 +771,6 @@ class Builder(gtk.Window):
         elif self.current_step == self.PACKAGE_GENERATING:
             fraction = 0
         self.build_details_page.update_progress_bar("Build Started: ", fraction)
-        self.build_details_page.show_configurations(self.configuration, self.parameters)
 
     def build_succeeded(self):
         if self.current_step == self.FAST_IMAGE_GENERATING:
@@ -894,13 +894,12 @@ class Builder(gtk.Window):
             elif message["eventname"] == "runQueueTaskStarted":
                 fraction = 0.2 + 0.8 * fraction
         self.build_details_page.update_progress_bar(title + ": ", fraction)
-        self.build_details_page.update_build_status(message["current"], message["total"], message["task"])
 
     def handler_disk_full_cb(self, running_build):
         self.disk_full = True
 
     def handler_build_failure_cb(self, running_build):
-        self.build_details_page.show_issues()
+        pass
 
     def handler_build_log_cb(self, running_build, func, obj):
         if hasattr(self.logger, func):
