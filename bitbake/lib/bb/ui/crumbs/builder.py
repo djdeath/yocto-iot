@@ -429,9 +429,6 @@ class Builder(gtk.Window):
 
     def generate_packages_async(self, log = False):
         self.switch_page(self.PACKAGE_GENERATING)
-        if log:
-            self.current_logfile = self.handler.get_logfile()
-            self.do_log(self.current_logfile)
         # Build packages
         _, all_recipes = self.recipe_model.get_selected_recipes()
         self.set_user_config()
@@ -447,9 +444,6 @@ class Builder(gtk.Window):
 
     def fast_generate_image_async(self, log = False):
         self.switch_page(self.FAST_IMAGE_GENERATING)
-        if log:
-            self.current_logfile = self.handler.get_logfile()
-            self.do_log(self.current_logfile)
         # Build packages
         _, all_recipes = self.recipe_model.get_selected_recipes()
         self.set_user_config()
@@ -459,9 +453,6 @@ class Builder(gtk.Window):
     def generate_image_async(self, cont = False):
         self.switch_page(self.IMAGE_GENERATING)
         self.handler.reset_build()
-        if not cont:
-            self.current_logfile = self.handler.get_logfile()
-            self.do_log(self.current_logfile)
         # Build image
         self.set_user_config()
         toolchain_packages = []

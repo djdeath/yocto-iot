@@ -53,7 +53,7 @@ class ImageDetailsPage (HobPage):
                 total_rows += len(varlist)
             self.table = gtk.Table(total_rows, 20, True)
             self.table.set_row_spacings(6)
-            self.table.set_size_request(100, -1)
+            self.table.set_size_request(70, -1)
             self.hbox.pack_start(self.table, expand=True, fill=True, padding=15)
 
             colid = 0
@@ -61,13 +61,13 @@ class ImageDetailsPage (HobPage):
             self.line_widgets = {}
             if icon:
                 self.table.attach(icon, colid, colid + 2, 0, 1)
-                colid = colid + 2
+                colid = colid + 3
             if varlist and vallist:
                 for row in range(rowid, total_rows):
                     index = row - rowid
                     self.line_widgets[varlist[index]] = self.text2label(varlist[index], vallist[index])
                     self.table.attach(self.line_widgets[varlist[index]], colid, 20, row, row + 1)
-                
+
         def update_line_widgets(self, variable, value):
             if len(self.line_widgets) == 0:
                 return
@@ -210,36 +210,38 @@ class ImageDetailsPage (HobPage):
 
         is_runnable = self.create_bottom_buttons(self.buttonlist, self.toggled_image)
 
-        label = self.create_label("<span weight='bold' font_desc='15'>Image information</span>")
-        self.box_group_area.pack_start(label, expand=False, fill=True)
+        table = gtk.Table(40, 40, True)
+        image_info_label = self.create_label("<span weight='bold' font_desc='15'>Image information</span>")
+        table.attach(image_info_label, 0, 40, 0, 3)
 
-        label = self.create_label("<span weight='bold' font_desc='12'>Image</span>")
-        self.box_group_area.pack_start(label, expand=False, fill=True)
+        image_label = self.create_label("<span weight='bold' font_desc='12'>Image</span>")
+        table.attach(image_label, 0, 40, 3, 5)
 
-        label = self.create_label("<span font_desc='12'>%s</span>" % image_name)
-        self.box_group_area.pack_start(label, expand=False, fill=True)
+        image_name_label = self.create_label("<span font_desc='12'>%s</span>" % image_name)
+        table.attach(image_name_label, 2, 40, 5, 7)
 
-        label = self.create_label("<span weight='bold' font_desc='12'>Distro</span>")
-        self.box_group_area.pack_start(label, expand=False, fill=True)
+        distro_label = self.create_label("<span weight='bold' font_desc='12'>Distro</span>")
+        table.attach(distro_label, 0, 40, 7, 9)
 
-        label = self.create_label("<span font_desc='12'>%s</span>" % self.builder.parameters.distro)
-        self.box_group_area.pack_start(label, expand=False, fill=True)
+        distro_name_label = self.create_label("<span font_desc='12'>%s</span>" % self.builder.parameters.distro)
+        table.attach(distro_name_label, 2, 40, 9, 11)
 
-        label = self.create_label("<span weight='bold' font_desc='12'>Packages included</span>")
-        self.box_group_area.pack_start(label, expand=False, fill=True)
+        packages_label = self.create_label("<span weight='bold' font_desc='12'>Packages included</span>")
+        table.attach(packages_label, 0, 40, 11, 13)
 
-        label = self.create_label("<span font_desc='12'>%s</span>" % pkg_num)
-        self.box_group_area.pack_start(label, expand=False, fill=True)
+        pkg_num_label = self.create_label("<span font_desc='12'>%s</span>" % pkg_num)
+        table.attach(pkg_num_label, 2, 40, 13, 15)
 
-        label = self.create_label("<span weight='bold' font_desc='12'>Root file system files</span>")
-        self.box_group_area.pack_start(label, expand=False, fill=True)
+        files_label = self.create_label("<span weight='bold' font_desc='12'>Root file system files</span>")
+        table.attach(files_label, 0, 40, 15, 17)
 
-        label = self.create_label("<span font_desc='12'>" + image_name + " (" + default_image_size + ")</span>")
-        self.box_group_area.pack_start(label, expand=False, fill=True)
+        res_label = self.create_label("<span font_desc='12'>" + image_name + " (" + default_image_size + ")</span>")
+        table.attach(res_label, 2, 40, 17, 19)
 
-        label = self.create_label("<span font_desc='12'>Root file system files are stored in\n%s</span>" % image_addr)
-        self.box_group_area.pack_start(label, expand=False, fill=True)
+        addr_label = self.create_label("<span font_desc='12'>Root file system files are stored in\n%s</span>" % image_addr)
+        table.attach(addr_label, 2, 40, 19, 21)
 
+        self.box_group_area.pack_start(table, expand=False, fill=True)
         self.box_group_area.pack_end(self.details_bottom_buttons, expand=False, fill=False)
 
         self.show_all()

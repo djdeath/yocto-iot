@@ -290,7 +290,6 @@ class HobHandler(gobject.GObject):
         self.set_var_in_file("INHERIT", inherits, ".hob.conf")
 
     def set_distro(self, distro):
-        print("set distro " + str(distro))
         self.set_var_in_file("DISTRO", distro, "local.conf")
 
     def request_package_info(self):
@@ -361,9 +360,6 @@ class HobHandler(gobject.GObject):
     def reset_build(self):
         self.build.reset()
 
-    def get_logfile(self):
-        return self.server.runCommand(["getVariable", "BB_CONSOLELOG"])[0]
-
     def get_topdir(self):
         return self.runCommand(["getVariable", "TOPDIR"]) or ""
 
@@ -376,19 +372,18 @@ class HobHandler(gobject.GObject):
 
     def set_var_in_file(self, var, val, default_file=None):
         self.runCommand(["enableDataTracking"])
-        self.server.runCommand(["setVarFile", var, val, default_file, "set"])
+        self.runCommand(["setVarFile", var, val, default_file, "set"])
         self.runCommand(["disableDataTracking"])
 
     def early_assign_var_in_file(self, var, val, default_file=None):
-        self.runCommand(["enableDataTracking"])
-        self.server.runCommand(["setVarFile", var, val, default_file, "earlyAssign"])
+        self.runCommand(["setVarFile", var, val, default_file, "earlyAssign"])
         self.runCommand(["disableDataTracking"])
 
     def remove_var_from_file(self, var):
-        self.server.runCommand(["removeVarFile", var])
+        self.runCommand(["removeVarFile", var])
 
     def append_var_in_file(self, var, val, default_file=None):
-        self.server.runCommand(["setVarFile", var, val, default_file, "append"])
+        self.runCommand(["setVarFile", var, val, default_file, "append"])
 
     def append_to_bbfiles(self, val):
         bbfiles = self.runCommand(["getVariable", "BBFILES", "False"]) or ""
