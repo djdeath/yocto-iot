@@ -88,7 +88,7 @@ class ImageConfigurationPage (HobPage):
 
     def show_info_populated(self):
         self.progress_bar.reset()
-        self._pack_components(pack_config_build_button = False)
+        self._pack_components(pack_config_build_button = True)
         self.set_config_machine_layout(show_progress_bar = False)
         self.set_config_baseimg_layout()
         self.show_all()
@@ -119,7 +119,6 @@ class ImageConfigurationPage (HobPage):
 
         self.image_desc = gtk.Label()
         self.image_desc.set_alignment(0, 0)
-        self.image_desc.set_size_request(256, -1)
         self.image_desc.set_justify(gtk.JUSTIFY_LEFT)
         self.image_desc.set_line_wrap(True)
 
@@ -131,12 +130,11 @@ class ImageConfigurationPage (HobPage):
         mark = "<span %s>Select a distro</span>" % self.span_tag('x-large', 'bold')
         self.distro_title.set_markup(mark)
 
-        '''self.direct_checkbox = gtk.RadioButton(None, "Direct network connection")
-        self.direct_checkbox.set_active(not self.configuration.enable_proxy)
+        self.full_checkbox = gtk.RadioButton(None, "clanton-full (eglibc)")
+        self.full_checkbox.set_active(True)
 
-        self.proxy_checkbox = gtk.RadioButton(self.direct_checkbox, "Manual proxy configuration")
-        self.proxy_checkbox.set_active(self.configuration.enable_proxy)
-        '''
+        self.tiny_checkbox = gtk.RadioButton(self.full_checkbox, "clanton-tiny (uClibc)")
+        self.tiny_checkbox.set_active(False)
 
     def combo_separator_func(self, model, iter, user_data):
         name = model.get_value(iter, 0)
@@ -144,10 +142,14 @@ class ImageConfigurationPage (HobPage):
             return True
 
     def set_config_baseimg_layout(self):
-        self.gtable.attach(self.image_title, 0, 40, 0, 3)
-        self.gtable.attach(self.image_combo, 0, 40, 4, 7)
-        self.gtable.attach(self.image_desc, 0, 40, 8, 12)
-        self.gtable.attach(self.toolchain_checkbox, 0, 40, 13, 16)
+        self.gtable.attach(self.image_title, 0, 40, 1, 4)
+        self.gtable.attach(self.image_combo, 0, 20, 5, 8)
+        self.gtable.attach(self.image_desc, 0, 40, 9, 13)
+        self.gtable.attach(self.toolchain_checkbox, 0, 40, 14, 17)
+
+        self.gtable.attach(self.distro_title, 0, 40, 19, 22)
+        self.gtable.attach(self.full_checkbox, 0, 40, 23, 26)
+        self.gtable.attach(self.tiny_checkbox, 0, 40, 26, 29)
 
     def create_config_build_button(self):
         # Create the "Build packages" and "Build image" buttons at the bottom
@@ -277,6 +279,10 @@ class ImageConfigurationPage (HobPage):
 
     def update_conf(self):
         self.builder.configuration.toolchain_build = self.toolchain_checkbox.get_active()
+        if self.full_checkbox.get_active() == True:
+            self.builder.handler.set_distro("clanton-full")
+        else:
+            self.builder.handler.set_distro("clanton-tiny")
 
     def just_bake_button_clicked_cb(self, button):
         self.update_conf()

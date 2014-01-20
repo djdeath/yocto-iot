@@ -289,6 +289,10 @@ class HobHandler(gobject.GObject):
         inherits = inherits + " " + bbclass
         self.set_var_in_file("INHERIT", inherits, ".hob.conf")
 
+    def set_distro(self, distro):
+        print("set distro " + str(distro))
+        self.set_var_in_file("DISTRO", distro, "local.conf")
+
     def request_package_info(self):
         self.commands_async.append(self.SUB_GENERATE_PKGINFO)
         self.run_next_command(self.POPULATE_PACKAGEINFO)

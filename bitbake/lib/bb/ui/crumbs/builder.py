@@ -588,8 +588,7 @@ class Builder(gtk.Window):
     def reset(self):
         self.configuration.curr_mach = ""
         self.configuration.clear_selection()
-        self.image_configuration_page.switch_machine_combo()
-        self.switch_page(self.MACHINE_SELECTION)
+        self.initiate_new_build_async()
 
     # Callback Functions
     def handler_config_updated_cb(self, handler, which, values):
