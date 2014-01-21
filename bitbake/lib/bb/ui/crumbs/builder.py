@@ -560,6 +560,11 @@ class Builder(gtk.Window):
         self.handler.reset_cooker()
         self.handler.set_extra_inherit("packageinfo")
         self.handler.set_extra_inherit("image_types")
+        if self.image_configuration_page.full_checkbox.get_active() == True:
+            self.parameters.distro = "clanton-full"
+        else:
+            self.parameters.distro = "clanton-tiny"
+        self.handler.set_distro(self.parameters.distro)
 
     def update_recipe_model(self, selected_image, selected_recipes):
         self.recipe_model.set_selected_image(selected_image)
