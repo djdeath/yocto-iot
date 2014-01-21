@@ -43,13 +43,13 @@ IMAGE_INSTALL += "bluez4"
 
 IMAGE_INSTALL += "avahi"
 
-IMAGE_INSTALL += "gcc"
-IMAGE_INSTALL += "gdb"
-IMAGE_INSTALL += "binutils"
+# Unlike default meta-oe we build opencv without libav support
+# so don't require changing our license to commercial
+IMAGE_INSTALL += "opencv python-opencv"
 
-# Opencv relies on libav which has a commercial license restriction,
-# so we can't just build without adding LICENSE_FLAGS_WHITELIST = "commercial"
-# to our local.conf
-#IMAGE_INSTALL += "opencv python-opencv"
+IMAGE_INSTALL += "cmake"
+IMAGE_INSTALL += "binutils"
+IMAGE_INSTALL += "packagegroup-core-tools-profile"
+IMAGE_INSTALL += "packagegroup-core-buildessential"
 
 EXTRA_IMAGEDEPENDS = "grub-conf"
