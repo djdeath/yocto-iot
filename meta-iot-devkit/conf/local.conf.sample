@@ -100,8 +100,8 @@ MACHINE ??= "clanton"
 # Ultimately when creating custom policy, people will likely end up subclassing 
 # these defaults.
 #
-#DISTRO ?= "clanton-tiny"
-DISTRO ?= "clanton-full"
+#DISTRO ?= "iot-devkit-spi"
+DISTRO ?= "iot-devkit"
 # As an example of a subclass there is a "bleeding" edge policy configuration
 # where many versions are set to the absolute latest code from the upstream 
 # source control systems. This is just mentioned here as an example, its not

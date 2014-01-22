@@ -26,7 +26,7 @@
 # to sourcing this script.
 #
 
-export TEMPLATECONF=${TEMPLATECONF:-meta-clanton-distro/conf}
+export TEMPLATECONF=${TEMPLATECONF:-meta-iot-devkit/conf}
 
 
 if [ -z "$ZSH_NAME" ] && [ "x$0" = "x./oe-init-build-env" ]; then

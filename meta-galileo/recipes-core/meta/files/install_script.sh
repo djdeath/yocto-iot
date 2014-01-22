@@ -11,7 +11,7 @@ if [ "$INST_ARCH" != "$SDK_ARCH" ]; then
 	fi
 fi
 
-DEFAULT_INSTALL_DIR="/opt/clanton-tiny/1.4.2"
+DEFAULT_INSTALL_DIR="/opt/iot-devkit-spi/1.4.2"
 SUDO_EXEC=""
 target_sdk_dir=""
 answer=""
@@ -117,10 +117,10 @@ if [ $relocate = 1 ] ; then
 	fi
 fi
 
-# replace /opt/clanton-tiny/1.4.2 with the new prefix in all text files: configs/scripts/etc
+# replace /opt/iot-devkit-spi/1.4.2 with the new prefix in all text files: configs/scripts/etc
 $SUDO_EXEC find $native_sysroot -type f -exec file '{}' \;|grep ":.*\(ASCII\|script\|source\).*text"|cut -d':' -f1|$SUDO_EXEC xargs sed -i -e "s:$DEFAULT_INSTALL_DIR:$target_sdk_dir:g"
 
-# change all symlinks pointing to /opt/clanton-tiny/1.4.2
+# change all symlinks pointing to /opt/iot-devkit-spi/1.4.2
 for l in $($SUDO_EXEC find $native_sysroot -type l); do
 	$SUDO_EXEC ln -sfn $(readlink $l|$SUDO_EXEC sed -e "s:$DEFAULT_INSTALL_DIR:$target_sdk_dir:") $l
 done

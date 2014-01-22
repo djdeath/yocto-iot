@@ -8,11 +8,11 @@ BBFILES ?= ""
 BBLAYERS ?= " \
   ##OEROOT##/meta \
   ##OEROOT##/meta-oe \
-  ##OEROOT##/meta-clanton-distro \
+  ##OEROOT##/meta-iot-devkit \
   ##OEROOT##/meta-yocto \
   ##OEROOT##/meta-intel \
   ##OEROOT##/meta-clanton-bsp \
-  ##OEROOT##/meta-clanton-galileo \
+  ##OEROOT##/meta-galileo \
   "
 BBLAYERS_NON_REMOVABLE ?= " \
   ##OEROOT##/meta \
