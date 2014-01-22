@@ -51,6 +51,7 @@ SRC_URI = "git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 SRC_URI += "file://clanton.patch"
 SRC_URI += "file://clanton.cfg"
 SRC_URI += "file://clanton-standard.scc"
+SRC_URI += "file://0001-libtraceevent-Remove-hard-coded-include-to-usr-local.patch"
 
 LINUX_VERSION ?= "3.8"
 LINUX_VERSION_EXTENSION ?= "-clanton"
