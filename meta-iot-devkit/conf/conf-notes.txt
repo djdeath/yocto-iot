@@ -1,0 +1,3 @@
+Default targets are:
+    iot-devkit-image
+    iot-devkit-spi-image
