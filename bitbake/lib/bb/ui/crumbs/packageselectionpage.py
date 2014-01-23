@@ -34,79 +34,38 @@ class PackageSelectionPage (HobPage):
 
     pages = [
         {
-         'name'      : 'Included packages',
-         'tooltip'   : 'The packages currently included for your image',
-         'filter'    : { PackageListModel.COL_INC : [True] },
-         'search'    : 'Search packages by name',
-         'searchtip' : 'Enter a package name to find it',
-         'columns'   : [{
-                       'col_name' : 'Package name',
-                       'col_id'   : PackageListModel.COL_NAME,
-                       'col_style': 'text',
-                       'col_min'  : 100,
-                       'col_max'  : 300,
-                       'expand'   : 'True'
-                      }, {
-                       'col_name' : 'Size',
-                       'col_id'   : PackageListModel.COL_SIZE,
-                       'col_style': 'text',
-                       'col_min'  : 100,
-                       'col_max'  : 300,
-                       'expand'   : 'True'
-                      }, {
-                       'col_name' : 'Recipe',
-                       'col_id'   : PackageListModel.COL_RCP,
-                       'col_style': 'text',
-                       'col_min'  : 100,
-                       'col_max'  : 250,
-                       'expand'   : 'True'
-                      }, {
-                       'col_name' : 'Brought in by (+others)',
-                       'col_id'   : PackageListModel.COL_BINB,
-                       'col_style': 'binb',
-                       'col_min'  : 100,
-                       'col_max'  : 350,
-                       'expand'   : 'True'
-                      }, {
-                       'col_name' : 'Included',
-                       'col_id'   : PackageListModel.COL_INC,
-                       'col_style': 'check toggle',
-                       'col_min'  : 100,
-                       'col_max'  : 100
-                     }]
-        }, {
          'name'      : 'All packages',
          'tooltip'   : 'All packages that have been built',
          'filter'    : {},
          'search'    : 'Search packages by name',
          'searchtip' : 'Enter a package name to find it',
          'columns'   : [{
+                       'col_name' : 'Included',
+                       'col_id'   : PackageListModel.COL_INC,
+                       'col_style': 'check toggle',
+                       'col_min'  : 100,
+                       'col_max'  : 100
+                      }, {
                        'col_name' : 'Package name',
                        'col_id'   : PackageListModel.COL_NAME,
                        'col_style': 'text',
                        'col_min'  : 100,
-                       'col_max'  : 400,
+                       'col_max'  : 200,
                        'expand'   : 'True'
                       }, {
                        'col_name' : 'Size',
                        'col_id'   : PackageListModel.COL_SIZE,
                        'col_style': 'text',
                        'col_min'  : 100,
-                       'col_max'  : 500,
+                       'col_max'  : 100,
                        'expand'   : 'True'
                       }, {
-                       'col_name' : 'Recipe',
-                       'col_id'   : PackageListModel.COL_RCP,
-                       'col_style': 'text',
+                       'col_name' : 'Brought in by',
+                       'col_id'   : PackageListModel.COL_BINB,
+                       'col_style': 'binb',
                        'col_min'  : 100,
-                       'col_max'  : 250,
+                       'col_max'  : 100,
                        'expand'   : 'True'
-                      }, {
-                       'col_name' : 'Included',
-                       'col_id'   : PackageListModel.COL_INC,
-                       'col_style': 'check toggle',
-                       'col_min'  : 100,
-                       'col_max'  : 100
                       }]
         }
     ]
@@ -124,12 +83,9 @@ class PackageSelectionPage (HobPage):
         # create visual elements
         self.create_visual_elements()
 
-    def included_clicked_cb(self, button):
-        self.ins.set_current_page(self.INCLUDED)
-
     def create_visual_elements(self):
         self.label = gtk.Label("Packages included: 0\nSelected packages size: 0 MB")
-        self.eventbox = self.add_onto_top_bar(self.label, 73)
+        self.eventbox = self.add_onto_top_bar(self.label)
         self.pack_start(self.eventbox, expand=False, fill=False)
         self.pack_start(self.group_align, expand=True, fill=True)
 
@@ -140,23 +96,23 @@ class PackageSelectionPage (HobPage):
         search_names = []
         search_tips = []
         # append the tab
-        for page in self.pages:
-            columns = page['columns']
-            name = page['name']
-            tab = HobViewTable(columns, name)
-            search_names.append(page['search'])
-            search_tips.append(page['searchtip'])
-            filter = page['filter']
-            sort_model = self.package_model.tree_model(filter, initial=True)
-            tab.set_model(sort_model)
-            tab.connect("toggled", self.table_toggled_cb, name)
-            tab.connect("button-release-event", self.button_click_cb)
-            tab.connect("cell-fadeinout-stopped", self.after_fadeout_checkin_include, filter)
-            self.ins.append_page(tab, page['name'], page['tooltip'])
-            self.tables.append(tab)
-
+        page = self.pages[0]
+        columns = page['columns']
+        name = page['name']
+        self.tab = HobViewTable(columns, name)
+        search_names.append(page['search'])
+        search_tips.append(page['searchtip'])
         self.ins.set_entry(search_names, search_tips)
         self.ins.search.connect("changed", self.search_entry_changed)
+        filter = page['filter']
+        sort_model = self.package_model.tree_model(filter, initial=True)
+        self.tab.set_model(sort_model)
+        self.tab.connect("toggled", self.table_toggled_cb, name)
+        self.tab.connect("button-release-event", self.button_click_cb)
+        self.tab.connect("cell-fadeinout-stopped", self.after_fadeout_checkin_include, filter)
+        #self.tab.set_size_request(-1, 350)
+        self.ins.append_page(self.tab, page['name'], page['tooltip'])
+        self.tables.append(self.tab)
 
         # add all into the dialog
         self.box_group_area.pack_start(self.ins, expand=True, fill=True)
@@ -165,7 +121,6 @@ class PackageSelectionPage (HobPage):
         self.box_group_area.pack_start(self.button_box, expand=False, fill=False)
 
         self.build_image_button = HobButton('Build image')
-        #self.build_image_button.set_size_request(205, 49)
         self.build_image_button.set_tooltip_text("Build target image")
         self.build_image_button.set_flags(gtk.CAN_DEFAULT)
         self.build_image_button.grab_default()
@@ -188,20 +143,20 @@ class PackageSelectionPage (HobPage):
 
     def filter_search(self, entry):
         text = entry.get_text()
-        current_tab = self.ins.get_current_page()
+        current_tab = 0
         filter = self.pages[current_tab]['filter']
         filter[PackageListModel.COL_NAME] = text
         self.tables[current_tab].set_model(self.package_model.tree_model(filter, search_data=text))
         if self.package_model.filtered_nb == 0:
-            if not self.ins.get_nth_page(current_tab).top_bar:
-                self.ins.get_nth_page(current_tab).add_no_result_bar(entry)
-                self.ins.get_nth_page(current_tab).top_bar.set_no_show_all(True)
-            self.ins.get_nth_page(current_tab).top_bar.show()
-            self.ins.get_nth_page(current_tab).scroll.hide()
+            if not self.tab.top_bar:
+                self.tab.add_no_result_bar(entry)
+                self.tab.top_bar.set_no_show_all(True)
+            self.tab.top_bar.show()
+            self.tab.scroll.hide()
         else:
-            if self.ins.get_nth_page(current_tab).top_bar:
-                self.ins.get_nth_page(current_tab).top_bar.hide()
-            self.ins.get_nth_page(current_tab).scroll.show()
+            if self.tab.top_bar:
+                self.tab.top_bar.hide()
+            self.tab.scroll.show()
         if entry.get_text() == '':
             entry.set_icon_sensitive(gtk.ENTRY_ICON_SECONDARY, False)
         else:
@@ -266,9 +221,8 @@ class PackageSelectionPage (HobPage):
         selected_packages_size = self.package_model.get_packages_size()
         selected_packages_size_str = HobPage._size_to_string(selected_packages_size)
 
-        self.label.set_label("Packages included: %s\nSelected packages size: %s" %
+        self.label.set_label("Packages included: %s   Selected packages size: %s" %
                             (selected_packages_num, selected_packages_size_str))
-        self.ins.show_indicator_icon("Included packages", selected_packages_num)
 
     def toggle_item_idle_cb(self, path, view_tree, cell, pagename):
         if not self.package_model.path_included(path):
@@ -337,7 +291,4 @@ class PackageSelectionPage (HobPage):
         self.package_model.sort_order = self.sort_order
         tree.set_model(self.package_model.tree_model(filter))
         tree.expand_all()
-
-    def set_packages_curr_tab(self, curr_page):
-        self.ins.set_current_page(curr_page)
 

@@ -290,5 +290,5 @@ class ImageConfigurationPage (HobPage):
     def edit_image_button_clicked_cb(self, button):
         self.update_conf()
         self.builder.configuration.initial_selected_image = self.builder.configuration.selected_image
-        self.builder.show_recipes()
+        self.builder.show_packages(ask=False)
 

@@ -479,10 +479,9 @@ class HobTabLabel(gtk.HBox):
     def set_active(self, active=True):
         self.indicator.set_active(active)
 
-class HobNotebook(gtk.Notebook):
+class HobNotebook(gtk.VBox):
     def __init__(self):
-        gtk.Notebook.__init__(self)
-        self.set_property('homogeneous', True)
+        gtk.VBox.__init__(self)
 
         self.pages = []
 
@@ -490,20 +489,7 @@ class HobNotebook(gtk.Notebook):
         self.search_focus = False
         self.page_changed = False
 
-        self.connect("switch-page", self.page_changed_cb)
-
         self.show_all()
-
-    def page_changed_cb(self, nb, page, page_num):
-        for p, lbl in enumerate(self.pages):
-            if p == page_num:
-                lbl.set_active()
-            else:
-                lbl.set_active(False)
-
-        if self.search:
-            self.page_changed = True
-            self.reset_entry(self.search, page_num)
 
     def append_page(self, child, tab_label, tab_tooltip=None):
         label = HobTabLabel(tab_label)
@@ -511,7 +497,7 @@ class HobNotebook(gtk.Notebook):
             label.set_tooltip_text(tab_tooltip)
         label.set_active(False)
         self.pages.append(label)
-        gtk.Notebook.append_page(self, child, label)
+        gtk.VBox.pack_start(self, child, expand=True, fill=True)
 
     def set_entry(self, names, tips):
         self.search = gtk.Entry()
@@ -533,17 +519,7 @@ class HobNotebook(gtk.Notebook):
 
         self.search.connect("focus-in-event", self.set_search_entry_editable_cb)
         self.search.connect("focus-out-event", self.set_search_entry_reset_cb)
-        self.set_action_widget(self.search, gtk.PACK_END)
-
-    def show_indicator_icon(self, title, number):
-        for child in self.pages:
-            if child.lbl.get_label() == title:
-                child.set_count(number)
-
-    def hide_indicator_icon(self, title):
-        for child in self.pages:
-            if child.lbl.get_label() == title:
-                child.set_count(0)
+        self.pack_start(self.search, expand=False, fill=False)
 
     def set_search_entry_editable_cb(self, search, event):
         self.search_focus = True
@@ -556,7 +532,7 @@ class HobNotebook(gtk.Notebook):
         search.set_style(style)
 
     def set_search_entry_reset_cb(self, search, event):
-        page_num = self.get_current_page()
+        page_num = 0
         text = search.get_text()
         if not text:
             self.reset_entry(search, page_num)
@@ -575,13 +551,6 @@ class HobNotebook(gtk.Notebook):
             search.set_text("")
         search.set_icon_sensitive(gtk.ENTRY_ICON_SECONDARY, False)
         search.grab_focus()
-
-    def set_page(self, title):
-        for child in self.pages:
-            if child.lbl.get_label() == title:
-                child.grab_focus()
-                self.set_current_page(self.pages.index(child))
-                return
 
 class HobWarpCellRendererText(gtk.CellRendererText):
     def __init__(self, col_number):

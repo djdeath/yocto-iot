@@ -520,7 +520,6 @@ class Builder(gtk.Window):
             self.configuration.initial_selected_packages = self.configuration.selected_packages
             self.configuration.initial_user_selected_packages = self.configuration.user_selected_packages
             self.package_details_page.set_title("Edit packages")
-            self.package_details_page.set_packages_curr_tab(self.package_details_page.INCLUDED)
             self.package_details_page.show_page(self.current_logfile)
 
 
@@ -530,7 +529,6 @@ class Builder(gtk.Window):
 
         elif next_step == self.PACKAGE_GENERATED:
             self.package_details_page.set_title("Step 2 of 2: Edit packages")
-            self.package_details_page.set_packages_curr_tab(self.package_details_page.INCLUDED)
             self.package_details_page.show_page(self.current_logfile)
 
         elif next_step == self.IMAGE_GENERATING:

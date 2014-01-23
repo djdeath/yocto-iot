@@ -57,14 +57,16 @@ class HobPage (gtk.VBox):
         eventbox = gtk.EventBox()
         eventbox.set_size_request(-1, 88)
 
-        hbox = gtk.HBox()
+        hbox = gtk.VBox()
 
         self.title_label = gtk.Label()
         self.title_label.set_markup("<span size='x-large'>%s</span>" % self.title)
+        self.title_label.set_alignment(0, 0)
         hbox.pack_start(self.title_label, expand=False, fill=False, padding=20)
 
         if widget:
             # add the widget in the event box
+            widget.set_alignment(0, 0)
             hbox.pack_end(widget, expand=False, fill=False, padding=padding)
         eventbox.add(hbox)
 
