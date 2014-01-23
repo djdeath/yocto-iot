@@ -245,7 +245,6 @@ class ImageConfigurationPage (HobPage):
         model = self.image_combo.get_model()
         model.clear()
 
-        topdir = self.builder.get_topdir()
         # append and set active
         while it:
             path = image_model.get_path(it)

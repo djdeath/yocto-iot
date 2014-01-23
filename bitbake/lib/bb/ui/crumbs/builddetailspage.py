@@ -238,7 +238,7 @@ class BuildDetailsPage (HobPage):
             self.title = "Building packages ..."
         else:
             self.title = "Building image ..."
-        self.build_details_top = self.add_onto_top_bar(None)
+        self.build_details_top = self.add_onto_top_bar(None, padding=15)
         self.pack_start(self.build_details_top, expand=False, fill=False)
         self.pack_start(self.group_align, expand=True, fill=True)
 

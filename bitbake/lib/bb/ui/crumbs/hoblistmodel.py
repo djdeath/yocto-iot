@@ -63,7 +63,7 @@ class PackageListModel(gtk.ListStore):
                                 gobject.TYPE_BOOLEAN,
                                 gobject.TYPE_STRING,
                                 gobject.TYPE_STRING)
-        self.sort_column_id, self.sort_order = PackageListModel.COL_NAME, gtk.SORT_ASCENDING
+        self.sort_column_id, self.sort_order = PackageListModel.COL_INC, gtk.SORT_ASCENDING
 
     """
     Find the model path for the item_name
@@ -112,7 +112,7 @@ class PackageListModel(gtk.ListStore):
         sort = gtk.TreeModelSort(model)
         sort.connect ('sort-column-changed', self.sort_column_changed_cb)
         if initial:
-            sort.set_sort_column_id(PackageListModel.COL_NAME, gtk.SORT_ASCENDING)
+            sort.set_sort_column_id(PackageListModel.COL_INC, gtk.SORT_ASCENDING)
             sort.set_default_sort_func(None)
         elif excluded_items_ahead:
             sort.set_default_sort_func(self.exclude_item_sort_func, search_data)

@@ -690,10 +690,7 @@ class Builder(gtk.Window):
         self.window_sensitive(True)
 
     def rcppkglist_populated(self):
-        if  self.parameters.distro == "clanton-full":
-            selected_image = "image-full"
-        else:
-            selected_image = "image-spi"
+        selected_image = self.configuration.selected_image
         selected_recipes = self.configuration.selected_recipes[:]
         selected_packages = self.configuration.selected_packages[:]
         user_selected_packages = self.configuration.user_selected_packages[:]
@@ -1156,9 +1153,6 @@ class Builder(gtk.Window):
             self.consolelog.setFormatter(format)
 
             self.logger.addHandler(self.consolelog)
-
-    def get_topdir(self):
-        return self.handler.get_topdir()
 
     def wait(self, delay):
         time_start = time.time()

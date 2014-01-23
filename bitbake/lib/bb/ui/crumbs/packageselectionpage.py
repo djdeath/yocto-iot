@@ -85,7 +85,7 @@ class PackageSelectionPage (HobPage):
 
     def create_visual_elements(self):
         self.label = gtk.Label("Packages included: 0\nSelected packages size: 0 MB")
-        self.eventbox = self.add_onto_top_bar(self.label)
+        self.eventbox = self.add_onto_top_bar(self.label, padding=15)
         self.pack_start(self.eventbox, expand=False, fill=False)
         self.pack_start(self.group_align, expand=True, fill=True)
 
@@ -206,12 +206,9 @@ class PackageSelectionPage (HobPage):
             tab.set_model(self.package_model.tree_model(filter, initial=True))
 
     def back_button_clicked_cb(self, button):
-        if self.builder.previous_step ==  self.builder.IMAGE_GENERATED:
-            self.builder.restore_initial_selected_packages()
-            self.refresh_selection()
-            self.builder.show_image_details()
-        else:
-            self.builder.show_configuration()
+        self.builder.restore_initial_selected_packages()
+        self.refresh_selection()
+        self.builder.show_configuration()
         self.refresh_tables()
 
     def refresh_selection(self):

@@ -155,7 +155,7 @@ class HobHandler(gobject.GObject):
                 self.set_var_in_file("TOOLCHAIN_TARGET_TASK", " ".join(self.toolchain_packages), "local.conf")
                 targets.append(self.toolchain)
             if targets[0] == "hob-image":
-                self.set_var_in_file("LINGUAS_INSTALL", "", "local.conf")
+                #self.set_var_in_file("LINGUAS_INSTALL", "", "local.conf")
                 hobImage = self.runCommand(["matchFile", "hob-image.bb"])
                 if self.base_image != "Start with an empty image recipe":
                     baseImage = self.runCommand(["matchFile", self.base_image + ".bb"])
@@ -359,9 +359,6 @@ class HobHandler(gobject.GObject):
 
     def reset_build(self):
         self.build.reset()
-
-    def get_topdir(self):
-        return self.runCommand(["getVariable", "TOPDIR"]) or ""
 
     def _remove_redundant(self, string):
         ret = []
