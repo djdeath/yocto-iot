@@ -195,25 +195,22 @@ class ImageConfigurationPage (HobPage):
     def image_combo_changed_cb(self, combo):
         self.builder.window_sensitive(False)
         selected_image = self.image_combo.get_active_text()
-        if self.custom_image_selected:
-            self.custom_image_selected = None
-            self.update_image_combo(self.builder.recipe_model, selected_image)
+        if selected_image:
+            self.builder.customized = False
 
-        self.builder.customized = False
+            selected_recipes = []
 
-        selected_recipes = []
+            image_path = self.builder.recipe_model.pn_path[selected_image]
+            image_iter = self.builder.recipe_model.get_iter(image_path)
+            selected_packages = self.builder.recipe_model.get_value(image_iter, self.builder.recipe_model.COL_INSTALL).split()
+            self.update_image_desc()
 
-        image_path = self.builder.recipe_model.pn_path[selected_image]
-        image_iter = self.builder.recipe_model.get_iter(image_path)
-        selected_packages = self.builder.recipe_model.get_value(image_iter, self.builder.recipe_model.COL_INSTALL).split()
-        self.update_image_desc()
+            self.builder.recipe_model.reset()
+            self.builder.package_model.reset()
 
-        self.builder.recipe_model.reset()
-        self.builder.package_model.reset()
+            self.show_baseimg_selected()
 
-        self.show_baseimg_selected()
-
-        glib.idle_add(self.image_combo_changed_idle_cb, selected_image, selected_recipes, selected_packages)
+            glib.idle_add(self.image_combo_changed_idle_cb, selected_image, selected_recipes, selected_packages)
 
     def _image_combo_connect_signal(self):
         if not self.image_combo_id:
@@ -245,7 +242,6 @@ class ImageConfigurationPage (HobPage):
         black_pattern.append(re.compile("hob-image"))
 
         it = image_model.get_iter_first()
-        self._image_combo_disconnect_signal()
         model = self.image_combo.get_model()
         model.clear()
 

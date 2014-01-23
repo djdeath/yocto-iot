@@ -514,19 +514,13 @@ class Builder(gtk.Window):
             self.image_configuration_page.show_baseimg_selected()
 
         elif next_step == self.RECIPE_SELECTION:
-            if self.recipe_model.get_selected_image() == self.recipe_model.__custom_image__:
-                self.recipe_details_page.set_recipe_curr_tab(self.recipe_details_page.ALL)
-            else:
-                self.recipe_details_page.set_recipe_curr_tab(self.recipe_details_page.INCLUDED)
+            self.recipe_details_page.set_recipe_curr_tab(self.recipe_details_page.INCLUDED)
 
         elif next_step == self.PACKAGE_SELECTION:
             self.configuration.initial_selected_packages = self.configuration.selected_packages
             self.configuration.initial_user_selected_packages = self.configuration.user_selected_packages
             self.package_details_page.set_title("Edit packages")
-            if self.recipe_model.get_selected_image() == self.recipe_model.__custom_image__:
-                self.package_details_page.set_packages_curr_tab(self.package_details_page.ALL)
-            else:
-                self.package_details_page.set_packages_curr_tab(self.package_details_page.INCLUDED)
+            self.package_details_page.set_packages_curr_tab(self.package_details_page.INCLUDED)
             self.package_details_page.show_page(self.current_logfile)
 
 
@@ -536,10 +530,7 @@ class Builder(gtk.Window):
 
         elif next_step == self.PACKAGE_GENERATED:
             self.package_details_page.set_title("Step 2 of 2: Edit packages")
-            if self.recipe_model.get_selected_image() == self.recipe_model.__custom_image__:
-                self.package_details_page.set_packages_curr_tab(self.package_details_page.ALL)
-            else:
-                self.package_details_page.set_packages_curr_tab(self.package_details_page.INCLUDED)
+            self.package_details_page.set_packages_curr_tab(self.package_details_page.INCLUDED)
             self.package_details_page.show_page(self.current_logfile)
 
         elif next_step == self.IMAGE_GENERATING:
@@ -701,7 +692,10 @@ class Builder(gtk.Window):
         self.window_sensitive(True)
 
     def rcppkglist_populated(self):
-        selected_image = self.configuration.selected_image
+        if  self.parameters.distro == "clanton-full":
+            selected_image = "image-full"
+        else:
+            selected_image = "image-spi"
         selected_recipes = self.configuration.selected_recipes[:]
         selected_packages = self.configuration.selected_packages[:]
         user_selected_packages = self.configuration.user_selected_packages[:]
