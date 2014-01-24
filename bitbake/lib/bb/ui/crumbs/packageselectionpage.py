@@ -210,7 +210,7 @@ class PackageSelectionPage (HobPage):
         self.refresh_selection()
         self.ins.search.set_text("")
         self.builder.recipe_model.set_selected_image(self.builder.configuration.initial_selected_image)
-        self.builder.image_configuration_page.update_image_combo(self.builder.recipe_model, self.builder.configuration.initial_selected_image)
+        self.builder.image_configuration_page.update_image_combo(self.builder.configuration.initial_selected_image)
         self.builder.image_configuration_page.update_image_desc()
         self.builder.show_configuration()
         self.refresh_tables()

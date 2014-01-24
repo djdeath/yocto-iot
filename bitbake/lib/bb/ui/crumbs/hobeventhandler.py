@@ -391,13 +391,11 @@ class HobHandler(gobject.GObject):
     def get_parameters(self):
         # retrieve the parameters from bitbake
         params = {}
+        params["image_list"] = self.runCommand(["getVariable", "HOB_IMAGELIST"]) or ""
         params["image_addr"] = self.runCommand(["getVariable", "DEPLOY_DIR_IMAGE"]) or ""
         params["image_types"] = self._remove_redundant(self.runCommand(["getVariable", "IMAGE_TYPES"]) or "")
         params["runnable_image_types"] = self._remove_redundant(self.runCommand(["getVariable", "RUNNABLE_IMAGE_TYPES"]) or "")
         params["runnable_machine_patterns"] = self._remove_redundant(self.runCommand(["getVariable", "RUNNABLE_MACHINE_PATTERNS"]) or "")
         params["deployable_image_types"] = self._remove_redundant(self.runCommand(["getVariable", "DEPLOYABLE_IMAGE_TYPES"]) or "")
         params["kernel_image_type"] = self.runCommand(["getVariable", "KERNEL_IMAGETYPE"]) or ""
-
-        params["image_white_pattern"] = self.runCommand(["getVariable", "BBUI_IMAGE_WHITE_PATTERN"]) or ""
-        params["image_black_pattern"] = self.runCommand(["getVariable", "BBUI_IMAGE_BLACK_PATTERN"]) or ""
         return params

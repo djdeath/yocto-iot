@@ -101,31 +101,9 @@ class ImageConfigurationPage (HobPage):
         self.show_all()
 
     def create_config_machine(self):
-        self.distro_title = gtk.Label()
-        self.distro_title.set_alignment(0, 0)
-        mark = "<span %s>Select a distro</span>" % self.span_tag('x-large', 'bold')
-        self.distro_title.set_markup(mark)
-
-        self.full_checkbox = gtk.RadioButton(None, "clanton-full (eglibc)")
-        self.full_checkbox.set_active(True)
-
-        self.tiny_checkbox = gtk.RadioButton(self.full_checkbox, "clanton-tiny (uClibc)")
-        self.tiny_checkbox.set_active(False)
-
-        self.full_checkbox.connect("toggled", self.distro_checkbox_toggled_cb)
         self.progress_bar = HobProgressBar()
 
-    def distro_checkbox_toggled_cb(self, button):
-        if self.full_checkbox.get_active() == True:
-            self.builder.parameters.distro = "clanton-full"
-        else:
-            self.builder.parameters.distro = "clanton-tiny"
-        self.builder.populate_recipe_package_info_async()
-
     def set_config_distro_layout(self, show_progress_bar = False):
-        self.gtable.attach(self.distro_title, 0, 40, 1, 4)
-        self.gtable.attach(self.full_checkbox, 0, 40, 5, 8)
-        self.gtable.attach(self.tiny_checkbox, 0, 40, 8, 11)
         if show_progress_bar:
             self.gtable.attach(self.progress_bar, 0, 40, 12, 15)
 
@@ -153,10 +131,10 @@ class ImageConfigurationPage (HobPage):
             return True
 
     def set_config_baseimg_layout(self):
-        self.gtable.attach(self.image_title, 0, 40, 16, 19)
-        self.gtable.attach(self.image_combo, 0, 20, 20, 23)
-        self.gtable.attach(self.image_desc, 0, 40, 24, 28)
-        self.gtable.attach(self.toolchain_checkbox, 0, 40, 29, 32)
+        self.gtable.attach(self.image_title, 0, 40, 8, 11)
+        self.gtable.attach(self.image_combo, 0, 20, 12, 15)
+        self.gtable.attach(self.image_desc, 0, 40, 16, 20)
+        self.gtable.attach(self.toolchain_checkbox, 0, 40, 21, 24)
 
     def create_config_build_button(self):
         # Create the "Build packages" and "Build image" buttons at the bottom
@@ -221,63 +199,18 @@ class ImageConfigurationPage (HobPage):
             self.image_combo.disconnect(self.image_combo_id)
             self.image_combo_id = None
 
-    def update_image_combo(self, recipe_model, selected_image):
-        # Update the image combo according to the images in the recipe_model
-        # populate image combo
-        filter = {RecipeListModel.COL_TYPE : ['image']}
-        image_model = recipe_model.tree_model(filter)
-        image_model.set_sort_column_id(recipe_model.COL_NAME, gtk.SORT_ASCENDING)
-        active = 0
-        cnt = 0
-
-        white_pattern = []
-        if self.builder.parameters.image_white_pattern:
-            for i in self.builder.parameters.image_white_pattern.split():
-                white_pattern.append(re.compile(i))
-
-        black_pattern = []
-        if self.builder.parameters.image_black_pattern:
-            for i in self.builder.parameters.image_black_pattern.split():
-                black_pattern.append(re.compile(i))
-        black_pattern.append(re.compile("hob-image"))
-
-        it = image_model.get_iter_first()
+    def update_image_combo(self, selected_image):
         model = self.image_combo.get_model()
         model.clear()
 
-        # append and set active
-        while it:
-            path = image_model.get_path(it)
-            it = image_model.iter_next(it)
-            image_name = image_model[path][recipe_model.COL_NAME]
-
-            if black_pattern:
-                allow = True
-                for pattern in black_pattern:
-                    if pattern.search(image_name):
-                        allow = False
-                        break
-            elif white_pattern:
-                allow = False
-                for pattern in white_pattern:
-                    if pattern.search(image_name):
-                        allow = True
-                        break
-            else:
-                allow = True
-
-            if allow:
-                self.image_combo.append_text(image_name)
-                if image_name == selected_image:
-                    active = cnt
-                cnt = cnt + 1
-
+        active = 0
+        cnt = 0
+        for image_name in self.builder.parameters.image_list.keys():
+            self.image_combo.append_text(image_name)
+            if image_name == selected_image:
+                active = cnt
+            cnt = cnt + 1
         self.image_combo.set_active(active)
-
-        if active != 0:
-            self.show_baseimg_selected()
-
-        self._image_combo_connect_signal()
 
     def update_conf(self):
         self.builder.configuration.toolchain_build = self.toolchain_checkbox.get_active()

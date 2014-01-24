@@ -167,6 +167,7 @@ class Parameters:
         self.deployable_image_types = []
         self.tmpdir = ""
         self.distro = ""
+        self.image_list = ""
 
         self.all_machines = []
         self.all_package_formats = []
@@ -174,8 +175,6 @@ class Parameters:
         self.all_sdk_machines = []
         self.all_layers = []
         self.image_names = []
-        self.image_white_pattern = ""
-        self.image_black_pattern = ""
 
         # for build log to show
         self.bb_version = ""
@@ -185,13 +184,15 @@ class Parameters:
         self.tune_pkgarch = ""
 
     def update(self, params):
+        hob_image_list = params["image_list"].split()
+        self.image_list = {}
+        for image in hob_image_list:
+            self.image_list[image.split(":")[0]] = image.split(":")[1]
         self.image_addr = params["image_addr"]
         self.image_types = params["image_types"].split()
         self.runnable_image_types = params["runnable_image_types"].split()
         self.runnable_machine_patterns = params["runnable_machine_patterns"].split()
         self.deployable_image_types = params["deployable_image_types"].split()
-        self.image_white_pattern = params["image_white_pattern"]
-        self.image_black_pattern = params["image_black_pattern"]
 
 def hob_conf_filter(fn, data):
     if fn.endswith("/local.conf"):
@@ -549,11 +550,9 @@ class Builder(gtk.Window):
         self.handler.reset_cooker()
         self.handler.set_extra_inherit("packageinfo")
         self.handler.set_extra_inherit("image_types")
-        if self.image_configuration_page.full_checkbox.get_active() == True:
-            self.parameters.distro = "clanton-full"
-        else:
-            self.parameters.distro = "clanton-tiny"
-        self.handler.set_distro(self.parameters.distro)
+        if self.configuration.selected_image:
+            self.parameters.distro = self.parameters.image_list[self.configuration.selected_image]
+            self.handler.set_distro(self.parameters.distro)
 
     def update_recipe_model(self, selected_image, selected_recipes):
         self.recipe_model.set_selected_image(selected_image)
@@ -695,7 +694,7 @@ class Builder(gtk.Window):
         selected_packages = self.configuration.selected_packages[:]
         user_selected_packages = self.configuration.user_selected_packages[:]
 
-        self.image_configuration_page.update_image_combo(self.recipe_model, selected_image)
+        self.image_configuration_page.update_image_combo(selected_image)
         self.image_configuration_page.update_image_desc()
         self.update_recipe_model(selected_image, selected_recipes)
         self.update_package_model(selected_packages, user_selected_packages)
