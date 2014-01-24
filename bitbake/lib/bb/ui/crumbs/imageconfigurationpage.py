@@ -284,7 +284,7 @@ class ImageConfigurationPage (HobPage):
 
     def just_bake_button_clicked_cb(self, button):
         self.update_conf()
-        self.builder.just_bake()
+        self.builder.build_image()
 
     def edit_image_button_clicked_cb(self, button):
         self.update_conf()
