@@ -192,7 +192,7 @@ class HobHandler(gobject.GObject):
             self.run_next_command()
 
         elif isinstance(event, bb.event.SanityCheckFailed):
-            self.emit("sanity-failed", event._msg, event._network_error)
+            self.emit("sanity-failed", event._msg)
 
         elif isinstance(event, logging.LogRecord):
             if not self.building:

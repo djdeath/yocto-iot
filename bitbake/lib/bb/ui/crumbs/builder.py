@@ -274,7 +274,6 @@ class Builder(gtk.Window):
 
         # logger
         self.logger = logging.getLogger("BitBake")
-        self.consolelog = None
         self.current_logfile = None
 
         # configuration and parameters
@@ -339,18 +338,6 @@ class Builder(gtk.Window):
         self.set_icon_name("applications-development")
         self.set_resizable(True)
 
-        '''
-        try:
-            window_width = self.get_screen().get_width()
-            window_height = self.get_screen().get_height()
-        except AttributeError:
-            print "Please set DISPLAY variable before running Hob."
-            sys.exit(1)
-
-        if window_width >= hwc.MAIN_WIN_WIDTH:
-            window_width = hwc.MAIN_WIN_WIDTH
-            window_height = hwc.MAIN_WIN_HEIGHT
-        '''
         window_width = 500
         window_height = 550
         self.set_size_request(window_width, window_height)
@@ -368,7 +355,6 @@ class Builder(gtk.Window):
         self.sanity_check_page        = SanityCheckPage(self)
         self.display_sanity_check = False
         self.sanity_check_post_func = False
-        self.had_network_error = False
 
         self.nb = gtk.Notebook()
         self.nb.set_show_tabs(False)
@@ -587,10 +573,6 @@ class Builder(gtk.Window):
     def handler_package_formats_updated_cb(self, handler, formats):
         self.parameters.all_package_formats = formats
 
-    def show_network_error_dialog_helper(self):
-        self.sanity_check_page.stop()
-        self.show_network_error_dialog()
-
     def handler_command_succeeded_cb(self, handler, initcmd):
         if initcmd == self.handler.GENERATE_CONFIGURATION:
             if not self.configuration.curr_mach:
@@ -600,13 +582,7 @@ class Builder(gtk.Window):
                 self.sanity_check()
                 self.sanity_checked = True
         elif initcmd == self.handler.SANITY_CHECK:
-            if self.had_network_error:
-                self.had_network_error = False
-                self.execute_after_sanity_check(self.show_network_error_dialog_helper)
-            else:
-                # Switch to the 'image configuration' page now, but we might need
-                # to wait for the minimum display time of the sanity check page
-                self.execute_after_sanity_check(self.populate_recipe_package_info_async)
+            self.execute_after_sanity_check(self.populate_recipe_package_info_async)
         elif initcmd in [self.handler.GENERATE_RECIPES,
                          self.handler.GENERATE_PACKAGES,
                          self.handler.GENERATE_IMAGE]:
@@ -630,40 +606,16 @@ class Builder(gtk.Window):
         response = dialog.run()
         dialog.destroy()
 
-    def show_network_error_dialog(self):
-        lbl = "<b>Hob cannot connect to the network</b>\n"
-        msg = "Please check your network connection. If you are using a proxy server, please make sure it is configured correctly."
-        lbl = lbl + "%s\n\n" % glib.markup_escape_text(msg)
-        dialog = CrumbsMessageDialog(self, lbl, gtk.STOCK_DIALOG_ERROR)
-        button = dialog.add_button("Close", gtk.RESPONSE_OK)
-        HobButton.style_button(button)
-        button = dialog.add_button("Proxy settings", gtk.RESPONSE_CANCEL)
-        HobButton.style_button(button)
-        res = dialog.run()
-        dialog.destroy()
-        if res == gtk.RESPONSE_CANCEL:
-            res, settings_changed = self.show_simple_settings_dialog(SimpleSettingsDialog.PROXIES_PAGE_ID)
-            if not res:
-                return
-            if settings_changed:
-                self.reparse_post_adv_settings()
-
     def handler_command_failed_cb(self, handler, msg):
         if msg:
             self.show_error_dialog(msg)
         self.reset()
 
-    def handler_sanity_failed_cb(self, handler, msg, network_error):
+    def handler_sanity_failed_cb(self, handler, msg):
         self.reset()
-        if network_error:
-            # Mark this in an internal field. The "network error" dialog will be
-            # shown later, when a SanityCheckPassed event will be handled
-            # (as sent by sanity.bbclass)
-            self.had_network_error = True
-        else:
-            msg = msg.replace("your local.conf", "Settings")
-            self.show_error_dialog(msg)
-            self.reset()
+        msg = msg.replace("your local.conf", "Settings")
+        self.show_error_dialog(msg)
+        self.reset()
 
     def window_sensitive(self, sensitive):
         self.image_configuration_page.image_combo.set_sensitive(sensitive)
@@ -919,7 +871,7 @@ class Builder(gtk.Window):
 
     def build_image(self):
         selected_packages = self.package_model.get_selected_packages()
-        if not selected_packages:      
+        if not selected_packages:
             lbl = "<b>No selections made</b>\nYou have not made any selections"
             lbl = lbl + " so there isn't anything to bake at this time."
             dialog = CrumbsMessageDialog(self, lbl, gtk.STOCK_DIALOG_INFO)
@@ -1139,19 +1091,6 @@ class Builder(gtk.Window):
             self.cancel_build_sync()
         elif response == gtk.RESPONSE_YES:
             self.cancel_build_sync(True)
-
-    def do_log(self, consolelogfile = None):
-        if consolelogfile:
-            bb.utils.mkdirhier(os.path.dirname(consolelogfile))
-            if self.consolelog:
-                self.logger.removeHandler(self.consolelog)
-                self.consolelog = None
-            self.consolelog = logging.FileHandler(consolelogfile)
-            bb.msg.addDefaultlogFilter(self.consolelog)
-            format = bb.msg.BBLogFormatter("%(levelname)s: %(message)s")
-            self.consolelog.setFormatter(format)
-
-            self.logger.addHandler(self.consolelog)
 
     def wait(self, delay):
         time_start = time.time()
