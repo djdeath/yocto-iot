@@ -82,14 +82,18 @@ class SignatureGeneratorOEBasicHash(bb.siggen.SignatureGeneratorBasicHash):
     def rundep_check(self, fn, recipename, task, dep, depname, dataCache = None):
         return sstate_rundepfilter(self, fn, recipename, task, dep, depname, dataCache)
     def dump_sigs(self, dataCache):
+        sigs = []
+        for fn in self.taskdeps:
+            for task in self.taskdeps[fn]:
+                k = fn + "." + task
+                if k not in self.taskhash:
+                    continue
+                sigs.append("    " + dataCache.pkg_fn[fn] + ":" + task + ":" + self.taskhash[k] + " \\\n")
+        sigs.sort()
         with open("locked-sigs.inc", "w") as f:
             f.write('SIGGEN_LOCKEDSIGS = "\\\n')
-            for fn in self.taskdeps:
-                for task in self.taskdeps[fn]:
-                    k = fn + "." + task
-                    if k not in self.taskhash:
-                        continue
-                    f.write("    " + dataCache.pkg_fn[fn] + ":" + task + ":" + self.taskhash[k] + " \\\n")
+            for s in sigs:
+                f.write(s)
             f.write('    "\n')
         return super(bb.siggen.SignatureGeneratorBasicHash, self).dump_sigs(dataCache)
     def get_taskhash(self, fn, task, deps, dataCache):
