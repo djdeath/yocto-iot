@@ -150,19 +150,18 @@ class HobHandler(gobject.GObject):
         elif next_command == self.SUB_BUILD_IMAGE:
             self.clear_busy()
             self.building = True
-            targets = [self.image]
-            if self.toolchain_packages:
-                self.set_var_in_file("TOOLCHAIN_TARGET_TASK", " ".join(self.toolchain_packages), "local.conf")
-                targets.append(self.toolchain)
-            if targets[0] == "hob-image":
-                #self.set_var_in_file("LINGUAS_INSTALL", "", "local.conf")
+            target = self.image
+            if target == "hob-image":
                 hobImage = self.runCommand(["matchFile", "hob-image.bb"])
                 if self.base_image != "Start with an empty image recipe":
                     baseImage = self.runCommand(["matchFile", self.base_image + ".bb"])
                     version = self.runCommand(["generateNewImage", hobImage, baseImage, self.package_queue, True, ""])
-                    targets[0] += version
+                    target += version
                     self.recipe_model.set_custom_image_version(version)
 
+            targets = [target + ":do_rootfs"]
+            if self.toolchain:
+                targets.append(target + ":do_populate_sdk")
             self.runCommand(["buildTargets", targets, self.default_task])
 
     def display_error(self):
@@ -319,12 +318,11 @@ class HobHandler(gobject.GObject):
         self.commands_async.append(self.SUB_BUILD_RECIPES)
         self.run_next_command(self.GENERATE_PACKAGES)
 
-    def generate_image(self, image, base_image, toolchain, image_packages=[], toolchain_packages=[], default_task="build"):
+    def generate_image(self, image, base_image, image_packages=[], toolchain=False, default_task="build"):
         self.image = image
         self.base_image = base_image
         self.toolchain = toolchain
         self.package_queue = image_packages
-        self.toolchain_packages = toolchain_packages
         self.default_task = default_task
         self.commands_async.append(self.SUB_PARSE_CONFIG)
         self.commands_async.append(self.SUB_BUILD_IMAGE)

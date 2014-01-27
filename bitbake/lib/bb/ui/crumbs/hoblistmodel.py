@@ -407,19 +407,6 @@ class PackageListModel(gtk.ListStore):
 
         return packagelist
 
-    def get_selected_packages_toolchain(self):
-        packagelist = []
-
-        it = self.get_iter_first()
-        while it:
-            if self.get_value(it, self.COL_INC):
-                name = self.get_value(it, self.COL_NAME)
-                if name.endswith("-dev") or name.endswith("-dbg"):
-                    packagelist.append(name)
-            it = self.iter_next(it)
-
-        return list(set(packagelist + self.__toolchain_required_packages__));
-
     """
     Package model may be incomplete, therefore when calling the
     set_selected_packages(), some packages will not be set included.

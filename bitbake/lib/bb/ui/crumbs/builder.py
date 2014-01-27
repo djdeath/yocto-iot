@@ -444,8 +444,6 @@ class Builder(gtk.Window):
         self.set_user_config()
         toolchain_packages = []
         base_image = None
-        if self.configuration.toolchain_build:
-            toolchain_packages = self.package_model.get_selected_packages_toolchain()
         if self.configuration.selected_image == self.recipe_model.__custom_image__:
             packages = self.package_model.get_selected_packages()
             image = self.hob_image
@@ -455,9 +453,8 @@ class Builder(gtk.Window):
             image = self.configuration.selected_image
         self.handler.generate_image(image,
                                     base_image,
-                                    self.hob_toolchain,
                                     packages,
-                                    toolchain_packages,
+                                    self.configuration.toolchain_build,
                                     self.configuration.default_task)
 
     def generate_new_image(self, image, description):
