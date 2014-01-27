@@ -108,7 +108,6 @@ class PropertyDialog(CrumbsDialog):
                 name = self.properties['name']
                 binb = self.properties['binb']
                 size = self.properties['size']
-                recipe = self.properties['recipe']
                 file_list = self.properties['files_list']
 
                 file_list = file_list.strip("{}'")
@@ -120,9 +119,6 @@ class PropertyDialog(CrumbsDialog):
                 self.tooltip_items = {}
 
                 self.set_resizable(False)
-                
-                #cleaning out the recipe variable
-                recipe = recipe.split("+")[0]
 
                 vbox = gtk.VBox(True,spacing = 0)
 
@@ -146,17 +142,6 @@ class PropertyDialog(CrumbsDialog):
                 self.label_short.set_markup("<span weight=\"bold\">Size: </span>" + size)
                 self.label_short.set_property("xalign", 0)
                 
-                self.vbox.add(self.label_short)
-
-                ##################################### RECIPE ROW + COL #########################################
-
-                self.label_short = gtk.Label()
-                self.label_short.set_size_request(300,-1)
-                self.label_short.set_selectable(True)
-                self.label_short.set_line_wrap(True)
-                self.label_short.set_markup("<span weight=\"bold\">Recipe: </span>" + recipe)
-                self.label_short.set_property("xalign", 0)
-
                 self.vbox.add(self.label_short)
 
                 ##################################### BINB ROW + COL #######################################

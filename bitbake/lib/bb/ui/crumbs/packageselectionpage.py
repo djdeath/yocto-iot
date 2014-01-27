@@ -26,6 +26,7 @@ from bb.ui.crumbs.hobcolor import HobColors
 from bb.ui.crumbs.hobwidget import HobViewTable, HobNotebook, HobAltButton, HobButton
 from bb.ui.crumbs.hoblistmodel import PackageListModel
 from bb.ui.crumbs.hobpages import HobPage
+from bb.ui.crumbs.hig.crumbsmessagedialog import CrumbsMessageDialog
 
 #
 # PackageSelectionPage
@@ -43,8 +44,8 @@ class PackageSelectionPage (HobPage):
                        'col_name' : 'Included',
                        'col_id'   : PackageListModel.COL_INC,
                        'col_style': 'check toggle',
-                       'col_min'  : 100,
-                       'col_max'  : 100
+                       'col_min'  : 50,
+                       'col_max'  : 50
                       }, {
                        'col_name' : 'Package name',
                        'col_id'   : PackageListModel.COL_NAME,
@@ -56,15 +57,15 @@ class PackageSelectionPage (HobPage):
                        'col_name' : 'Size',
                        'col_id'   : PackageListModel.COL_SIZE,
                        'col_style': 'text',
-                       'col_min'  : 100,
-                       'col_max'  : 100,
+                       'col_min'  : 80,
+                       'col_max'  : 80,
                        'expand'   : 'True'
                       }, {
                        'col_name' : 'Brought in by',
                        'col_id'   : PackageListModel.COL_BINB,
                        'col_style': 'binb',
-                       'col_min'  : 100,
-                       'col_max'  : 100,
+                       'col_min'  : 150,
+                       'col_max'  : 170,
                        'expand'   : 'True'
                       }]
         }
@@ -170,7 +171,6 @@ class PackageSelectionPage (HobPage):
             properties['binb'] = tree_model.get_value(tree_model.get_iter(path), PackageListModel.COL_BINB)
             properties['name'] = tree_model.get_value(tree_model.get_iter(path), PackageListModel.COL_NAME)
             properties['size'] = tree_model.get_value(tree_model.get_iter(path), PackageListModel.COL_SIZE)
-            properties['recipe'] = tree_model.get_value(tree_model.get_iter(path), PackageListModel.COL_RCP)
             properties['files_list'] = tree_model.get_value(tree_model.get_iter(path), PackageListModel.COL_FLIST)
 
             self.builder.show_recipe_property_dialog(properties)
@@ -195,7 +195,26 @@ class PackageSelectionPage (HobPage):
         self.show_all()
 
     def build_image_clicked_cb(self, button):
-        self.builder.parsing_warnings = []
+        selected_pkgs = self.package_model.get_selected_packages()
+        show_missing_pkg_dialog = False
+        if 'eglibc' not in selected_pkgs:
+            show_missing_pkg_dialog = True
+        if 'bash' not in selected_pkgs or 'busybox' not in selected_pkgs:
+            show_missing_pkg_dialog = True
+
+        if show_missing_pkg_dialog:
+            lbl = "<b>Missing important packages</b>\n\nYour list of included "
+            lbl = lbl + " packages is missing:\n\n-A C library (choose eglibc)\n\n"
+            lbl = lbl + "-A shell provider (choose bash or busybox)\n\n"
+            dialog = CrumbsMessageDialog(None, lbl, gtk.STOCK_DIALOG_INFO)
+            button = dialog.add_button("Build anyway", gtk.RESPONSE_OK)
+            HobButton.style_button(button)
+            button = dialog.add_button("Edit packages", gtk.RESPONSE_CANCEL)
+            HobButton.style_button(button)
+            response = dialog.run()
+            dialog.destroy()
+            if response == gtk.RESPONSE_CANCEL:
+                return
         self.builder.build_image()
 
     def refresh_tables(self):
