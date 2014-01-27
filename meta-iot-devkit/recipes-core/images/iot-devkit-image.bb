@@ -30,7 +30,7 @@ IMAGE_INSTALL += "linuxptp"
 IMAGE_INSTALL += "libstdc++"
 IMAGE_INSTALL += "sysstat"
 
-IMAGE_INSTALL += "python python-modules python-numpy python-pyserial python-pyfirmata"
+IMAGE_INSTALL += "python python-modules python-numpy"
 IMAGE_INSTALL += "alsa-lib alsa-utils alsa-tools"
 IMAGE_INSTALL += "wireless-tools"
 IMAGE_INSTALL += "wpa-supplicant"
@@ -43,14 +43,12 @@ IMAGE_INSTALL += "bluez4"
 
 IMAGE_INSTALL += "avahi"
 
+IMAGE_INSTALL += "lighttpd"
+
+IMAGE_INSTALL += "packagegroup-core-eclipse-debug"
+
 # Unlike default meta-oe we build opencv without libav support
 # so don't require changing our license to commercial
 IMAGE_INSTALL += "opencv python-opencv"
-
-IMAGE_INSTALL += "cmake"
-IMAGE_INSTALL += "binutils"
-IMAGE_INSTALL += "packagegroup-core-tools-profile"
-IMAGE_INSTALL += "packagegroup-core-buildessential"
-IMAGE_INSTALL += "packagegroup-core-eclipse-debug"
 
 EXTRA_IMAGEDEPENDS = "grub-conf"
