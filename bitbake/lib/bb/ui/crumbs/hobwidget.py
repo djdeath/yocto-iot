@@ -167,13 +167,13 @@ class HobViewTable (gtk.VBox):
         label = gtk.Label()
         label.set_alignment(0.0, 0.5)
         title = "No results matching your search"
-        label.set_markup("<span size='x-large'><b>%s</b></span>" % title)
-        no_result_tab.attach(label, 1, 14, 1, 4)
+        label.set_markup("<span size='medium'><b>%s</b></span>" % title)
+        no_result_tab.attach(label, 1, 13, 1, 4)
 
         clear_button = HobButton("Clear search")
         clear_button.set_tooltip_text("Clear search query")
         clear_button.connect('clicked', self.set_search_entry_clear_cb, entry)
-        no_result_tab.attach(clear_button, 16, 19, 1, 4)
+        no_result_tab.attach(clear_button, 14, 19, 1, 4)
 
         self.pack_start(self.top_bar, False, True, 12)
         self.top_bar.show_all()

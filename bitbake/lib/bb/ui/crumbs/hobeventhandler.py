@@ -47,7 +47,7 @@ class HobHandler(gobject.GObject):
                                      (gobject.TYPE_STRING,)),
          "sanity-failed"           : (gobject.SIGNAL_RUN_LAST,
                                       gobject.TYPE_NONE,
-                                     (gobject.TYPE_STRING, gobject.TYPE_INT)),
+                                     (gobject.TYPE_STRING,)),
          "generating-data"         : (gobject.SIGNAL_RUN_LAST,
                                       gobject.TYPE_NONE,
                                      ()),

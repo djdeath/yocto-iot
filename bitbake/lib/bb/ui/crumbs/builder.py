@@ -536,8 +536,11 @@ class Builder(gtk.Window):
         self.handler.reset_cooker()
         self.handler.set_extra_inherit("packageinfo")
         self.handler.set_extra_inherit("image_types")
-        if self.configuration.selected_image:
-            self.parameters.distro = self.parameters.image_list[self.configuration.selected_image]
+        image = self.configuration.selected_image
+        if image:
+            if image == self.recipe_model.__custom_image__:
+                image = self.configuration.initial_selected_image
+            self.parameters.distro = self.parameters.image_list[image]
             self.handler.set_distro(self.parameters.distro)
 
     def update_recipe_model(self, selected_image, selected_recipes):
@@ -646,8 +649,9 @@ class Builder(gtk.Window):
         selected_packages = self.configuration.selected_packages[:]
         user_selected_packages = self.configuration.user_selected_packages[:]
 
-        self.image_configuration_page.update_image_combo(selected_image)
-        self.image_configuration_page.update_image_desc()
+        if selected_image != self.recipe_model.__custom_image__:
+            self.image_configuration_page.update_image_combo(selected_image)
+            self.image_configuration_page.update_image_desc()
         self.update_recipe_model(selected_image, selected_recipes)
         self.update_package_model(selected_packages, user_selected_packages)
 
