@@ -401,7 +401,6 @@ class Builder(gtk.Window):
     def initiate_new_build_async(self):
         self.configuration.selected_image = None
         self.handler.init_cooker()
-        self.handler.set_extra_inherit("image_types")
         self.generate_configuration()
 
     def sanity_check(self):
@@ -531,8 +530,6 @@ class Builder(gtk.Window):
 
     def set_user_config(self):
         self.handler.reset_cooker()
-        self.handler.set_extra_inherit("packageinfo")
-        self.handler.set_extra_inherit("image_types")
         image = self.configuration.selected_image
         if image:
             if image == self.recipe_model.__custom_image__:
