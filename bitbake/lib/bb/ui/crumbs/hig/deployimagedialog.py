@@ -34,6 +34,8 @@ import bb.ui.crumbs.utils
 import bb.process
 from bb.ui.crumbs.hig.crumbsdialog import CrumbsDialog
 from bb.ui.crumbs.hig.crumbsmessagedialog import CrumbsMessageDialog
+from bb.ui.crumbs.hobwidget import HobAltButton
+from bb.ui.crumbs.hobwidget import HobIconChecker
 
 """
 The following are convenience classes for implementing GNOME HIG compliant
@@ -51,75 +53,101 @@ class DeployImageDialog (CrumbsDialog):
         self.image_path = image_path
         self.standalone = standalone
 
+        self.devices = self.find_all_usb_devices()
         self.create_visual_elements()
         self.connect("response", self.response_cb)
 
     def create_visual_elements(self):
-        self.set_size_request(600, 400)
-        label = gtk.Label()
-        label.set_alignment(0.0, 0.5)
-        markup = "<span font_desc='12'>The image to be written into usb drive:</span>"
-        label.set_markup(markup)
-        self.vbox.pack_start(label, expand=False, fill=False, padding=2)
+        if not self.devices:
+            self.set_size_request(400, 200)
+            first_column = gtk.HBox(spacing=6)
+            first_column.set_property("border-width", 6)
+            first_column.show()
+            self.vbox.add(first_column)
+            icon = gtk.Image()
+            icon_chk = HobIconChecker()
+            icon.set_from_stock(icon_chk.check_stock_icon(gtk.STOCK_DIALOG_WARNING), gtk.ICON_SIZE_DIALOG)
+            icon.set_property("xalign", 0.00)
+            first_column.pack_start(icon, expand=False, fill=True, padding=0)
 
-        table = gtk.Table(2, 10, False)
-        table.set_col_spacings(5)
-        table.set_row_spacings(5)
-        self.vbox.pack_start(table, expand=True, fill=True)
+            label = gtk.Label()
+            label.set_use_markup(True)
+            label.set_line_wrap(True)
+            label.set_markup("<span font_desc='17' weight=\'bold\'>No external storage\ndevice found</span>")
+            label.set_property("xalign", 0.00)
+            first_column.add(label)
 
-        scroll = gtk.ScrolledWindow()
-        scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-        scroll.set_shadow_type(gtk.SHADOW_IN)
-        tv = gtk.TextView()
-        tv.set_editable(False)
-        tv.set_wrap_mode(gtk.WRAP_WORD)
-        tv.set_cursor_visible(False)
-        self.buf = gtk.TextBuffer()
-        self.buf.set_text(self.image_path)
-        tv.set_buffer(self.buf)
-        scroll.add(tv)
-        table.attach(scroll, 0, 10, 0, 1)
+            label = gtk.Label()
+            label.set_use_markup(True)
+            label.set_line_wrap(True)
+            label.set_markup("<span font_desc='12'>Insert an SD card or USB drive before\ndeploying your image</span>")
+            label.set_property("yalign", 0.00)
+            self.vbox.add(label)
 
-        # There are 2 ways to use DeployImageDialog
-        # One way is that called by HOB when the 'Deploy Image' button is clicked
-        # The other way is that called by a standalone script.
-        # Following block of codes handles the latter way. It adds a 'Select Image' button and
-        # emit a signal when the button is clicked.
-        if self.standalone:
-                gobject.signal_new("select_image_clicked", self, gobject.SIGNAL_RUN_FIRST,
-                                   gobject.TYPE_NONE, ())
-                icon = gtk.Image()
-                pix_buffer = gtk.gdk.pixbuf_new_from_file(hic.ICON_IMAGES_DISPLAY_FILE)
-                icon.set_from_pixbuf(pix_buffer)
-                button = gtk.Button("Select Image")
-                button.set_image(icon)
-                #button.set_size_request(140, 50)
-                table.attach(button, 9, 10, 1, 2, gtk.FILL, 0, 0, 0)
-                button.connect("clicked", self.select_image_button_clicked_cb)
+            button = self.add_button("OK", gtk.RESPONSE_CANCEL)
+            HobAltButton.style_button(button)
 
-        separator = gtk.HSeparator()
-        self.vbox.pack_start(separator, expand=False, fill=False, padding=10)
+        else:
+            self.set_size_request(350, 300)
+            label = gtk.Label()
+            label.set_alignment(0.0, 0.5)
+            markup = "<span font_desc='17' weight=\'bold\'>External storage device</span>"
+            label.set_markup(markup)
+            self.vbox.pack_start(label, expand=False, fill=False, padding=2)
 
-        self.usb_desc = gtk.Label()
-        self.usb_desc.set_alignment(0.0, 0.5)
-        markup = "<span font_desc='12'>You haven't chosen any USB drive.</span>"
-        self.usb_desc.set_markup(markup)
+            self.device_vendor = gtk.Label()
+            self.device_vendor.set_alignment(0.0, 0.5)
+            markup = "<span font_desc='12'>Vendor: %s</span>" % self.get_vendor_info(self.devices[0])
+            self.device_vendor.set_markup(markup)
 
-        self.usb_combo = gtk.combo_box_new_text()
-        self.usb_combo.connect("changed", self.usb_combo_changed_cb)
-        model = self.usb_combo.get_model()
-        model.clear()
-        self.usb_combo.append_text(self.__dummy_usb__)
-        for usb in self.find_all_usb_devices():
-            self.usb_combo.append_text("/dev/" + usb)
-        self.usb_combo.set_active(0)
-        self.vbox.pack_start(self.usb_combo, expand=False, fill=False)
-        self.vbox.pack_start(self.usb_desc, expand=False, fill=False, padding=2)
+            self.device_model = gtk.Label()
+            self.device_model.set_alignment(0.0, 0.5)
+            markup = "<span font_desc='12'>Model: %s</span>" % self.get_model_info(self.devices[0])
+            self.device_model.set_markup(markup)
+
+            self.device_size = gtk.Label()
+            self.device_size.set_alignment(0.0, 0.5)
+            size = float(self.get_size_info(self.devices[0])) * 512 / 1024 / 1024
+            if size > 1024:
+                size = size/1024
+                markup = "<span font_desc='12'>Size: %s GB</span>" % size
+            else:
+                markup = "<span font_desc='12'>Size: %s MB</span>" % size
+            self.device_size.set_markup(markup)
+
+            if len(self.devices) == 1:
+                label = gtk.Label()
+                label.set_alignment(0.0, 0.5)
+                markup = "<span font_desc='12'>/dev/%s</span>" % self.devices[0]
+                label.set_markup(markup)
+                self.vbox.pack_start(label, expand=False, fill=False, padding=2)
+            else:
+                self.usb_combo = gtk.combo_box_new_text()
+                self.usb_combo.connect("changed", self.usb_combo_changed_cb)
+                model = self.usb_combo.get_model()
+                model.clear()
+                for usb in self.devices:
+                    self.usb_combo.append_text("/dev/" + usb)
+                self.usb_combo.set_active(0)
+                self.vbox.pack_start(self.usb_combo, expand=False, fill=False)
+
+            label = gtk.Label()
+            label.set_alignment(0.0, 0.5)
+            markup = "<span font_desc='17' weight=\'bold\'>Device details</span>"
+            label.set_markup(markup)
+            self.vbox.pack_start(label, expand=False, fill=False, padding=2)
+
+            self.vbox.pack_start(self.device_vendor, expand=False, fill=False, padding=2)
+            self.vbox.pack_start(self.device_model, expand=False, fill=False, padding=2)
+            self.vbox.pack_start(self.device_size, expand=False, fill=False, padding=2)
+
+            button = self.add_button("Cancel", gtk.RESPONSE_NO)
+            HobAltButton.style_button(button)
+            button = self.add_button("Deploy image", gtk.RESPONSE_YES)
+            HobButton.style_button(button)
 
         self.progress_bar = HobProgressBar()
         self.vbox.pack_start(self.progress_bar, expand=False, fill=False)
-        separator = gtk.HSeparator()
-        self.vbox.pack_start(separator, expand=False, fill=True, padding=10)
 
         self.vbox.show_all()
         self.progress_bar.hide()
@@ -140,39 +168,51 @@ class DeployImageDialog (CrumbsDialog):
             if not re.search(r'part\d+', u) ]
         return [ '%s' % u[u.rfind('/')+1:] for u in usb_devs ]
 
-    def get_usb_info(self, dev):
-        return "%s %s" % \
-            (self.popen_read('cat /sys/class/block/%s/device/vendor' % dev),
-            self.popen_read('cat /sys/class/block/%s/device/model' % dev))
+    def get_vendor_info(self, dev):
+        return "%s" % self.popen_read('cat /sys/class/block/%s/device/vendor' % dev)
+
+    def get_model_info(self, dev):
+        return "%s" % self.popen_read('cat /sys/class/block/%s/device/model' % dev)
+
+    def get_size_info(self, dev):
+        return "%s" % self.popen_read('cat /sys/class/block/%s/size' % dev)
 
     def select_image_button_clicked_cb(self, button):
             self.emit('select_image_clicked')
 
     def usb_combo_changed_cb(self, usb_combo):
         combo_item = self.usb_combo.get_active_text()
-        if not combo_item or combo_item == self.__dummy_usb__:
-            markup = "<span font_desc='12'>You haven't chosen any USB drive.</span>"
-            self.usb_desc.set_markup(markup)
+        markup = "<span font_desc='12'>Vendor: %s</span>" % self.get_vendor_info(combo_item.lstrip("/dev/"))
+        self.device_vendor.set_markup(markup)
+        markup = "<span font_desc='12'>Model: %s</span>" % self.get_model_info(combo_item.lstrip("/dev/"))
+        self.device_model.set_markup(markup)
+        size = float(self.get_size_info(combo_item.lstrip("/dev/"))) * 512 / 1024 / 1024
+        if size > 1024:
+            size = size/1024
+            markup = "<span font_desc='12'>Size: %s GB</span>" % size
         else:
-            markup = "<span font_desc='12'>" + self.get_usb_info(combo_item.lstrip("/dev/")) + "</span>"
-            self.usb_desc.set_markup(markup)
+            markup = "<span font_desc='12'>Size: %s MB</span>" % size
+        self.device_size.set_markup(markup)
 
     def response_cb(self, dialog, response_id):
         if response_id == gtk.RESPONSE_YES:
             lbl = ''
-            combo_item = self.usb_combo.get_active_text()
-            if combo_item and combo_item != self.__dummy_usb__ and self.image_path:
+            if len(self.devices) == 1:
+                item = "/dev/" + str(self.devices[0])
+            else:
+                item = self.usb_combo.get_active_text()
+            if item and self.image_path:
                 cmdline = bb.ui.crumbs.utils.which_terminal()
                 if cmdline:
                     tmpfile = tempfile.NamedTemporaryFile()
                     cmdline += "\"sudo dd if=" + self.image_path + \
-                                " of=" + combo_item + "; echo $? > " + tmpfile.name + "\""
+                                " of=" + item + "; echo $? > " + tmpfile.name + "\""
                     subprocess.call(shlex.split(cmdline))
 
                     if int(tmpfile.readline().strip()) == 0:
                         lbl = "<b>Deploy image successfully.</b>"
                     else:
-                        lbl = "<b>Failed to deploy image.</b>\nPlease check image <b>%s</b> exists and USB device <b>%s</b> is writable." % (self.image_path, combo_item)
+                        lbl = "<b>Failed to deploy image.</b>\nPlease check image <b>%s</b> exists and USB device <b>%s</b> is writable." % (self.image_path, item)
                     tmpfile.close()
             else:
                 if not self.image_path:

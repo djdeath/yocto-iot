@@ -952,16 +952,12 @@ class Builder(gtk.Window):
             return
 
         image_path = os.path.join(self.parameters.image_addr, image_name)
-        dialog = DeployImageDialog(title = "Usb Image Maker",
+        dialog = DeployImageDialog(title = "Image Maker",
             image_path = image_path,
             parent = self,
             flags = gtk.DIALOG_MODAL
                     | gtk.DIALOG_DESTROY_WITH_PARENT
                     | gtk.DIALOG_NO_SEPARATOR)
-        button = dialog.add_button("Close", gtk.RESPONSE_NO)
-        HobAltButton.style_button(button)
-        button = dialog.add_button("Make usb image", gtk.RESPONSE_YES)
-        HobButton.style_button(button)
         response = dialog.run()
         dialog.destroy()
 
