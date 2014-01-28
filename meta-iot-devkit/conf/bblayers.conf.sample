@@ -13,6 +13,7 @@ BBLAYERS ?= " \
   ##OEROOT##/meta-intel \
   ##OEROOT##/meta-clanton-bsp \
   ##OEROOT##/meta-galileo \
+  ##OEROOT##/meta-hob \
   "
 BBLAYERS_NON_REMOVABLE ?= " \
   ##OEROOT##/meta \

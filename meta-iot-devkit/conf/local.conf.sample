@@ -251,3 +251,8 @@ ASSUME_PROVIDED += "libsdl-native"
 # track the version of this file when it was generated. This can safely be ignored if
 # this doesn't mean anything to you.
 CONF_VERSION = "1"
+
+HOB_IMAGELIST = "iot-devkit-image:iot-devkit iot-devkit-prof-image:iot-devkit \
+    iot-devkit-prof-dev-image:iot-devkit iot-devkit-spi-image:iot-devkit-spi"
+
+INHERIT += " image_types packageinfo "
