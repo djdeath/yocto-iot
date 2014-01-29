@@ -194,30 +194,6 @@ class Parameters:
         self.runnable_machine_patterns = params["runnable_machine_patterns"].split()
         self.deployable_image_types = params["deployable_image_types"].split()
 
-def hob_conf_filter(fn, data):
-    if fn.endswith("/local.conf"):
-        distro = data.getVar("DISTRO_HOB")
-        if distro:
-            if distro != "defaultsetup":
-                data.setVar("DISTRO", distro)
-            else:
-                data.delVar("DISTRO")
-
-        keys = ["MACHINE_HOB", "SDKMACHINE_HOB", "PACKAGE_CLASSES_HOB", \
-                "BB_NUMBER_THREADS_HOB", "PARALLEL_MAKE_HOB", "DL_DIR_HOB", \
-                "SSTATE_DIR_HOB", "SSTATE_MIRRORS_HOB", "INCOMPATIBLE_LICENSE_HOB"]
-        for key in keys:
-            var_hob = data.getVar(key)
-            if var_hob:
-                data.setVar(key.split("_HOB")[0], var_hob)
-        return
-
-    if fn.endswith("/bblayers.conf"):
-        layers = data.getVar("BBLAYERS_HOB")
-        if layers:
-            data.setVar("BBLAYERS", layers)
-        return
-
 class Builder(gtk.Window):
 
     (INITIAL_CHECKS,

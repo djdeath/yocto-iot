@@ -134,7 +134,7 @@ class HobHandler(gobject.GObject):
             self.runCommand(["findConfigFiles", "MACHINE"])
         elif next_command == self.SUB_PARSE_CONFIG:
             self.runCommand(["enableDataTracking"])
-            self.runCommand(["parseConfigurationFiles", "conf/.hob.conf", ""])
+            self.runCommand(["parseConfigurationFiles", "", ""])
             self.runCommand(["disableDataTracking"])
         elif next_command == self.SUB_GNERATE_TGTS:
             self.runCommand(["generateTargetsTree", "classes/image.bbclass", []])
@@ -187,7 +187,7 @@ class HobHandler(gobject.GObject):
             reparse = self.runCommand(["getVariable", "BB_INVALIDCONF"]) or None
             if reparse is True:
                 self.set_var_in_file("BB_INVALIDCONF", False, "local.conf")
-                self.runCommand(["parseConfigurationFiles", "conf/.hob.conf", ""])
+                self.runCommand(["parseConfigurationFiles", "", ""])
             self.run_next_command()
 
         elif isinstance(event, bb.event.SanityCheckFailed):
@@ -276,7 +276,6 @@ class HobHandler(gobject.GObject):
 
     def init_cooker(self):
         self.runCommand(["initCooker"])
-        self.runCommand(["createConfigFile", ".hob.conf"])
 
     def reset_cooker(self):
         self.runCommand(["enableDataTracking"])
