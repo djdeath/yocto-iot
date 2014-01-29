@@ -28,7 +28,6 @@ from bb.ui.crumbs.hobcolor import HobColors
 from bb.ui.crumbs.hobwidget import hic, HobImageButton, HobInfoButton, HobAltButton, HobButton
 from bb.ui.crumbs.hoblistmodel import RecipeListModel
 from bb.ui.crumbs.hobpages import HobPage
-from bb.ui.crumbs.hig.retrieveimagedialog import RetrieveImageDialog
 
 #
 # ImageConfigurationPage

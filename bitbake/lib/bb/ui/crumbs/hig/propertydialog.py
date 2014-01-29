@@ -25,9 +25,7 @@ import os
 import tempfile
 import glib
 from bb.ui.crumbs.hig.crumbsdialog import CrumbsDialog
-from bb.ui.crumbs.hig.settingsuihelper import SettingsUIHelper
 from bb.ui.crumbs.hig.crumbsmessagedialog import CrumbsMessageDialog
-from bb.ui.crumbs.hig.layerselectiondialog import LayerSelectionDialog
 
 """
 The following are convenience classes for implementing GNOME HIG compliant

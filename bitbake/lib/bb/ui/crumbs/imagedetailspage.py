@@ -27,7 +27,6 @@ from bb.ui.crumbs.hobwidget import hic, HobViewTable, HobAltButton, HobButton
 from bb.ui.crumbs.hobpages import HobPage
 import subprocess
 from bb.ui.crumbs.hig.crumbsdialog import CrumbsDialog
-from bb.ui.crumbs.hig.saveimagedialog import SaveImageDialog
 
 #
 # ImageDetailsPage
