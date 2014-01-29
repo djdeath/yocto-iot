@@ -56,6 +56,8 @@ class BuildDetailsPage (HobPage):
         self.progress_hbox.pack_start(self.progress_bar, expand=True, fill=True)
         self.stop_button = HobAltButton("Stop")
         self.stop_button.connect("clicked", self.stop_button_clicked_cb)
+        tooltip = "Cancel build in progress"
+        self.stop_button.set_tooltip_text(tooltip)
         self.stop_button.set_sensitive(False)
         self.progress_hbox.pack_end(self.stop_button, expand=False, fill=False)
 

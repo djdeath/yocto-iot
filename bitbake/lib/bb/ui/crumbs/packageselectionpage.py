@@ -122,7 +122,7 @@ class PackageSelectionPage (HobPage):
         self.box_group_area.pack_start(self.button_box, expand=False, fill=False)
 
         self.build_image_button = HobButton('Build image')
-        self.build_image_button.set_tooltip_text("Build target image")
+        self.build_image_button.set_tooltip_text("Build your image")
         self.build_image_button.set_flags(gtk.CAN_DEFAULT)
         self.build_image_button.grab_default()
         self.build_image_button.connect("clicked", self.build_image_clicked_cb)
@@ -208,8 +208,12 @@ class PackageSelectionPage (HobPage):
             lbl = lbl + "-A shell provider (choose bash or busybox)\n\n"
             dialog = CrumbsMessageDialog(None, lbl, gtk.STOCK_DIALOG_INFO)
             button = dialog.add_button("Build anyway", gtk.RESPONSE_OK)
+            tooltip = "Build the image without changing the included packages"
+            button.set_tooltip_text(tooltip)
             HobButton.style_button(button)
             button = dialog.add_button("Edit packages", gtk.RESPONSE_CANCEL)
+            tooltip = "Change the list of included packages"
+            button.set_tooltip_text(tooltip)
             HobButton.style_button(button)
             response = dialog.run()
             dialog.destroy()

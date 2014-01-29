@@ -389,7 +389,8 @@ class ImageDetailsPage (HobPage):
         name = "Deploy image"
         if name in buttonlist:  # and self.test_deployable(image_name):
             deploy_button = HobButton('Deploy image')
-            deploy_button.set_tooltip_text("Burn a live image to a USB drive or flash memory")
+            tooltip = "Burn your image to an external storage device"
+            deploy_button.set_tooltip_text(tooltip)
             deploy_button.set_flags(gtk.CAN_DEFAULT)
             button_id = deploy_button.connect("clicked", self.deploy_button_clicked_cb)
             self.button_ids[button_id] = deploy_button
@@ -401,7 +402,8 @@ class ImageDetailsPage (HobPage):
         if name in buttonlist:
             # create button "Edit packages"
             edit_packages_button = HobAltButton("Edit packages")
-            edit_packages_button.set_tooltip_text("Edit the packages included in your image")
+            tooltip = "Edit the list of packages included in your image"
+            edit_packages_button.set_tooltip_text(tooltip)
             edit_packages_button.connect("clicked", self.edit_packages_button_clicked_cb)
 
             self.details_bottom_buttons.pack_end(edit_packages_button, expand=False, fill=False)

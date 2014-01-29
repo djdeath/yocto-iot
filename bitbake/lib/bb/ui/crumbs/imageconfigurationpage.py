@@ -115,6 +115,7 @@ class ImageConfigurationPage (HobPage):
 
         self.image_combo = gtk.combo_box_new_text()
         self.image_combo.set_row_separator_func(self.combo_separator_func, None)
+        self.image_combo.set_tooltip_text("Select an image to see a description of it")
         self.image_combo_id = self.image_combo.connect("changed", self.image_combo_changed_cb)
 
         self.image_desc = gtk.Label()
@@ -124,6 +125,9 @@ class ImageConfigurationPage (HobPage):
 
         self.toolchain_checkbox = gtk.CheckButton("Build a matching toolchain")
         self.toolchain_checkbox.set_active(self.builder.configuration.toolchain_build)
+        tooltip = "Check this box to generate a toolchain installer "
+        tooltip += "that contains a sysroot for your selected image"
+        self.toolchain_checkbox.set_tooltip_text(tooltip)
 
     def combo_separator_func(self, model, iter, user_data):
         name = model.get_value(iter, 0)
@@ -142,13 +146,15 @@ class ImageConfigurationPage (HobPage):
 
         # create button "Build image"
         self.just_bake_button = HobButton("Build image")
-        self.just_bake_button.set_tooltip_text("Build the image recipe as it is")
+        tooltip = "Build your selected image"
+        self.just_bake_button.set_tooltip_text(tooltip)
         self.just_bake_button.connect("clicked", self.just_bake_button_clicked_cb)
         button_box.pack_end(self.just_bake_button, expand=False, fill=False)
 
         # create button "Edit packages"
         self.edit_image_button = HobAltButton("Edit packages")
-        self.edit_image_button.set_tooltip_text("Customize the packages to be included in your image")
+        tooltip = "Customize the list of packages to be included in your image"
+        self.edit_image_button.set_tooltip_text(tooltip)
         self.edit_image_button.connect("clicked", self.edit_image_button_clicked_cb)
         button_box.pack_end(self.edit_image_button, expand=False, fill=False)
 

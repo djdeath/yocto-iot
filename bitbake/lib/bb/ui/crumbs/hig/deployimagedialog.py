@@ -144,6 +144,8 @@ class DeployImageDialog (CrumbsDialog):
             button = self.add_button("Cancel", gtk.RESPONSE_NO)
             HobAltButton.style_button(button)
             button = self.add_button("Deploy image", gtk.RESPONSE_YES)
+            tooltip = "Burn your image to an external storage device"
+            button.set_tooltip_text(tooltip)
             HobButton.style_button(button)
 
         self.progress_bar = HobProgressBar()
