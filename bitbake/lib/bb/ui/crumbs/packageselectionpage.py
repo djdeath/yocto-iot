@@ -199,7 +199,7 @@ class PackageSelectionPage (HobPage):
         show_missing_pkg_dialog = False
         if 'eglibc' not in selected_pkgs:
             show_missing_pkg_dialog = True
-        if 'bash' not in selected_pkgs or 'busybox' not in selected_pkgs:
+        if not ('bash' in selected_pkgs or 'busybox'  in selected_pkgs):
             show_missing_pkg_dialog = True
 
         if show_missing_pkg_dialog:
