@@ -4,6 +4,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 SRC_URI = "file://galileo-target.tar.bz2 \
            file://galileo-reset.sh"
+SRC_URI += "file://remove_auto_conf.patch"
 
 INSTALLDIR = "/opt/cln/galileo"
 FILES_${PN} += "${INSTALLDIR}"
