@@ -12,6 +12,7 @@ SANITY_TESTED_DISTROS = " \
 
 DISTRO_VERSION = "1.0"
 DISTRO_CODENAME = "monkey"
+DISTRO_NAME = "iot-devkit (Intel IoT Development Kit)"
 MAINTAINER = "Yocto Devkit <yocto-devkit@linux.intel.com>"
 
 TARGET_VENDOR = "-iotkit"
