@@ -58,7 +58,7 @@ class BuildDetailsPage (HobPage):
         self.stop_button.connect("clicked", self.stop_button_clicked_cb)
         tooltip = "Cancel build in progress"
         self.stop_button.set_tooltip_text(tooltip)
-        self.stop_button.set_sensitive(False)
+        self.stop_button.set_sensitive(True)
         self.progress_hbox.pack_end(self.stop_button, expand=False, fill=False)
 
         self.build_tv = RunningBuildTreeView(readonly=True, hob=True)
@@ -184,20 +184,12 @@ class BuildDetailsPage (HobPage):
         elif action == "packages":
             action_button.set_tooltip_text("Edit the included packages")
         action_button.connect('clicked', self.stop_primary_action_button_clicked_cb, action)
-        build_stop_tab.attach(action_button, 4, 13, 6, 9)
+        build_stop_tab.attach(action_button, 4, 20, 6, 9)
 
-        if log_file:
-            open_log_button = HobAltButton("Open log")
-            open_log_button.set_relief(gtk.RELIEF_HALF)
-            open_log_button.set_tooltip_text("Open the build's log file")
-            open_log_button.connect('clicked', self.open_log_button_clicked_cb, log_file)
-            build_stop_tab.attach(open_log_button, 14, 23, 6, 9)
-
-        attach_pos = (24 if log_file else 14)
         build_button = HobAltButton("Build new image")
         build_button.set_tooltip_text("Create a new image from scratch")
         build_button.connect('clicked', self.new_image_button_clicked_cb)
-        build_stop_tab.attach(build_button, attach_pos, attach_pos + 9, 6, 9)
+        build_stop_tab.attach(build_button, 21, 40, 6, 9)
 
         return build_stop_top, action_button
 
@@ -247,7 +239,7 @@ class BuildDetailsPage (HobPage):
         self.builder.show_configuration()
 
     def new_image_button_clicked_cb(self, button):
-        self.builder.reset()
+        self.builder.populate_recipe_package_info_async()
 
     def show_back_button(self):
         self.back_button.show()
