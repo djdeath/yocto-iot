@@ -105,7 +105,6 @@ class HobHandler(gobject.GObject):
             self.generating = False
 
     def runCommand(self, commandline):
-        print("run command " + str(commandline))
         try:
             result, error = self.server.runCommand(commandline)
             if error:
