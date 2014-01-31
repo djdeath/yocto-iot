@@ -216,13 +216,21 @@ class ImageDetailsPage (HobPage):
         image_label = self.create_label("<span weight='bold' font_desc='12'>Image</span>")
         table.attach(image_label, 0, 40, 3, 5)
 
-        image_name_label = self.create_label("<span font_desc='12'>%s</span>" % image_name)
+        if self.builder.configuration.selected_image == self.builder.recipe_model.__custom_image__:
+            img_recipe_name = "Custom " + self.builder.configuration.initial_selected_image
+        else:
+            img_recipe_name = self.builder.configuration.selected_image
+        image_name_label = self.create_label("<span font_desc='12'>%s</span>" % img_recipe_name)
         table.attach(image_name_label, 2, 40, 5, 7)
 
-        distro_label = self.create_label("<span weight='bold' font_desc='12'>Distro</span>")
+        distro_label = self.create_label("<span weight='bold' font_desc='12'>Toolchain</span>")
         table.attach(distro_label, 0, 40, 7, 9)
 
-        distro_name_label = self.create_label("<span font_desc='12'>%s</span>" % self.builder.parameters.distro)
+        if self.builder.configuration.toolchain_build:
+            text = "Yes"
+        else:
+            text ="No"
+        distro_name_label = self.create_label("<span font_desc='12'>%s</span>" % text)
         table.attach(distro_name_label, 2, 40, 9, 11)
 
         packages_label = self.create_label("<span weight='bold' font_desc='12'>Packages included</span>")
@@ -379,8 +387,6 @@ class ImageDetailsPage (HobPage):
 
     def create_bottom_buttons(self, buttonlist, image_name):
         # Create the buttons at the bottom
-        created = False
-        packed = False
         self.button_ids = {}
         is_runnable = False
 
@@ -394,8 +400,6 @@ class ImageDetailsPage (HobPage):
             button_id = deploy_button.connect("clicked", self.deploy_button_clicked_cb)
             self.button_ids[button_id] = deploy_button
             self.details_bottom_buttons.pack_end(deploy_button, expand=False, fill=False)
-            created = True
-            packed = True
 
         name = "Edit packages"
         if name in buttonlist:
@@ -411,12 +415,7 @@ class ImageDetailsPage (HobPage):
 
         name = "New image"
         if name in buttonlist:
-            # create button "Build new image"
-            if packed:
-                build_new_button = HobAltButton("New image")
-            else:
-                build_new_button = HobButton("New image")
-                build_new_button.set_flags(gtk.CAN_DEFAULT)
+            build_new_button = HobAltButton("New image")
             self.details_bottom_buttons.pack_end(build_new_button, expand=False, fill=False)
             build_new_button.set_tooltip_text("Create a new image from scratch")
             button_id = build_new_button.connect("clicked", self.build_new_button_clicked_cb)

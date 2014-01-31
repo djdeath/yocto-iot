@@ -97,12 +97,18 @@ class DeployImageDialog (CrumbsDialog):
 
             self.device_vendor = gtk.Label()
             self.device_vendor.set_alignment(0.0, 0.5)
-            markup = "<span font_desc='12'>Vendor: %s</span>" % self.get_vendor_info(self.devices[0])
+            vendor = self.get_vendor_info(self.devices[0])
+            if vendor is None:
+                vendor = "Not known"
+            markup = "<span font_desc='12'>Vendor: %s</span>" % vendor
             self.device_vendor.set_markup(markup)
 
             self.device_model = gtk.Label()
             self.device_model.set_alignment(0.0, 0.5)
-            markup = "<span font_desc='12'>Model: %s</span>" % self.get_model_info(self.devices[0])
+            model = self.get_model_info(self.devices[0])
+            if model is None:
+                model = "Not known"
+            markup = "<span font_desc='12'>Model: %s</span>" % model
             self.device_model.set_markup(markup)
 
             self.device_size = gtk.Label()
@@ -110,9 +116,9 @@ class DeployImageDialog (CrumbsDialog):
             size = float(self.get_size_info(self.devices[0])) * 512 / 1024 / 1024
             if size > 1024:
                 size = size/1024
-                markup = "<span font_desc='12'>Size: %s GB</span>" % size
+                markup = "<span font_desc='12'>Size: %.2f GB</span>" % size
             else:
-                markup = "<span font_desc='12'>Size: %s MB</span>" % size
+                markup = "<span font_desc='12'>Size: %.2f MB</span>" % size
             self.device_size.set_markup(markup)
 
             if len(self.devices) == 1:
@@ -184,16 +190,22 @@ class DeployImageDialog (CrumbsDialog):
 
     def usb_combo_changed_cb(self, usb_combo):
         combo_item = self.usb_combo.get_active_text()
-        markup = "<span font_desc='12'>Vendor: %s</span>" % self.get_vendor_info(combo_item.lstrip("/dev/"))
+        vendor = self.get_vendor_info(combo_item.lstrip("/dev/"))
+        if vendor is None:
+            vendor = "Not known"
+        markup = "<span font_desc='12'>Vendor: %s</span>" % vendor
         self.device_vendor.set_markup(markup)
-        markup = "<span font_desc='12'>Model: %s</span>" % self.get_model_info(combo_item.lstrip("/dev/"))
+        model = self.get_model_info(combo_item.lstrip("/dev/"))
+        if model is None:
+            model = "Not known"
+        markup = "<span font_desc='12'>Model: %s</span>" % model
         self.device_model.set_markup(markup)
         size = float(self.get_size_info(combo_item.lstrip("/dev/"))) * 512 / 1024 / 1024
         if size > 1024:
             size = size/1024
-            markup = "<span font_desc='12'>Size: %s GB</span>" % size
+            markup = "<span font_desc='12'>Size: %.2f GB</span>" % size
         else:
-            markup = "<span font_desc='12'>Size: %s MB</span>" % size
+            markup = "<span font_desc='12'>Size: %.2f MB</span>" % size
         self.device_size.set_markup(markup)
 
     def response_cb(self, dialog, response_id):
@@ -212,7 +224,7 @@ class DeployImageDialog (CrumbsDialog):
                     subprocess.call(shlex.split(cmdline))
 
                     if int(tmpfile.readline().strip()) == 0:
-                        lbl = "<b>Deploy image successfully.</b>"
+                        lbl = "<b>Image deployed to SD card</b>"
                     else:
                         lbl = "<b>Failed to deploy image.</b>\nPlease check image <b>%s</b> exists and USB device <b>%s</b> is writable." % (self.image_path, item)
                     tmpfile.close()

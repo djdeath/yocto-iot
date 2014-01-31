@@ -925,7 +925,7 @@ class Builder(gtk.Window):
             return
 
         image_path = os.path.join(self.parameters.image_addr, image_name)
-        dialog = DeployImageDialog(title = "Image Maker",
+        dialog = DeployImageDialog(title = "Hob",
             image_path = image_path,
             parent = self,
             flags = gtk.DIALOG_MODAL
