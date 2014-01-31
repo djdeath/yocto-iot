@@ -78,6 +78,7 @@ class SignatureGeneratorOEBasicHash(bb.siggen.SignatureGeneratorBasicHash):
         self.abisaferecipes = (data.getVar("SIGGEN_EXCLUDERECIPES_ABISAFE", True) or "").split()
         self.saferecipedeps = (data.getVar("SIGGEN_EXCLUDE_SAFE_RECIPE_DEPS", True) or "").split()
         self.lockedsigs = sstate_lockedsigs(data)
+        self.lockedhashes = {}
         pass
     def rundep_check(self, fn, recipename, task, dep, depname, dataCache = None):
         return sstate_rundepfilter(self, fn, recipename, task, dep, depname, dataCache)
@@ -102,12 +103,18 @@ class SignatureGeneratorOEBasicHash(bb.siggen.SignatureGeneratorBasicHash):
             if task in self.lockedsigs[recipename]:
                 k = fn + "." + task
                 h = self.lockedsigs[recipename][task]
+                self.lockedhashes[k] = h
                 self.taskhash[k] = h
                 #bb.warn("Using %s %s %s" % (recipename, task, h))
                 return h
         h = super(bb.siggen.SignatureGeneratorBasicHash, self).get_taskhash(fn, task, deps, dataCache)
         #bb.warn("%s %s %s" % (recipename, task, h))
         return h
+    def dump_sigtask(self, fn, task, stampbase, runtime):
+        k = fn + "." + task
+        if k in self.lockedhashes:
+            return
+        super(bb.siggen.SignatureGeneratorBasicHash, self).dump_sigtask(fn, task, stampbase, runtime)
 
 # Insert these classes into siggen's namespace so it can see and select them
 bb.siggen.SignatureGeneratorOEBasic = SignatureGeneratorOEBasic
