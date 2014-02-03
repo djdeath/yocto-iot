@@ -310,7 +310,7 @@ class Builder(gtk.Window):
         signal.signal(signal.SIGINT, self.event_handle_SIGINT)
 
     def create_visual_elements(self):
-        self.set_title("Hob")
+        self.set_title("Hob IoT")
         self.set_icon_name("applications-development")
         self.set_resizable(True)
 
@@ -925,7 +925,7 @@ class Builder(gtk.Window):
             return
 
         image_path = os.path.join(self.parameters.image_addr, image_name)
-        dialog = DeployImageDialog(title = "Hob",
+        dialog = DeployImageDialog(title = "Hob IoT",
             image_path = image_path,
             parent = self,
             flags = gtk.DIALOG_MODAL
