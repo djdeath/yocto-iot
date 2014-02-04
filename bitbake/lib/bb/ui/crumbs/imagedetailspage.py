@@ -170,7 +170,14 @@ class ImageDetailsPage (HobPage):
             self.build_result = self.BuildDetailBox(varlist=varlist, vallist=vallist, icon=icon, color=color)
             self.box_group_area.pack_start(self.build_result, expand=False, fill=False)
 
-        self.buttonlist = ["New image", "Edit packages", "Deploy image"]
+        self.buttonlist = ["New image", "Edit packages"]
+        if self.builder.configuration.selected_image == self.builder.recipe_model.__custom_image__:
+            img_recipe_name = "Custom " + self.builder.configuration.initial_selected_image
+        else:
+            img_recipe_name = self.builder.configuration.selected_image
+
+        if "spi" not in img_recipe_name:
+            self.buttonlist.append("Deploy image")
 
         # Name
         self.image_store = []
@@ -216,10 +223,6 @@ class ImageDetailsPage (HobPage):
         image_label = self.create_label("<span weight='bold' font_desc='12'>Image</span>")
         table.attach(image_label, 0, 40, 3, 5)
 
-        if self.builder.configuration.selected_image == self.builder.recipe_model.__custom_image__:
-            img_recipe_name = "Custom " + self.builder.configuration.initial_selected_image
-        else:
-            img_recipe_name = self.builder.configuration.selected_image
         image_name_label = self.create_label("<span font_desc='12'>%s</span>" % img_recipe_name)
         table.attach(image_name_label, 2, 40, 5, 7)
 
