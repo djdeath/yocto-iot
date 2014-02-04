@@ -26,4 +26,5 @@ bitbake/doc/manual/txt/
 bitbake/doc/manual/xhtml/
 pull-*/
 hob-image-*.bb
+devkit-cache/
 
