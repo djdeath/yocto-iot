@@ -38,28 +38,30 @@ fi
 
 SANITY_TESTED_DISTROS=`grep ^SANITY_TESTED_DISTROS= $ENVDATA_FILE | sed -e 's/[^"]*"\([^"]*\)".*/\1/' -e 's/\\\n//g'`
 
-# Clear out locked sigs files (we're going to create them)
-echo > ../meta-iot-devkit/conf/distro/include/iot-devkit-locked-sigs.inc
-echo > ../meta-iot-devkit/conf/distro/include/iot-devkit-spi-locked-sigs.inc
+TMPDIR=`grep ^TMPDIR= $ENVDATA_FILE | sed -e 's/[^"]*"\([^"]*\)".*/\1/'`
 
-DISTRO=iot-devkit-locked bitbake iot-devkit-image:do_rootfs iot-devkit-image:do_populate_sdk
+generate_cache_data() {
+    echo > $LOCKED_SIGS_FILE
+    rm -rf $TMPDIR
+    bitbake $TARGETS
+    bitbake -S $TARGETS
+    cat locked-sigs.inc | sed -e '/do_rootfs/d' -e '/do_bootimg/d' -e '/do_populate_sdk/d' > $LOCKED_SIGS_FILE
+    rm locked-sigs.inc
+    echo "Launching Hob to populate caches, will close automatically"
+    HOB_POPULATE_CACHES_ONLY=1 hob-iot
+}
 
-DISTRO=iot-devkit-locked bitbake -S iot-devkit-image:do_rootfs iot-devkit-image:do_populate_sdk
-cat locked-sigs.inc | sed -e '/do_rootfs/d' -e '/do_bootimg/d' -e '/do_populate_sdk/d' > ../meta-iot-devkit/conf/distro/include/iot-devkit-locked-sigs.inc
-rm locked-sigs.inc
+# Full distro
+LOCKED_SIGS_FILE="../meta-iot-devkit/conf/distro/include/iot-devkit-locked-sigs.inc"
+export DISTRO="iot-devkit-locked"
+TARGETS="iot-devkit-image:do_rootfs iot-devkit-image:do_populate_sdk iot-devkit-prof-dev-image:do_rootfs iot-devkit-prof-dev-image:do_populate_sdk iot-devkit-prof-dev-image:do_rootfs iot-devkit-prof-dev-image:do_populate_sdk"
+generate_cache_data
 
-# Prime Hob cache (Hob has extra caches and we need the pkgdata cache as well)
-# FIXME this needs to be non-interactive or we can't practically do this for the -spi distro as well
-echo "Launching hob - once the cache has been populated, exit out"
-DISTRO=iot-devkit-locked hob-iot
-
-#rm -rf tmp
-#DISTRO=iot-devkit-spi-locked bitbake iot-devkit-spi-image iot-devkit-spi-image:do_populate_sdk
-#rm -rf tmp
-
-#DISTRO=iot-devkit-spi-locked bitbake -S iot-devkit-spi-image
-#cat locked-sigs.inc | sed -e '/do_rootfs/d' -e '/do_bootimg/d' -e '/do_populate_sdk/d' > ../meta-iot-devkit/conf/distro/include/iot-devkit-spi-locked-sigs.inc
-#rm locked-sigs.inc
+# SPI distro
+LOCKED_SIGS_FILE="../meta-iot-devkit/conf/distro/include/iot-devkit-spi-locked-sigs.inc"
+export DISTRO="iot-devkit-spi-locked"
+TARGETS="iot-devkit-spi-image:do_rootfs iot-devkit-spi-image:do_populate_sdk"
+generate_cache_data
 
 # Symlink all other distros host sstate subdirs to the current distro
 SSTATE_DIR=`grep ^SSTATE_DIR= $ENVDATA_FILE | sed -e 's/[^"]*"\([^"]*\)".*/\1/'`
