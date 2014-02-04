@@ -22,8 +22,9 @@ python packageinfo_handler () {
                         pkginfolist.append(sdata)
                     except Exception as e:
                         bb.warn("Failed to read pkgdata file %s: %s: %s" % (pkgdatafile, e.__class__, str(e)))
-        with open(pkgdata_cache, 'wb') as f:
-            pickle.dump(pkginfolist, f)
+        if pkgdata_cache:
+            with open(pkgdata_cache, 'wb') as f:
+                pickle.dump(pkginfolist, f)
     bb.event.fire(bb.event.PackageInfo(pkginfolist), e.data)
 }
 
