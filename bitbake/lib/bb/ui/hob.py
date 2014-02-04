@@ -71,6 +71,10 @@ _evt_list = [ "bb.runqueue.runQueueExitWait", "bb.event.LogExecTTY", "logging.Lo
               "bb.event.FilesMatchingFound", "bb.event.NetworkTestFailed", "bb.event.NetworkTestPassed",
               "bb.event.BuildStarted", "bb.event.BuildCompleted", "bb.event.DiskFull"]
 
+def handler_auto_exit(handler):
+    print('Caches populated, exiting automatically')
+    gtk.main_quit()
+
 def main (server, eventHandler, params):
     params.updateFromServer(server)
     gobject.threads_init()
@@ -85,6 +89,9 @@ def main (server, eventHandler, params):
     server.runCommand(["setEventMask", server.getEventHandle(), llevel, debug_domains, _evt_list])
     hobHandler = HobHandler(server, recipe_model, package_model)
     builder = Builder(hobHandler, recipe_model, package_model)
+
+    if 'HOB_POPULATE_CACHES_ONLY' in os.environ:
+        hobHandler.connect("package-populated", handler_auto_exit)
 
     # This timeout function regularly probes the event queue to find out if we
     # have any messages waiting for us.
