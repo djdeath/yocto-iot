@@ -51,7 +51,7 @@ rm locked-sigs.inc
 # Prime Hob cache (Hob has extra caches and we need the pkgdata cache as well)
 # FIXME this needs to be non-interactive or we can't practically do this for the -spi distro as well
 echo "Launching hob - once the cache has been populated, exit out"
-DISTRO=iot-devkit-locked hob
+DISTRO=iot-devkit-locked hob-iot
 
 #rm -rf tmp
 #DISTRO=iot-devkit-spi-locked bitbake iot-devkit-spi-image iot-devkit-spi-image:do_populate_sdk
