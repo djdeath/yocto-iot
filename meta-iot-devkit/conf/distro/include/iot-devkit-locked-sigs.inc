@@ -1275,8 +1275,6 @@ SIGGEN_LOCKEDSIGS = "\
     iot-devkit-image:do_package_write_ipk:78816084edd8df656a5adb8887c0f17c \
     iot-devkit-image:do_packagedata:1e2b69d5697e3424e600569e7473465e \
     iot-devkit-image:do_patch:74589482c389e047aa58568691f42465 \
-    iot-devkit-image:do_populate_sdk:93a7ca90080b8c9ac12be823b2a09a7a \
-    iot-devkit-image:do_rootfs:849b8a7248eb83c6149ee3943286c024 \
     iot-devkit-image:do_unpack:86e1fb19353d6b861fd4aebe280b352a \
     iot-devkit-prof-dev-image:do_compile:003e9814e5cafc855994495e4c93df72 \
     iot-devkit-prof-dev-image:do_configure:58725782ba70582f90b6f39ecfaa2728 \
@@ -1287,8 +1285,6 @@ SIGGEN_LOCKEDSIGS = "\
     iot-devkit-prof-dev-image:do_package_write_ipk:90a48a799ffed0987ed137c7c81227e0 \
     iot-devkit-prof-dev-image:do_packagedata:bef1887a93d618c5353183bd1543bac4 \
     iot-devkit-prof-dev-image:do_patch:74589482c389e047aa58568691f42465 \
-    iot-devkit-prof-dev-image:do_populate_sdk:9ef639661cc5ce76255e01b88ab5ac93 \
-    iot-devkit-prof-dev-image:do_rootfs:ac1a0f7272b45788b130877b33f01dca \
     iot-devkit-prof-dev-image:do_unpack:86e1fb19353d6b861fd4aebe280b352a \
     iot-devkit-prof-image:do_compile:abf6b429c477f29fbe22942a38f0e1dd \
     iot-devkit-prof-image:do_configure:aafd1af663bc6a5c6775b1b44e90608e \
@@ -1299,8 +1295,6 @@ SIGGEN_LOCKEDSIGS = "\
     iot-devkit-prof-image:do_package_write_ipk:614abeb24700e9a52437a07555d1bb92 \
     iot-devkit-prof-image:do_packagedata:fb262ecabd0500a50dad51579a10f90a \
     iot-devkit-prof-image:do_patch:74589482c389e047aa58568691f42465 \
-    iot-devkit-prof-image:do_populate_sdk:52528277b5a06ef025ab2de01235be9e \
-    iot-devkit-prof-image:do_rootfs:f7794f813766faf9d4877e3dac04a8a8 \
     iot-devkit-prof-image:do_unpack:86e1fb19353d6b861fd4aebe280b352a \
     jpeg-native:do_compile:0ee5076bbff18da3648ff45425e3f78d \
     jpeg-native:do_configure:5f6b46310272c75d0491b00de05fcb13 \
