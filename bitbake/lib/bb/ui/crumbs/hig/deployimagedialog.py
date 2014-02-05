@@ -221,7 +221,10 @@ class DeployImageDialog (CrumbsDialog):
                     tmpfile = tempfile.NamedTemporaryFile()
                     cmdline += "\"sudo dd if=" + self.image_path + \
                                 " of=" + item + "; echo $? > " + tmpfile.name + "\""
+                    dialog.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+                    bb.ui.crumbs.utils.wait(0.1)
                     subprocess.call(shlex.split(cmdline))
+                    dialog.window.set_cursor(None)
 
                     if int(tmpfile.readline().strip()) == 0:
                         lbl = "<b>Image deployed to external storage device</b>"

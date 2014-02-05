@@ -23,6 +23,8 @@
 
 import os
 import bb
+import time
+import gtk
 
 def which_terminal():
     term = bb.utils.which(os.environ["PATH"], "xterm")
@@ -32,3 +34,11 @@ def which_terminal():
     if term:
         return term + " -c "
     return None
+
+
+def wait(delay):
+    time_start = time.time()
+    time_end = time_start + delay
+    while time_end > time.time():
+        while gtk.events_pending():
+            gtk.main_iteration()

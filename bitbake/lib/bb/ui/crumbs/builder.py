@@ -1061,10 +1061,3 @@ class Builder(gtk.Window):
             self.cancel_build_sync()
         elif response == gtk.RESPONSE_YES:
             self.cancel_build_sync(True)
-
-    def wait(self, delay):
-        time_start = time.time()
-        time_end = time_start + delay
-        while time_end > time.time():
-            while gtk.events_pending():
-                gtk.main_iteration()
