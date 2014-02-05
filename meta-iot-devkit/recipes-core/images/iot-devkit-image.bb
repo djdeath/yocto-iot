@@ -44,6 +44,7 @@ IMAGE_INSTALL += "bluez4"
 IMAGE_INSTALL += "avahi"
 
 IMAGE_INSTALL += "lighttpd"
+IMAGE_INSTALL += "naui"
 
 IMAGE_INSTALL += "packagegroup-core-eclipse-debug"
 
