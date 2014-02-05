@@ -245,11 +245,23 @@ class ImageDetailsPage (HobPage):
         files_label = self.create_label("<span weight='bold' font_desc='12'>Root file system files</span>")
         table.attach(files_label, 0, 40, 15, 17)
 
-        res_label = self.create_label("<span font_desc='12'>" + image_name + " (" + default_image_size + ")</span>")
-        table.attach(res_label, 2, 40, 17, 19)
+        textWindow = gtk.ScrolledWindow()
+        textWindow.set_shadow_type(gtk.SHADOW_IN)
+        textWindow.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        msgView = gtk.TextView()
+        msgView.set_editable(False)
+        msgView.set_cursor_visible(False)
+        msgView.set_size_request(-1, 70)
 
-        addr_label = self.create_label("<span font_desc='12'>Root file system files are stored in\n%s</span>" % image_addr)
-        table.attach(addr_label, 2, 40, 19, 21)
+        msg = image_name + " (" + default_image_size + ")"
+        msg += "\n\nRoot file system files are stored in\n%s" % image_addr
+        buf = gtk.TextBuffer()
+        buf.set_text(msg)
+        msgView.set_buffer(buf)
+        textWindow.add(msgView)
+        msgView.show()
+
+        table.attach(textWindow, 2, 40, 17, 21)
 
         self.box_group_area.pack_start(table, expand=False, fill=True)
         self.box_group_area.pack_end(self.details_bottom_buttons, expand=False, fill=False)
