@@ -224,7 +224,7 @@ class DeployImageDialog (CrumbsDialog):
                     subprocess.call(shlex.split(cmdline))
 
                     if int(tmpfile.readline().strip()) == 0:
-                        lbl = "<b>Image deployed to SD card</b>"
+                        lbl = "<b>Image deployed to external storage device</b>"
                     else:
                         lbl = "<b>Failed to deploy image.</b>\nPlease check image <b>%s</b> exists and USB device <b>%s</b> is writable." % (self.image_path, item)
                     tmpfile.close()

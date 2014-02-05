@@ -197,15 +197,19 @@ class PackageSelectionPage (HobPage):
     def build_image_clicked_cb(self, button):
         selected_pkgs = self.package_model.get_selected_packages()
         show_missing_pkg_dialog = False
+        lbl = "<b>Missing important packages</b>\n\nYour list of included "
+        lbl = lbl + " packages is missing:\n\n"
         if 'eglibc' not in selected_pkgs:
             show_missing_pkg_dialog = True
+            lbl = lbl + "-A C library (choose eglibc)\n\n"
         if not ('bash' in selected_pkgs or 'busybox'  in selected_pkgs):
             show_missing_pkg_dialog = True
+            lbl = lbl + "-A shell provider (choose bash or busybox)\n\n"
+        if 'initscripts' not in selected_pkgs:
+            show_missing_pkg_dialog = True
+            lbl = lbl + "-Initialization scripts (choose initscripts)\n\n"
 
         if show_missing_pkg_dialog:
-            lbl = "<b>Missing important packages</b>\n\nYour list of included "
-            lbl = lbl + " packages is missing:\n\n-A C library (choose eglibc)\n\n"
-            lbl = lbl + "-A shell provider (choose bash or busybox)\n\n"
             dialog = CrumbsMessageDialog(None, lbl, gtk.STOCK_DIALOG_INFO)
             button = dialog.add_button("Build anyway", gtk.RESPONSE_OK)
             tooltip = "Build the image without changing the included packages"

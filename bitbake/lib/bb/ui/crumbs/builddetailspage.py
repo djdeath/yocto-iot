@@ -263,7 +263,7 @@ class BuildDetailsPage (HobPage):
         if "Edit recipes" in action:
             self.builder.show_recipes()
         elif "Edit packages" in action:
-            self.builder.show_packages()
+            self.builder.show_packages(ask=False)
         elif "Edit image" in action:
             self.builder.show_configuration()
 
