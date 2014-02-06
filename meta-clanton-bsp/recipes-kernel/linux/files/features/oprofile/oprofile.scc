@@ -1,0 +1,6 @@
+define KFEATURE_DESCRIPTION "Enable latencytop"
+define KFEATURE_COMPATIBILITY arch
+
+include features/profiling/profiling.scc
+
+kconf non-hardware oprofile.cfg
