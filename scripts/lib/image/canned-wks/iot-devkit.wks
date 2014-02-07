@@ -2,6 +2,6 @@
 # long-description: Creates the partitioned disk image that the user
 # can directly dd to the sdcard.
 
-part /boot --source iot-devkit --ondisk mmcblkp0 --fstype=msdos --label msdos --active --align 1024
+part /boot --source iot-devkit --size 50 --ondisk mmcblkp0 --fstype=msdos --label msdos --active --align 1024
 
-part / --source rootfs --ondisk mmcblkp0 --fstype=ext3 --label platform --align 1024
+part / --source rootfs --size 500 --ondisk mmcblkp0 --fstype=ext3 --label platform --align 1024
