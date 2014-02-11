@@ -1514,8 +1514,8 @@ SIGGEN_LOCKEDSIGS = "\
     groff-native:do_unpack:4f87c2dab1db70b9fe88e570a83e7b1b \
     grub-conf:do_compile:06ab69241f91250627f4824b9ba9bff3 \
     grub-conf:do_configure:5895bae5c6c15105db0e60568c491b35 \
+    grub-conf:do_deploy:1dd162a54ecfa2bf9aaa43eb78a86f94 \
     grub-conf:do_fetch:5a794d3003b93db74300e763158ab7bf \
-    grub-conf:do_grub:3c36067fa20335cac7979c343efd7956 \
     grub-conf:do_install:485a12a857ae79f84c117925005b34ef \
     grub-conf:do_package:88303979c2d9592552d9b67a95a1b8fc \
     grub-conf:do_package_write:87381b9d2bec1419e987c99e77b66a32 \
@@ -1785,8 +1785,8 @@ SIGGEN_LOCKEDSIGS = "\
     intltool:do_fetch:e5df375d602db79ca226c98ee6ab1a89 \
     intltool:do_install:a004f07b7165770907b372436c2b5725 \
     intltool:do_package:da537bc4d6ce23fdcb3b43ff0db71a24 \
-    intltool:do_package_write:1876c94b90018783cb57930065b9ee25 \
-    intltool:do_package_write_ipk:de6927a1dcb5cc1f5896d75e03c12976 \
+    intltool:do_package_write:e652efa405cc027a3278e39c948b2cc3 \
+    intltool:do_package_write_ipk:9a120d8943eaefc608ba454bf33f862b \
     intltool:do_packagedata:1eab6551afd19a0195f0a61b163155e4 \
     intltool:do_patch:01e1a6a7383753ad2a995cd9f81d9111 \
     intltool:do_populate_lic:3c3fd9f383d641fcbb2c2be5a2033648 \
@@ -2777,10 +2777,10 @@ SIGGEN_LOCKEDSIGS = "\
     libxml-parser-perl:do_configure:2184a8ee55475e267b653421c39d6723 \
     libxml-parser-perl:do_fetch:e31bc7afd185512fbfa8ad0899e7ce26 \
     libxml-parser-perl:do_install:340b233c76cb1ca0c1de62bb604a6e5c \
-    libxml-parser-perl:do_package:f15b2baa75b507af83af4cadfb45b46a \
-    libxml-parser-perl:do_package_write:f0aed912dc371e0239ccf8bea99cceeb \
-    libxml-parser-perl:do_package_write_ipk:393a986f338c72c606f3c60373c67d99 \
-    libxml-parser-perl:do_packagedata:c2f17c6d47658c1a0306747b1fdd4bcb \
+    libxml-parser-perl:do_package:b32c812bcf119bfecb480df6238da847 \
+    libxml-parser-perl:do_package_write:b19d421627a013eadd701256f1599e50 \
+    libxml-parser-perl:do_package_write_ipk:b4bc62ea1ffd7d876f00177aefb3911e \
+    libxml-parser-perl:do_packagedata:70f7cc0451ffb1f3934103711deead84 \
     libxml-parser-perl:do_patch:8ef7e2cbbc6f4fe5223d316ae9d5ec2b \
     libxml-parser-perl:do_populate_lic:601cda05e6476449be447191115b69bb \
     libxml-parser-perl:do_populate_sysroot:5a93c4d29bc356d50eb0e83e7d12f4fc \
@@ -4376,10 +4376,10 @@ SIGGEN_LOCKEDSIGS = "\
     perf:do_configure:92a05d4bd699a70444eb342e89d0fba7 \
     perf:do_fetch:5c76e66fdf9e584278f9569035a10df6 \
     perf:do_install:e729b7ddb89b8388e3f64538a96d1f64 \
-    perf:do_package:1402e823e1cfd7a53eee75fcc081ceaa \
-    perf:do_package_write:693fd09218472ab0ce7620d8bb6f4cd0 \
-    perf:do_package_write_ipk:269920226eec4b1d1de2f6b904111433 \
-    perf:do_packagedata:27c0402b394fb8ce1d763acf8dc14d33 \
+    perf:do_package:d49fa413f2e7f311eafe499b42193099 \
+    perf:do_package_write:81f7a9421913f20a12ebe411617da57a \
+    perf:do_package_write_ipk:dd8b4765860c4ef27caf1e92776b3bee \
+    perf:do_packagedata:56abf519a5df8d0f864df5e9af75c499 \
     perf:do_patch:2b00b584d268cda90324658eb220a05f \
     perf:do_populate_lic:84aa5c23ca9f5ec28bb187f0928c0e5d \
     perf:do_populate_sysroot:82d02cf25b7c1a1fd7119241bc2c6d83 \
