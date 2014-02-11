@@ -3,10 +3,9 @@
 # Devkit release tarball creation script
 # Copyright 2014 Intel Corporation
 
-if [ "$1" = "" ] ; then
-    echo "Please specify an output directory"
-    exit 1
-fi
+usage() {
+    echo "usage: `basename $0` <outputdir> [--keep-tmpdir] [--dldir <downloads-dir>]"
+}
 
 if [ ! -f iot-devkit-init-build-env ] ; then
     echo "Please execute this script from the base devkit directory"
@@ -15,15 +14,78 @@ fi
 
 set -e
 
-OUTDIR="$1"
-shift
+unset OUTDIR
+unset DL_DIR
+unset SKIPDELETE
+
+while [ "$1" != "" ] ; do
+    case "$1" in
+        --help )
+            usage
+            exit
+            ;;
+        --keep-tmpdir )
+            SKIPDELETE=1
+            ;;
+        --dldir )
+            if [ "$2" = "" ] ; then
+                echo "You must specify a directory for the --dldir option"
+                usage
+                exit 1
+            fi
+            DL_DIR=$2
+            shift
+            ;;
+        -* )
+            echo "Invalid option $1"
+            usage
+            exit 1
+            ;;
+        * )
+            if [ "$OUTDIR" = "" ] ; then
+                OUTDIR="$1"
+            else
+                echo "Invalid parameter $1"
+                usage
+                exit 1
+            fi
+    esac
+    shift
+done
+
+if [ "$OUTDIR" = "" ] ; then
+    echo "Please specify an output directory"
+    usage
+    exit 1
+fi
+
 
 if [ "$OUTDIR" != "." ] ; then
-    git clone . $OUTDIR
+    if [ ! -d $OUTDIR ] ; then
+        git clone . $OUTDIR
+    fi
     cd $OUTDIR
 fi
 
+if [ -d "$OUTDIR" ] ; then
+    echo
+    echo "WARNING: using existing output directory"
+    echo
+fi
+
+if [ "$DL_DIR" = "" ] ; then
+    DL_DIR="$OUTDIR/downloads"
+fi
+
 . ./iot-devkit-init-build-env
+
+VARSET="1"
+grep -q ^DL_DIR conf/local.conf || VARSET="0"
+if [ "$VARSET" = "1" ] ; then
+    sed -i "s,^DL_DIR =.*,DL_DIR = \"$DL_DIR\"," conf/local.conf
+else
+    echo "DL_DIR = \"$DL_DIR\"" >> conf/local.conf
+fi
 
 ENVDATA_FILE=`mktemp`
 bitbake -e > $ENVDATA_FILE
@@ -32,7 +94,9 @@ LOWEST_DISTRO="Ubuntu-12.04"
 CURRENT_DISTRO=`grep ^NATIVELSBSTRING= $ENVDATA_FILE | sed -e 's/[^"]*"\([^"]*\)".*/\1/'`
 
 if [ "$CURRENT_DISTRO" != "$LOWEST_DISTRO" ] ; then
-    echo "You are not using $LOWEST_DISTRO - the current host distribution $CURRENT_DISTRO cannot be used to create host sstate packages that will work on all supported distros"
+    echo
+    echo "WARNING: you are not using $LOWEST_DISTRO - the current host distribution $CURRENT_DISTRO cannot be used to create host sstate packages that will work on all supported distros"
+    echo
     #exit 1
 fi
 
@@ -41,8 +105,18 @@ SANITY_TESTED_DISTROS=`grep ^SANITY_TESTED_DISTROS= $ENVDATA_FILE | sed -e 's/[^
 TMPDIR=`grep ^TMPDIR= $ENVDATA_FILE | sed -e 's/[^"]*"\([^"]*\)".*/\1/'`
 
 generate_cache_data() {
+    if [ "$SKIPDELETE" = "" ] ; then
+        for n in {10..1}; do
+            printf "\rAbout to delete TMPDIR %s... %s " "$TMPDIR" $n
+            sleep 1
+        done
+        echo
+        rm -rf $TMPDIR
+    else
+        # We need to delete it the second time
+        unset SKIPDELETE
+    fi
     echo > $LOCKED_SIGS_FILE
-    rm -rf $TMPDIR
     bitbake $TARGETS
     bitbake -S $TARGETS
     cat locked-sigs.inc | sed -e '/do_rootfs/d' -e '/do_bootimg/d' -e '/do_populate_sdk/d' -e '/do_build/d' > $LOCKED_SIGS_FILE
