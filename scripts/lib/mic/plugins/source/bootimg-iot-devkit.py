@@ -51,7 +51,6 @@ class IOTDevkitPlugin(SourcePlugin):
         For the iot-devkit, we need to stage just the boot/ dir in the
         deploy dir.
         """
-        bootimg_dir = get_bitbake_var("DEPLOY_DIR_IMAGE")
         if not bootimg_dir:
             msger.error("Couldn't find DEPLOY_DIR_IMAGE, exiting\n")
 
