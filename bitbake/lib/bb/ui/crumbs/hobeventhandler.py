@@ -389,4 +389,8 @@ class HobHandler(gobject.GObject):
         params["runnable_machine_patterns"] = self._remove_redundant(self.runCommand(["getVariable", "RUNNABLE_MACHINE_PATTERNS"]) or "")
         params["deployable_image_types"] = self._remove_redundant(self.runCommand(["getVariable", "DEPLOYABLE_IMAGE_TYPES"]) or "")
         params["kernel_image_type"] = self.runCommand(["getVariable", "KERNEL_IMAGETYPE"]) or ""
+        params["core_base"] = self.runCommand(["getVariable", "COREBASE"]) or ""
+        params["staging_dir_native"] = self.runCommand(["getVariable", "STAGING_DIR_NATIVE"]) or ""
+        params["staging_kernel_dir"] = self.runCommand(["getVariable", "STAGING_KERNEL_DIR"]) or ""
+        params["tmpdir"] = self.runCommand(["getVariable", "TMPDIR"]) or ""
         return params

@@ -159,7 +159,6 @@ class Parameters:
     def __init__(self):
         # Variables
         self.max_threads = 65535
-        self.core_base = ""
         self.image_addr = ""
         self.image_types = []
         self.runnable_image_types = []
@@ -168,6 +167,10 @@ class Parameters:
         self.tmpdir = ""
         self.distro = ""
         self.image_list = ""
+        self.core_base = ""
+        self.build_dir = ""
+        self.staging_dir_native = ""
+        self.staging_kernel_dir = ""
 
         self.all_machines = []
         self.all_package_formats = []
@@ -193,6 +196,12 @@ class Parameters:
         self.runnable_image_types = params["runnable_image_types"].split()
         self.runnable_machine_patterns = params["runnable_machine_patterns"].split()
         self.deployable_image_types = params["deployable_image_types"].split()
+        self.core_base = params["core_base"]
+        self.build_dir = os.getcwd()
+        self.tmpdir = params["tmpdir"]
+
+        self.staging_dir_native = params["staging_dir_native"]
+        self.staging_kernel_dir = params["staging_kernel_dir"]
 
 class Builder(gtk.Window):
 
@@ -924,9 +933,9 @@ class Builder(gtk.Window):
             dialog.destroy()
             return
 
-        image_path = os.path.join(self.parameters.image_addr, image_name)
-        dialog = DeployImageDialog(title = "Hob IoT",
-            image_path = image_path,
+        dialog = DeployImageDialog(self,
+            title = "Hob IoT",
+            image = image_name,
             parent = self,
             flags = gtk.DIALOG_MODAL
                     | gtk.DIALOG_DESTROY_WITH_PARENT

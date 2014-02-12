@@ -47,10 +47,11 @@ class DeployImageDialog (CrumbsDialog):
 
     __dummy_usb__ = "--select a usb drive--"
 
-    def __init__(self, title, image_path, parent, flags, buttons=None, standalone=False):
+    def __init__(self, builder, title, image, parent, flags, buttons=None, standalone=False):
         super(DeployImageDialog, self).__init__(title, parent, flags, buttons)
 
-        self.image_path = image_path
+        self.image = image.split("-clanton-")[0]
+        self.builder = builder
         self.standalone = standalone
 
         self.devices = self.find_all_usb_devices()
@@ -160,12 +161,6 @@ class DeployImageDialog (CrumbsDialog):
         self.vbox.show_all()
         self.progress_bar.hide()
 
-    def set_image_text_buffer(self, image_path):
-        self.buf.set_text(image_path)
-
-    def set_image_path(self, image_path):
-        self.image_path = image_path
-
     def popen_read(self, cmd):
         tmpout, errors = bb.process.run("%s" % cmd)
         return tmpout.strip()
@@ -186,7 +181,7 @@ class DeployImageDialog (CrumbsDialog):
         return "%s" % self.popen_read('cat /sys/class/block/%s/size' % dev)
 
     def select_image_button_clicked_cb(self, button):
-            self.emit('select_image_clicked')
+        self.emit('select_image_clicked')
 
     def usb_combo_changed_cb(self, usb_combo):
         combo_item = self.usb_combo.get_active_text()
@@ -215,27 +210,34 @@ class DeployImageDialog (CrumbsDialog):
                 item = "/dev/" + str(self.devices[0])
             else:
                 item = self.usb_combo.get_active_text()
-            if item and self.image_path:
+            if item and self.image:
+                cmdline = bb.ui.crumbs.utils.which_terminal()
+
+                if cmdline:
+                    cmdline += "\"source " + self.builder.parameters.core_base +"/iot-devkit-init-build-env " + \
+                                self.builder.parameters.build_dir + " && wic create iot-devkit " + \
+                                " -r " + self.builder.parameters.tmpdir + "/work/clanton-iotkit-linux/" + self.image + "/1.0-r0/rootfs" + \
+                                " -k " + self.builder.parameters.staging_kernel_dir + \
+                                " -n " + self.builder.parameters.staging_dir_native + \
+                                " -b " + self.builder.parameters.image_addr + "\""
+                    dialog.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+                    bb.ui.crumbs.utils.wait(0.1)
+                    subprocess.call(shlex.split(cmdline))
+
                 cmdline = bb.ui.crumbs.utils.which_terminal()
                 if cmdline:
                     tmpfile = tempfile.NamedTemporaryFile()
-                    cmdline += "\"sudo dd if=" + self.image_path + \
+                    details_file = glob.glob('/var/tmp/wic/build/*.direct')[0]
+                    cmdline += "\"sudo dd if=" + details_file + \
                                 " of=" + item + "; echo $? > " + tmpfile.name + "\""
-                    dialog.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-                    bb.ui.crumbs.utils.wait(0.1)
                     subprocess.call(shlex.split(cmdline))
                     dialog.window.set_cursor(None)
 
                     if int(tmpfile.readline().strip()) == 0:
                         lbl = "<b>Image deployed to external storage device</b>"
                     else:
-                        lbl = "<b>Failed to deploy image.</b>\nPlease check image <b>%s</b> exists and USB device <b>%s</b> is writable." % (self.image_path, item)
+                        lbl = "<b>Failed to deploy image.</b>\nPlease check image <b>%s</b> exists and USB device <b>%s</b> is writable." % (self.image, item)
                     tmpfile.close()
-            else:
-                if not self.image_path:
-                    lbl = "<b>No selection made.</b>\nYou have not selected an image to deploy."
-                else:
-                    lbl = "<b>No selection made.</b>\nYou have not selected a USB device."
             if len(lbl):
                 crumbs_dialog = CrumbsMessageDialog(self, lbl, gtk.STOCK_DIALOG_INFO)
                 button = crumbs_dialog.add_button("Close", gtk.RESPONSE_OK)
