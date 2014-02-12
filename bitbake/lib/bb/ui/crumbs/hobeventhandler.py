@@ -161,6 +161,9 @@ class HobHandler(gobject.GObject):
             targets = [target + ":do_rootfs"]
             targets.append("virtual/kernel:do_deploy")
             targets.append("virtual/kernel:do_populate_sysroot")
+            targets.append("grub:do_deploy")
+            targets.append("grub-conf:do_deploy")
+
             if self.toolchain:
                 targets.append(target + ":do_populate_sdk")
             self.runCommand(["buildTargets", targets, self.default_task])
