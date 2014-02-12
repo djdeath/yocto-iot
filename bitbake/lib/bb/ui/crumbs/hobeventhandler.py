@@ -159,6 +159,8 @@ class HobHandler(gobject.GObject):
                     self.recipe_model.set_custom_image_version(version)
 
             targets = [target + ":do_rootfs"]
+            targets.append("virtual/kernel:do_deploy")
+            targets.append("virtual/kernel:do_populate_sysroot")
             if self.toolchain:
                 targets.append(target + ":do_populate_sdk")
             self.runCommand(["buildTargets", targets, self.default_task])
