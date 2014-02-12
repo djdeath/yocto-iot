@@ -106,13 +106,20 @@ MACHINE ??= "clanton"
 # Ultimately when creating custom policy, people will likely end up subclassing 
 # these defaults.
 #
+# Notes:
+# (1) If you wish to build an image for the Galileo's on-board SPI flash you
+#     need to set DISTRO to one of the -spi- values listed below. The other
+#     values are for building images to go onto an SD card. (The hob-iot
+#     UI will select this automatically - see HOB_IMAGELIST further down.)
+# (2) The -locked DISTRO values below are for assembling images based on the
+#     components in the pre-populated sstate-cache. If you want to do deeper
+#     customisation you will need to use the non-locked DISTRO options
+#     instead, and the system will build packages from source code.
+#
 #DISTRO ?= "iot-devkit-spi"
-DISTRO ?= "iot-devkit"
-# As an example of a subclass there is a "bleeding" edge policy configuration
-# where many versions are set to the absolute latest code from the upstream 
-# source control systems. This is just mentioned here as an example, its not
-# useful to most new users.
-# DISTRO ?= "poky-bleeding"
+#DISTRO ?= "iot-devkit-spi-locked"
+#DISTRO ?= "iot-devkit"
+DISTRO ?= "iot-devkit-locked"
 
 #
 # Package Management configuration
@@ -252,7 +259,10 @@ ASSUME_PROVIDED += "libsdl-native"
 # this doesn't mean anything to you.
 CONF_VERSION = "1"
 
+
+# Set up the image/DISTRO selection for the hob-iot UI
 HOB_IMAGELIST = "iot-devkit-image:iot-devkit iot-devkit-prof-image:iot-devkit \
     iot-devkit-prof-dev-image:iot-devkit iot-devkit-spi-image:iot-devkit-spi"
 
+# These are required for hob-iot
 INHERIT += " image_types packageinfo "
