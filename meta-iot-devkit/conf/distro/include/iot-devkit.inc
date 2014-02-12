@@ -3,10 +3,9 @@ SANITY_TESTED_DISTROS = " \
             Ubuntu-12.04 \n \
             Ubuntu-13.10 \n \
             Fedora-19 \n \
-            Debian-7.0 \n \
-            Debian-7.1 \n \
-            Debian-7.2 \n \
+            Fedora-20 \n \
             Debian-7.3 \n \
+            Debian-7.4 \n \
             openSUSE-project-12.3 \n \
             "
 
