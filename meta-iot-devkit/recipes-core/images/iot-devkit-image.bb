@@ -46,6 +46,8 @@ IMAGE_INSTALL += "avahi"
 IMAGE_INSTALL += "lighttpd"
 IMAGE_INSTALL += "naui"
 
+IMAGE_INSTALL += "iotkit-agent"
+
 IMAGE_INSTALL += "packagegroup-core-eclipse-debug"
 
 # Unlike default meta-oe we build opencv without libav support
