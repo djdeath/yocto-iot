@@ -18,6 +18,8 @@ MAINTAINER = "Yocto Devkit <yocto-devkit@linux.intel.com>"
 TARGET_VENDOR = "-iotkit"
 SDK_VENDOR = "-iotkit"
 
+SDKMACHINE ?= "i686"
+
 SSTATE_DIR = "${TOPDIR}/../devkit-cache/sstate-cache"
 CACHE_forcevariable = "${TOPDIR}/../devkit-cache/cache"
 PERSISTENT_DIR = "${TOPDIR}/../devkit-cache/persistent"
