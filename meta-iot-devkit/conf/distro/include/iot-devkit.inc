@@ -20,6 +20,6 @@ MAINTAINER = "Yocto Devkit <yocto-devkit@linux.intel.com>"
 
 SDKMACHINE ?= "i686"
 
-SSTATE_DIR = "${TOPDIR}/../devkit-cache/sstate-cache"
+SSTATE_DIR ?= "${TOPDIR}/../devkit-cache/sstate-cache"
 CACHE_forcevariable = "${TOPDIR}/../devkit-cache/cache"
 PERSISTENT_DIR = "${TOPDIR}/../devkit-cache/persistent"
