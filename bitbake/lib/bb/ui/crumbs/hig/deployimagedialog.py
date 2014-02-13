@@ -54,7 +54,7 @@ class DeployImageDialog (CrumbsDialog):
         self.builder = builder
         self.standalone = standalone
 
-        self.devices = self.find_all_usb_devices()
+        self.devices = self.find_all_external_devices()
         self.create_visual_elements()
         self.connect("response", self.response_cb)
 
@@ -165,17 +165,28 @@ class DeployImageDialog (CrumbsDialog):
         tmpout, errors = bb.process.run("%s" % cmd)
         return tmpout.strip()
 
-    def find_all_usb_devices(self):
-        usb_devs = [ os.readlink(u)
-            for u in glob.glob('/dev/disk/by-id/usb*')
+    def find_all_external_devices(self):
+        devices = glob.glob('/dev/disk/by-id/usb*')
+        devices.extend(glob.glob('/dev/disk/by-id/mmc*'))
+        ext_devs = [ os.readlink(u)
+            for u in devices
             if not re.search(r'part\d+', u) ]
-        return [ '%s' % u[u.rfind('/')+1:] for u in usb_devs ]
+        return [ '%s' % u[u.rfind('/')+1:] for u in ext_devs ]
 
     def get_vendor_info(self, dev):
-        return "%s" % self.popen_read('cat /sys/class/block/%s/device/vendor' % dev)
+        try:
+            return "%s" % self.popen_read('/sys/class/block/%s/device/vendor' % dev)
+        except bb.process.ExecutionError:
+            return ''
 
     def get_model_info(self, dev):
-        return "%s" % self.popen_read('cat /sys/class/block/%s/device/model' % dev)
+        try:
+            return "%s" % self.popen_read('cat /sys/class/block/%s/device/model' % dev)
+        except bb.process.ExecutionError:
+            try:
+                return "%s" % self.popen_read('cat /sys/class/block/%s/device/name' % dev)
+            except bb.process.ExecutionError:
+                return ''
 
     def get_size_info(self, dev):
         return "%s" % self.popen_read('cat /sys/class/block/%s/size' % dev)
