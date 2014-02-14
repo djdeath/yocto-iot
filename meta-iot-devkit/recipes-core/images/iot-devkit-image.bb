@@ -45,6 +45,7 @@ IMAGE_INSTALL += "avahi"
 
 IMAGE_INSTALL += "lighttpd"
 IMAGE_INSTALL += "naui"
+IMAGE_INSTALL += "hd44780lib"
 
 IMAGE_INSTALL += "iotkit-agent"
 
