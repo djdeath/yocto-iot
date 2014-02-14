@@ -261,8 +261,8 @@ CONF_VERSION = "1"
 
 
 # Set up the image/DISTRO selection for the hob-iot UI
-HOB_IMAGELIST = "iot-devkit-image:iot-devkit iot-devkit-prof-image:iot-devkit \
-    iot-devkit-prof-dev-image:iot-devkit iot-devkit-spi-image:iot-devkit-spi"
+HOB_IMAGELIST = "iot-devkit-image:iot-devkit-locked iot-devkit-prof-image:iot-devkit-locked \
+    iot-devkit-prof-dev-image:iot-devkit-locked iot-devkit-spi-image:iot-devkit-spi-locked"
 
 # These are required for hob-iot
 INHERIT += " image_types packageinfo "
