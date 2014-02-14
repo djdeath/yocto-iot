@@ -1,4 +1,4 @@
-DESCRIPTION = "A fully functional image to be placed on SD card"
+DESCRIPTION = "A fully functional image to be placed on an SD card"
 
 IMAGE_INSTALL = "packagegroup-core-boot ${ROOTFS_PKGMANAGE_BOOTSTRAP} ${CORE_IMAGE_EXTRA_INSTALL}"
 

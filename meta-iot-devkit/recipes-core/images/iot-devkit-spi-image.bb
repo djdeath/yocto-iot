@@ -1,4 +1,4 @@
-DESCRIPTION = "A small image just capable of allowing a device to boot."
+DESCRIPTION = "A small image capable of fitting into the on-board SPI flash"
 
 IMAGE_INSTALL = "packagegroup-core-boot ${ROOTFS_PKGMANAGE_BOOTSTRAP} ${CORE_IMAGE_EXTRA_INSTALL}"
 
