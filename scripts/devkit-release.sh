@@ -128,7 +128,7 @@ generate_cache_data() {
 # Full distro
 LOCKED_SIGS_FILE="../meta-iot-devkit/conf/distro/include/iot-devkit-locked-sigs.inc"
 export DISTRO="iot-devkit-locked"
-TARGETS="iot-devkit-image:do_build iot-devkit-image:do_populate_sdk iot-devkit-prof-dev-image:do_build iot-devkit-prof-dev-image:do_populate_sdk"
+TARGETS="iot-devkit-image:do_build iot-devkit-image:do_populate_sdk iot-devkit-prof-image:do_build iot-devkit-prof-dev-image:do_build iot-devkit-prof-dev-image:do_populate_sdk"
 generate_cache_data
 
 # SPI distro
