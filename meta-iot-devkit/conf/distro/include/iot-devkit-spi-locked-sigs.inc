@@ -15,10 +15,10 @@ SIGGEN_LOCKEDSIGS = "\
     apr-native:do_configure:837660bac1402e2450f7b7df89fa6270 \
     apr-native:do_fetch:1b3aeeff0934967908ed9c418064c0fe \
     apr-native:do_install:bd238b1f4f57caa74dab4ea0b191ce06 \
-    apr-native:do_package:11f32339c063943a0d76a3e0d34afae5 \
-    apr-native:do_package_write:3151c077d8777a2076a3b2d43055e7d1 \
-    apr-native:do_package_write_ipk:c195f38e7eeab9accdbaa77e377f75b9 \
-    apr-native:do_packagedata:02d0e7f2c48e5d5b9bbee93ae0ea1458 \
+    apr-native:do_package:043ab689f04b3ae791cb149550af833b \
+    apr-native:do_package_write:88b731747a6117e9fc60e1114da40e91 \
+    apr-native:do_package_write_ipk:5f8a58bc1b3bc8d4b70983f0ba42461e \
+    apr-native:do_packagedata:c9c269008f8d0f0a2ba56de05fb3e73f \
     apr-native:do_patch:73e4ce77adccad781ee6f4e2b921493d \
     apr-native:do_populate_lic:a28b59bd4dca51e08bff37fd46b3c73f \
     apr-native:do_populate_sysroot:d567d530df91728628a631bd3444d866 \
@@ -27,10 +27,10 @@ SIGGEN_LOCKEDSIGS = "\
     apr-util-native:do_configure:e86af8fb21202064a4452191e904574d \
     apr-util-native:do_fetch:10ce1d314e401080e81a22c82f51d056 \
     apr-util-native:do_install:184c307ff9117bc8db7fa642286cfd67 \
-    apr-util-native:do_package:46df9441b5d1c42ee32658221d61711e \
-    apr-util-native:do_package_write:4d849e479bf2125f469dff811ff9bf3b \
-    apr-util-native:do_package_write_ipk:2ef4163bd23293d17c5f6d2e72758efa \
-    apr-util-native:do_packagedata:6de8207d70ffa892d3ce5f57a292006c \
+    apr-util-native:do_package:add6c133e5efb86843df6d1a4ee45587 \
+    apr-util-native:do_package_write:a8fa08de077930ecd5a6d0b99bf1c47d \
+    apr-util-native:do_package_write_ipk:49799c721b471439cb83614cb1cd0d93 \
+    apr-util-native:do_packagedata:a9cf397386c6ede5289599f5ec857ccc \
     apr-util-native:do_patch:4792ea86758eddae0126917c94e886ac \
     apr-util-native:do_populate_lic:6485c034d94659bdcdee4ffbb607fdb6 \
     apr-util-native:do_populate_sysroot:ecb63d1a2fda0916d4311bbe1d0c1679 \
@@ -266,10 +266,10 @@ SIGGEN_LOCKEDSIGS = "\
     e2fsprogs:do_configure:30399204258feba342ac4162c84a048d \
     e2fsprogs:do_fetch:1b503d1e9e3ba9dab2c91414b2ac53ab \
     e2fsprogs:do_install:eda123b40e303bd30fb363407b688798 \
-    e2fsprogs:do_package:f24d642dbcc27096d00d2d25fde7db86 \
-    e2fsprogs:do_package_write:5f94165e37fcc0ec8c669a8c86430e3d \
-    e2fsprogs:do_package_write_ipk:08cdc1a74d296aa2f47923fc4752a3a6 \
-    e2fsprogs:do_packagedata:a93c2659984adb36facca8217138e690 \
+    e2fsprogs:do_package:bdb4f788888c3a789ec98bf4a119eebe \
+    e2fsprogs:do_package_write:6c770310ad670dc7ef6d5863ff834f71 \
+    e2fsprogs:do_package_write_ipk:f9f45e3bde5ae9620826f3cf17814abe \
+    e2fsprogs:do_packagedata:38d5364cdc814440c0f5dafb67e7fc07 \
     e2fsprogs:do_patch:9897e4ca460c318df5c8010e2755eb19 \
     e2fsprogs:do_populate_lic:2647c7b1712615cdad167fcbf665c091 \
     e2fsprogs:do_populate_sysroot:8121cd3bbb80125cf356e3a941dfb63e \
@@ -512,10 +512,10 @@ SIGGEN_LOCKEDSIGS = "\
     gnutls-native:do_configure:865ca9aba8ba3943926dbe338d0c413a \
     gnutls-native:do_fetch:0997bbf63cb2356870e94344aeadaac8 \
     gnutls-native:do_install:e2094a26485ac4d93fb75e68f9c9562a \
-    gnutls-native:do_package:f1fc1cf5b07d017efeb92f8d40b72ddc \
-    gnutls-native:do_package_write:7a0e61c1e22f610ac3a4fe9913cd120e \
-    gnutls-native:do_package_write_ipk:984266bd6c5e243b2ba8ff867c702247 \
-    gnutls-native:do_packagedata:a4dc9acb5eea6430dccef13ce7fa08ac \
+    gnutls-native:do_package:e494fb88f08d33b57c231737dc64b5d5 \
+    gnutls-native:do_package_write:bfc2006fa2b3235a6e2c60ab2215f4ad \
+    gnutls-native:do_package_write_ipk:c58bbb9618719a95e59fad1ef2a68b31 \
+    gnutls-native:do_packagedata:ee989c5839672d3c7996ece0ffe76183 \
     gnutls-native:do_patch:36c587e51f2141b00208071b2adc4032 \
     gnutls-native:do_populate_lic:793878558bab0ea859fec156f079e1cf \
     gnutls-native:do_populate_sysroot:a6378a7cede1aa9dab9f7a2e521a60af \
@@ -559,10 +559,10 @@ SIGGEN_LOCKEDSIGS = "\
     icu-native:do_configure:d733ea6ac34f0df11ddd307875dcab9f \
     icu-native:do_fetch:5cb012df431cfe45646b88da6019691e \
     icu-native:do_install:4f5169dd00983644471d6ab536c27bf1 \
-    icu-native:do_package:a97b383cbea761fd0b5d7e0d81c081bf \
-    icu-native:do_package_write:617daf0e1d38f1b75fc403c42652fbeb \
-    icu-native:do_package_write_ipk:88873d3c93686f89642a26addb76dd64 \
-    icu-native:do_packagedata:4a07ab8745f022e852ce3abef24b669c \
+    icu-native:do_package:7c1cc498123a5d1487825ba06b1530f2 \
+    icu-native:do_package_write:210265d9d1091ae8c565d2ee98f14f29 \
+    icu-native:do_package_write_ipk:e6ed73fbc31cadbb0f284cd54cb6b7d7 \
+    icu-native:do_packagedata:58bdb02cd45c9c41114baeb4f9412335 \
     icu-native:do_patch:71f695a66f495efa45fe4f5acd30bb6c \
     icu-native:do_populate_lic:87113741ffb452c366ca8c62a74742e6 \
     icu-native:do_populate_sysroot:5234a89e94975e7123b08953420336cd \
@@ -595,10 +595,10 @@ SIGGEN_LOCKEDSIGS = "\
     iot-devkit-spi-image:do_configure:cc897d7952b9a36b5a58ac1b1058dbc0 \
     iot-devkit-spi-image:do_fetch:5c76e66fdf9e584278f9569035a10df6 \
     iot-devkit-spi-image:do_install:6ab044d71ac5ae5477589f35ef1c57f3 \
-    iot-devkit-spi-image:do_package:fe21cb80f934ebe0a412d2f9926d342e \
-    iot-devkit-spi-image:do_package_write:2aa352d32666ab933fe53db282fbc5eb \
-    iot-devkit-spi-image:do_package_write_ipk:31e05a7794263d7eb0242980cfe2f6f7 \
-    iot-devkit-spi-image:do_packagedata:0989db3e9e78374ce699b2ea2860acec \
+    iot-devkit-spi-image:do_package:fc03cc9f698f8fbadd1151e5feb42987 \
+    iot-devkit-spi-image:do_package_write:4bc11f797ecefb470de8bb2ac486f133 \
+    iot-devkit-spi-image:do_package_write_ipk:d711800a49f7c1b78b8c4e5f4b1e18c2 \
+    iot-devkit-spi-image:do_packagedata:207123c7a9e62cea2745590399c9331e \
     iot-devkit-spi-image:do_patch:d8cc3b6e2189885411a52c54bd1bad3b \
     iot-devkit-spi-image:do_populate_lic:fa468e24340e77dc72f4b87d3e4b0ab9 \
     iot-devkit-spi-image:do_populate_sysroot:0d7844ea56420f920d632ffd058002f5 \
@@ -691,10 +691,10 @@ SIGGEN_LOCKEDSIGS = "\
     libgcrypt-native:do_configure:dad0a5ec2df026b796217380ceacd35a \
     libgcrypt-native:do_fetch:6115388d28da3c1bf5c33bf8c45af800 \
     libgcrypt-native:do_install:2a9e27352606910699a999f88111d830 \
-    libgcrypt-native:do_package:c9a682a49e0f0382ed21b662a4354eb6 \
-    libgcrypt-native:do_package_write:e567dd1910fadef44adcd0866ea95bcf \
-    libgcrypt-native:do_package_write_ipk:9f51c63a4e8cdd3d7e72c52982bb880d \
-    libgcrypt-native:do_packagedata:552b6e04db597991fc208561e30d3a95 \
+    libgcrypt-native:do_package:6c9339577c6792cf6109753eede2ab6d \
+    libgcrypt-native:do_package_write:f33be0eb7680418af1ed0cacf76e57f7 \
+    libgcrypt-native:do_package_write_ipk:67e80044134176770b9e0c8451bd2617 \
+    libgcrypt-native:do_packagedata:d599283cc2db02680e16d939daa53231 \
     libgcrypt-native:do_patch:9d2134d8fe8ebecc34e6eca6474b56d6 \
     libgcrypt-native:do_populate_lic:a3f556b1288ca14e13805b70f2dd71cd \
     libgcrypt-native:do_populate_sysroot:4a4cd891dc0c2d46f1e26ba724a1166d \
@@ -703,10 +703,10 @@ SIGGEN_LOCKEDSIGS = "\
     libgpg-error-native:do_configure:711f7fde6b9f10431f6695ce67231aac \
     libgpg-error-native:do_fetch:cd3fbdc7f483ab97f57a2d8caebda164 \
     libgpg-error-native:do_install:dd27e27e0b0fac57547331ff28114708 \
-    libgpg-error-native:do_package:3b29c85e601c97626dda7e328d09d6eb \
-    libgpg-error-native:do_package_write:64563b56e2298c220f0d5fb4eafdb367 \
-    libgpg-error-native:do_package_write_ipk:2695ab0ef945f7eb67cdcc0016dc4ecb \
-    libgpg-error-native:do_packagedata:db43bd962bd0c4504c522ebd2737f13b \
+    libgpg-error-native:do_package:fae31d38cbd360fe81fde4c370ba7d4c \
+    libgpg-error-native:do_package_write:b43d4df1f8e8d48fdda602a8bc276ed8 \
+    libgpg-error-native:do_package_write_ipk:c6d50dc3c5b748acc42f197048a91a87 \
+    libgpg-error-native:do_packagedata:0d084e14d69c0e6339fbbf473355d756 \
     libgpg-error-native:do_patch:1595ceda4568aad32d0b22095a0f27c3 \
     libgpg-error-native:do_populate_lic:a1fc2f87a61b5964161abf205ad94907 \
     libgpg-error-native:do_populate_sysroot:e5e2be5a0b4a5159a202945b0dfff403 \
@@ -739,10 +739,10 @@ SIGGEN_LOCKEDSIGS = "\
     libpcap:do_configure:1fde5f60cd66aae193aaeeca21fc5162 \
     libpcap:do_fetch:199158895ed2abc5cde484cc9ceec938 \
     libpcap:do_install:30394e92964f40e917fca8a58703b525 \
-    libpcap:do_package:a7207fff2175d6bcb9e0d0f608aaf29f \
-    libpcap:do_package_write:4964cf7d2f5474d8a6de7a7b79820a04 \
-    libpcap:do_package_write_ipk:108e7b23565187eacc346024b6581739 \
-    libpcap:do_packagedata:94dfa1b884de8d74add6a2e98bb0def4 \
+    libpcap:do_package:2eb73d51328eb74777dc283808cf568e \
+    libpcap:do_package_write:97de7bb67314c1568dc634231a3a409b \
+    libpcap:do_package_write_ipk:23c497b411d63c5e47f7b531be1cbb65 \
+    libpcap:do_packagedata:a9f235f3c48ced0afbcfd757b6625e9e \
     libpcap:do_patch:abc01c8e9a565c2dc9290502820f0cc8 \
     libpcap:do_populate_lic:ccd82a2272cbedcb3316e8a0c63b11f9 \
     libpcap:do_populate_sysroot:67f1712132fbf113cd140580b1b79149 \
@@ -751,10 +751,10 @@ SIGGEN_LOCKEDSIGS = "\
     libpcre-native:do_configure:cb8fc294fe4994cec56b7934a494932d \
     libpcre-native:do_fetch:7a2e25ed8bd9625d9d8e82fc9e9c82e5 \
     libpcre-native:do_install:bb42c56238fc1c834095970e1840b017 \
-    libpcre-native:do_package:474382ab47f7da1a3447418136c4a5bc \
-    libpcre-native:do_package_write:ef12605cc82c82de22ffdf61cbadbeb1 \
-    libpcre-native:do_package_write_ipk:0e2889b3635beeb83054acb93b7b86ce \
-    libpcre-native:do_packagedata:4075c292f28ee02e33e3d0ea86492e4b \
+    libpcre-native:do_package:0fd4fffacf21f87ba54c1570111759b0 \
+    libpcre-native:do_package_write:153841c6ed7c545e754bb363881f5a4b \
+    libpcre-native:do_package_write_ipk:978f345e8d2a565be2b1c5dbe3b5a2b7 \
+    libpcre-native:do_packagedata:3b9357e434ef618fb310d2bda9554efb \
     libpcre-native:do_patch:74faae55ce137657a9ab9fbafadd3a98 \
     libpcre-native:do_populate_lic:141373e15f4b1d491039f1a0c3fc7a41 \
     libpcre-native:do_populate_sysroot:3e1b53f2dddb68a1867d8e1c2171b0a9 \
@@ -763,10 +763,10 @@ SIGGEN_LOCKEDSIGS = "\
     libtasn1-native:do_configure:285bebdb2e02fb382457bdde3b621bc9 \
     libtasn1-native:do_fetch:382b22c7d435d0bebd3ab28616ff8b8e \
     libtasn1-native:do_install:c20d97d3abf1759481a890c1c77580c8 \
-    libtasn1-native:do_package:3cb656576e90fa0fc37c4670537a1537 \
-    libtasn1-native:do_package_write:6fbda0d13cd02192a0bee7b3c0860001 \
-    libtasn1-native:do_package_write_ipk:aa045e299b9cb5b56e3f692a98186a50 \
-    libtasn1-native:do_packagedata:05d7685db0161b4d84c78f5b466dc52a \
+    libtasn1-native:do_package:aa3262496ac642a9c9eea9e3b6d870cb \
+    libtasn1-native:do_package_write:81b97d55d4ad611f42864de58a9fe0a3 \
+    libtasn1-native:do_package_write_ipk:549bc32743af2879b6f99167f5d17210 \
+    libtasn1-native:do_packagedata:f68b80f85a372811bfd2154ae5058409 \
     libtasn1-native:do_patch:5d30b73e5e7f995ebf0e2bb4b2b6ac2c \
     libtasn1-native:do_populate_lic:58ebeae6a23a9d45e60a165f1a917473 \
     libtasn1-native:do_populate_sysroot:cf7dd7848202cae93b4136b40e060d63 \
@@ -802,10 +802,10 @@ SIGGEN_LOCKEDSIGS = "\
     libxml2-native:do_fetch:bafaa9e68b25a68f31c5cebf56957c1f \
     libxml2-native:do_install:72d9f233580a8e30a4bf67c8b920e25c \
     libxml2-native:do_install_ptest_base:d535833707519d520bff755a8a63887c \
-    libxml2-native:do_package:e02e4fa9abb4525c2961407abc1405f5 \
-    libxml2-native:do_package_write:613f8189e41bdf801ac9c339954d8608 \
-    libxml2-native:do_package_write_ipk:e73514c1f46d5099c50481ffeab74b6d \
-    libxml2-native:do_packagedata:0bf4194c03b29140166121921b6464a8 \
+    libxml2-native:do_package:fdebb01f1b337c3830eb95ca06b229ce \
+    libxml2-native:do_package_write:f1c88cbcbd73cc60a5af21d076984d20 \
+    libxml2-native:do_package_write_ipk:24f4e6691d411548a6e44911ac9bf6c4 \
+    libxml2-native:do_packagedata:2aaa38f54004268e22495f7a101f270a \
     libxml2-native:do_patch:c968af3a541cceeed33db3cdbb0016a3 \
     libxml2-native:do_populate_lic:420aabbcd38ae84d9c154f0902b43a0b \
     libxml2-native:do_populate_sysroot:40305a6183c0e78a6c7d5e1e059c3c8c \
@@ -955,10 +955,10 @@ SIGGEN_LOCKEDSIGS = "\
     mtd-utils:do_configure:98ea582e9cbb72b04a8ba041b0b3305f \
     mtd-utils:do_fetch:92c3cf002f284e16c133e1707a70ec2a \
     mtd-utils:do_install:018fd93a65453860a9882fbcb0c7c3fa \
-    mtd-utils:do_package:1888d4ad6c95a59166adac77e40d123a \
-    mtd-utils:do_package_write:67df946e10a7283969f59b25ef3804c1 \
-    mtd-utils:do_package_write_ipk:25d070940fcd52aa745d1dff1047822b \
-    mtd-utils:do_packagedata:571103e2ccb3581ffaa8372e7372005c \
+    mtd-utils:do_package:0f249946f99adf06186eff3a3823b78e \
+    mtd-utils:do_package_write:78e35495ee3926475a19f43283854bd6 \
+    mtd-utils:do_package_write_ipk:931e0672ccbb99715b44b5b9faa955b3 \
+    mtd-utils:do_packagedata:b82fe7fcd23a22d373f35b61696f0603 \
     mtd-utils:do_patch:27522320d6b0da29aaa3a0e0a0b4ea7c \
     mtd-utils:do_populate_lic:b5ad9e2a23429c2b099e2d3bcf47c70c \
     mtd-utils:do_populate_sysroot:9352b4aacd85124c963aa4f43f1e2ef0 \
@@ -1166,9 +1166,9 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-libpng:do_configure:da8d12539078731ce3ab7af2226a7481 \
     nativesdk-libpng:do_fetch:fcb40ad738fa31f45f5d13c45e1ee5ab \
     nativesdk-libpng:do_install:1965ad04ea9cf7c4e863c0aa18dd3f82 \
-    nativesdk-libpng:do_package:be89ce874ff34307442d2f3b9ac1d868 \
-    nativesdk-libpng:do_package_write_ipk:869b211f4764d0a0c41386ec392ce325 \
-    nativesdk-libpng:do_packagedata:48fee7fa9cac8f73875a7036177a85c7 \
+    nativesdk-libpng:do_package:dc509caec07a9f62509fe938e7c3c588 \
+    nativesdk-libpng:do_package_write_ipk:55b416cabf746efee6e45aa173d6b6bb \
+    nativesdk-libpng:do_packagedata:898059c7ac66469602d5bce957313094 \
     nativesdk-libpng:do_patch:af6a166a64bd8687ea15abc4354879ac \
     nativesdk-libpng:do_populate_sysroot:1a657dbeaa776dbf70564411f51288b8 \
     nativesdk-libpng:do_unpack:a379d7f6a6588365c278f19978a38677 \
@@ -1176,9 +1176,9 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-libsdl:do_configure:ece3a9c2ecbac43070f28c4747c4f681 \
     nativesdk-libsdl:do_fetch:bf75cd0cf47928857db147d67b7a03a7 \
     nativesdk-libsdl:do_install:7b2877916ba912e92376b7b052ff619d \
-    nativesdk-libsdl:do_package:aff5c3bd9f90774e244fda34db5650ee \
-    nativesdk-libsdl:do_package_write_ipk:1a7968f24dee414e2e0ed0af29c9c891 \
-    nativesdk-libsdl:do_packagedata:2bcc0e33e34557f030a07e26454fb3b0 \
+    nativesdk-libsdl:do_package:924fb2040920eef39f0436414fa8cd85 \
+    nativesdk-libsdl:do_package_write_ipk:4269d58a130024bcad6844b51628124e \
+    nativesdk-libsdl:do_packagedata:3de8289a4fc7af09e2fb09ad75bd4673 \
     nativesdk-libsdl:do_patch:a6c679336b866c55e981d9d7e1a0b663 \
     nativesdk-libsdl:do_populate_sysroot:2161546d4d557fe2f3759f779ce8e645 \
     nativesdk-libsdl:do_unpack:a41ea74129ee924969f9717c45383451 \
@@ -1235,9 +1235,9 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-ncurses:do_configure:51fa1bcc033a09c05569e95f3bc39e5b \
     nativesdk-ncurses:do_fetch:c0745bcfd1112086051f09d5533977d1 \
     nativesdk-ncurses:do_install:3277678012fb16dd5884c8011e2c39f2 \
-    nativesdk-ncurses:do_package:a6696cef9beb168cc208d9bc7c372115 \
-    nativesdk-ncurses:do_package_write_ipk:8739a54cf15b1df04bb3c94a33a5ef7c \
-    nativesdk-ncurses:do_packagedata:74aca5319d7d6fe5370a5a85072c5af9 \
+    nativesdk-ncurses:do_package:5cae50ac3a96a951bc39f2cfd2d65c04 \
+    nativesdk-ncurses:do_package_write_ipk:f79a954df53408246813c02a74166702 \
+    nativesdk-ncurses:do_packagedata:0c359194e94f02c0e8fcc3d6c2cd0b78 \
     nativesdk-ncurses:do_patch:fbaf19c5f8511471b0f1486be8605a59 \
     nativesdk-ncurses:do_populate_sysroot:2767d4a0a490b6af61a856a4fe7f22b5 \
     nativesdk-ncurses:do_unpack:0669ff7c20e7b1ba7a12b45641863137 \
@@ -1275,7 +1275,7 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-packagegroup-sdk-host:do_fetch:5c76e66fdf9e584278f9569035a10df6 \
     nativesdk-packagegroup-sdk-host:do_install:ba66565cac636f3367cebd25c8c2adaf \
     nativesdk-packagegroup-sdk-host:do_package:67294afa6b8bb7b6e3287389a2527e86 \
-    nativesdk-packagegroup-sdk-host:do_package_write_ipk:5da03f84387ce6d9b885668a4c5e9ef9 \
+    nativesdk-packagegroup-sdk-host:do_package_write_ipk:33465a0b8c42f36667c8eb5da035caba \
     nativesdk-packagegroup-sdk-host:do_packagedata:f3d97cc83106ddf325c547d003467947 \
     nativesdk-packagegroup-sdk-host:do_patch:dce7e07c89cfa725398b177e907eb359 \
     nativesdk-packagegroup-sdk-host:do_populate_sysroot:d6b70077be79ffcfadc049f314f617a2 \
@@ -1296,9 +1296,9 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-pixman:do_configure:307aa0a5b991ba70c7aed7c0788d744e \
     nativesdk-pixman:do_fetch:7c3dd23e37bc159b40365687474296cd \
     nativesdk-pixman:do_install:306544810ad2f2d676636607ea86c56d \
-    nativesdk-pixman:do_package:923f1fd3438d4cfdb1f34f0546f8955d \
-    nativesdk-pixman:do_package_write_ipk:e5c1a7733ff7a11d7d699809c6ddc5e6 \
-    nativesdk-pixman:do_packagedata:197947dbc1b98f8a822b6b9ea2eab211 \
+    nativesdk-pixman:do_package:0955a5c80f54d49cfd4daed2aac89c04 \
+    nativesdk-pixman:do_package_write_ipk:413b79fae3db5d858a538be5d0c635ec \
+    nativesdk-pixman:do_packagedata:836efb935dc0b664a07921f1a80ca223 \
     nativesdk-pixman:do_patch:30deeec52616712196a6a189fe03c6bf \
     nativesdk-pixman:do_populate_sysroot:599102281016c5c5fe620f492d7f76e3 \
     nativesdk-pixman:do_unpack:fb304fe35e84a17d624834dca2cb6899 \
@@ -1315,9 +1315,9 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-pseudo:do_configure:3187749b233b1af4a373fcd71330974d \
     nativesdk-pseudo:do_fetch:92ed54f9d958097f81a9a12dda74ab6d \
     nativesdk-pseudo:do_install:2aaf42fb46ea232072dbaba5d5acbfcd \
-    nativesdk-pseudo:do_package:fb12107d41b66a33d1b6e0f7434e3dbe \
-    nativesdk-pseudo:do_package_write_ipk:f09bdabec6ca8a3f4b1ea72aba14cf1f \
-    nativesdk-pseudo:do_packagedata:0f0e68ca88b42df9d149983425edd679 \
+    nativesdk-pseudo:do_package:2cec4699b75fb9bfab10db8df2a8d951 \
+    nativesdk-pseudo:do_package_write_ipk:8408e590f14a1b536637635ddc13bc79 \
+    nativesdk-pseudo:do_packagedata:8476e0375a9d4eb5d6b9f2880742bcd3 \
     nativesdk-pseudo:do_patch:5d7031464822310ecf766af9bb1f0098 \
     nativesdk-pseudo:do_unpack:acaf2b2b9ee4f32fb7a40fb5334b317f \
     nativesdk-python:do_compile:def8ebcc90679744059bb0a67f8ed508 \
@@ -1327,9 +1327,9 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-python:do_fetch:a6f4ed1ae840f21c6c42288189d002e9 \
     nativesdk-python:do_install:2f09717f8aba62d6e2a7c3078c74eab7 \
     nativesdk-python:do_install_ptest_base:509a51d45460dd4354076cf1fe25fa7f \
-    nativesdk-python:do_package:35ecafed2b343f8ca04ea4e1110802b9 \
-    nativesdk-python:do_package_write_ipk:4b8344697dfa03ace5f128eb5c79c55e \
-    nativesdk-python:do_packagedata:ffee2fb9730fa9518657e38560c39b8d \
+    nativesdk-python:do_package:4a677bbdb22e8660c2a909ec89330026 \
+    nativesdk-python:do_package_write_ipk:b1aa7241c15ac343ff99ecc6e6a8897a \
+    nativesdk-python:do_packagedata:cce8ead02d77f9607a59d1819bbdd2c5 \
     nativesdk-python:do_patch:3866620b47bf7cad044c413f3f84f872 \
     nativesdk-python:do_populate_sysroot:ad95b8f4a86691a5df488c9d12d8f99b \
     nativesdk-python:do_unpack:6cac1dd9ce9c2b45265cff915721a138 \
@@ -1338,7 +1338,7 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-qemu-helper:do_fetch:2098f2d6c4ef328595cf93688bc9ac65 \
     nativesdk-qemu-helper:do_install:aff9945ccc70bc593e669177e3f3501c \
     nativesdk-qemu-helper:do_package:96194feb5a0dad8837d02192e939fc41 \
-    nativesdk-qemu-helper:do_package_write_ipk:201a20c80e3885e7742dd29869ce3671 \
+    nativesdk-qemu-helper:do_package_write_ipk:5dc9a883773a3f6cbd37a1bee2623729 \
     nativesdk-qemu-helper:do_packagedata:f85fd2d40d0902184ce1188f8dc116ab \
     nativesdk-qemu-helper:do_patch:c7c6abd601058e4165ea348d18677916 \
     nativesdk-qemu-helper:do_unpack:d048a29b7e16b63091906e00445286bd \
@@ -1346,18 +1346,18 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-qemu:do_configure:a3931220545d4dd228fa9bb25de30511 \
     nativesdk-qemu:do_fetch:4cf26184d62240a879ed66556fd7bd26 \
     nativesdk-qemu:do_install:badbaf084161b68d58b0d2362569014f \
-    nativesdk-qemu:do_package:73ff72a15ae90d9c61457d0e6b94a91a \
-    nativesdk-qemu:do_package_write_ipk:be7cd8df4c87b84e049f89826c102bbb \
-    nativesdk-qemu:do_packagedata:be1ced4c280104549b13f75ae989af32 \
+    nativesdk-qemu:do_package:6228a1ccfe567e0baf187a5cc93732ed \
+    nativesdk-qemu:do_package_write_ipk:e9609a3cc1c47946650c9cb1a7b165ee \
+    nativesdk-qemu:do_packagedata:2ab5b4783f847714c128af227558bd5e \
     nativesdk-qemu:do_patch:af472b77fb749d64a1a9913672f2169d \
     nativesdk-qemu:do_unpack:e0ec109ec3241209f2c7e7427d30b2ac \
     nativesdk-readline:do_compile:82ec95010bfb2bcd1d45340148587690 \
     nativesdk-readline:do_configure:b4dc7bbd61b532c0f53d452ab62a53d8 \
     nativesdk-readline:do_fetch:5568ac6d99cbc865fc1b1dff37561a72 \
     nativesdk-readline:do_install:c2cdf979820fff816c49ace172e28085 \
-    nativesdk-readline:do_package:6f26aae52042e05d3d07532a7d51c4cf \
-    nativesdk-readline:do_package_write_ipk:e47fa8729c22724c396c88abfe5d6d81 \
-    nativesdk-readline:do_packagedata:7ebf71f07a5a591995397947100ae198 \
+    nativesdk-readline:do_package:e5354f0bd59021e2209d488cc8ce35a0 \
+    nativesdk-readline:do_package_write_ipk:574fc114e8d8be15d9caa763cc468c30 \
+    nativesdk-readline:do_packagedata:d022f4ebec2ef5cc36c4312d83daccf1 \
     nativesdk-readline:do_patch:77c4d34d756f6b9dad526f7af9cc35e2 \
     nativesdk-readline:do_populate_sysroot:9a1bc01a2c3040d9da5b029c4b849def \
     nativesdk-readline:do_unpack:85ac55a94a9aa6cefa201853dedcbac0 \
@@ -1374,9 +1374,9 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-sqlite3:do_configure:6d307a095a987e03eab75ff3efd2df78 \
     nativesdk-sqlite3:do_fetch:1fb46165a06aa1d6b5d6c786d5a034df \
     nativesdk-sqlite3:do_install:9f266d9850f35a95f0b0e3caa07ca70d \
-    nativesdk-sqlite3:do_package:69727446eb39a250d700242af4d43c9c \
-    nativesdk-sqlite3:do_package_write_ipk:d87f530e5425d7d65cadd9de69345609 \
-    nativesdk-sqlite3:do_packagedata:f6e351cabc3176590b8c7038f41d4f5f \
+    nativesdk-sqlite3:do_package:f8e59dea0fb2ce1d461b1b544471d7c2 \
+    nativesdk-sqlite3:do_package_write_ipk:f96ac7569b13090a6e0c5aba1eb19a8c \
+    nativesdk-sqlite3:do_packagedata:0983ba4c98e27abd43ca829d3d34a6e4 \
     nativesdk-sqlite3:do_patch:1ffabf18341ccefceef120113ab82597 \
     nativesdk-sqlite3:do_populate_sysroot:8cc47c48286957f0285f971b3659c6f6 \
     nativesdk-sqlite3:do_unpack:7a810964f3ed0be5d21afbdfe2ad0cdd \
@@ -1385,7 +1385,7 @@ SIGGEN_LOCKEDSIGS = "\
     nativesdk-unfs-server:do_fetch:dc3ca57477e63c3f5947d7cd6a9e9251 \
     nativesdk-unfs-server:do_install:4b4b3f9f2f5db79271ece3557c24c751 \
     nativesdk-unfs-server:do_package:0fbb0351ad5064d54345b88daf670945 \
-    nativesdk-unfs-server:do_package_write_ipk:e7048d07f56a3e1778cedc5f5744258b \
+    nativesdk-unfs-server:do_package_write_ipk:0d0877d4243c27a565af6e8a7fe93ac0 \
     nativesdk-unfs-server:do_packagedata:af007e5d12924e497abcdb3abac4135e \
     nativesdk-unfs-server:do_patch:6e9429a10b3189a6a0512b54009dc71f \
     nativesdk-unfs-server:do_unpack:bac332285bd91ac26f3924cd87996e6f \
@@ -1413,10 +1413,10 @@ SIGGEN_LOCKEDSIGS = "\
     ncurses-native:do_configure:fbbfe1b20dd210fb612cab2f80549b7e \
     ncurses-native:do_fetch:c0745bcfd1112086051f09d5533977d1 \
     ncurses-native:do_install:d4877f3135e911c28368ee6c019728c4 \
-    ncurses-native:do_package:dfb8c98283f60d042e53b72eecf06d51 \
-    ncurses-native:do_package_write:1cac705f5ed0f1a1308bf9d63d82aa99 \
-    ncurses-native:do_package_write_ipk:97165dcb1a91ccaa11d1365c8f5cf2cc \
-    ncurses-native:do_packagedata:2f55b6c99e432a296f72c13221ea6074 \
+    ncurses-native:do_package:8108a5f78bb17bd80b186234617ab646 \
+    ncurses-native:do_package_write:65523ba5f4c0da48b2dc3d7129118631 \
+    ncurses-native:do_package_write_ipk:9cc114cecf4030265a86acb1ae3888b5 \
+    ncurses-native:do_packagedata:6e428960ae60888643aefeb448068d54 \
     ncurses-native:do_patch:1847092781475cc39280d6f9a9c0358e \
     ncurses-native:do_populate_lic:d39d975e112982412969691a56a8ecf0 \
     ncurses-native:do_populate_sysroot:2bb7fcfc50fe36052341895e3c1240fe \
@@ -1425,10 +1425,10 @@ SIGGEN_LOCKEDSIGS = "\
     ncurses:do_configure:94a0273d04d5f8c98acc693ecf9956de \
     ncurses:do_fetch:c0745bcfd1112086051f09d5533977d1 \
     ncurses:do_install:4b2a6dbcf00fabe007ae0b58582718a6 \
-    ncurses:do_package:fcf6cd3ac277006ed31d0406c85a323e \
-    ncurses:do_package_write:e4c68e4cc45a6898c733e0c2aa408534 \
-    ncurses:do_package_write_ipk:5e4112acaa1e72d63f83519f7887f555 \
-    ncurses:do_packagedata:68cece9933d106876b1e69743a4109b1 \
+    ncurses:do_package:f2eb868ab89d53bae5838c027560a34c \
+    ncurses:do_package_write:08458e93f79a85ff08bad4f657342580 \
+    ncurses:do_package_write_ipk:d8365f710f125e0ed8292df4e42c5029 \
+    ncurses:do_packagedata:d0234ec7c3421e466253aa9e52f08b94 \
     ncurses:do_patch:47cdb4ed77ce1ed1a9dd4933a025d719 \
     ncurses:do_populate_lic:052cfdc9b177ab74fbf60ca50f79fb6c \
     ncurses:do_populate_sysroot:6a692fb45033753c96329979278b159a \
@@ -1437,10 +1437,10 @@ SIGGEN_LOCKEDSIGS = "\
     neon-native:do_configure:edfa8e5e0300f40f1d607ac603b2b862 \
     neon-native:do_fetch:10c5f7627104c55346f7257501bfb965 \
     neon-native:do_install:957a408c73db11dbfd0aebbc06ffb5a5 \
-    neon-native:do_package:7444047398cdd169336cad2a5e3cb7a5 \
-    neon-native:do_package_write:ea03b00129201eb6cc1cd1edc02ef4c8 \
-    neon-native:do_package_write_ipk:bf1f7709615c69a4b2fe6d99fdebb28d \
-    neon-native:do_packagedata:320bf8dbada44cd3b68a48058054d90b \
+    neon-native:do_package:3cc6ec6e93e1b5dea154626d8c2ac75a \
+    neon-native:do_package_write:9edc52923022aa9697ff0e3a9f605033 \
+    neon-native:do_package_write_ipk:b733e315909c32717a9b96dd9c4ce8a4 \
+    neon-native:do_packagedata:b08984cacb03a854029de3472ca98fb2 \
     neon-native:do_patch:bd80c527f2ca60ece345456ec4c50590 \
     neon-native:do_populate_lic:dd9edc9cf1e4c07f0d406104ce0a5ede \
     neon-native:do_populate_sysroot:1c470f949fbea446a6a319e017133b8e \
@@ -1649,10 +1649,10 @@ SIGGEN_LOCKEDSIGS = "\
     ppp:do_configure:19a4c3f8ec070c7e7c26bbeb95fe6920 \
     ppp:do_fetch:991cfbafb11405a20f89fdc15316d357 \
     ppp:do_install:df4c95d017ed46f978ac26719096556d \
-    ppp:do_package:9fb26ad75ab0886df10f53c23bfb9e66 \
-    ppp:do_package_write:bc5242d9449082b9e960c2e9ef9e5cae \
-    ppp:do_package_write_ipk:e57bc1cd31ded02a867cefae446349c7 \
-    ppp:do_packagedata:eabcc5a43bd16840e2eb3fc9cacfdc6b \
+    ppp:do_package:a6c050c221b5afed5fba7c2d20595d40 \
+    ppp:do_package_write:95bd1212130b9e846fbbb64858710876 \
+    ppp:do_package_write_ipk:aafb45594a6e28d6d268a1c720c8e92f \
+    ppp:do_packagedata:6428e7a6545f5d54e189d40897e6e196 \
     ppp:do_patch:6f389f9957f097a410626689b9e4ab19 \
     ppp:do_populate_lic:6e1b3a487875410fdf6419fdbf467d1a \
     ppp:do_populate_sysroot:2e5d1215b596162aaeb67fa112804fa9 \
@@ -1902,10 +1902,10 @@ SIGGEN_LOCKEDSIGS = "\
     util-linux:do_configure:c7150ff95b3d2d4416bd05159bbefee5 \
     util-linux:do_fetch:27703d743f7803434f8dc3dc438a415b \
     util-linux:do_install:7d2745154674fdc02f7ec67519324f40 \
-    util-linux:do_package:632905b5957e304108b9bc44f591f50e \
-    util-linux:do_package_write:3b997ab0054f59b0c42025aa6442091e \
-    util-linux:do_package_write_ipk:bfd6320bfa2ef40e3e7c8ccfdff94ae4 \
-    util-linux:do_packagedata:bf2437e3bc154a404c64eca49994546a \
+    util-linux:do_package:bbd4cec5491e0eda2332acfa65a7de23 \
+    util-linux:do_package_write:053e9c05f95e767f6a96690ec7b608da \
+    util-linux:do_package_write_ipk:8dfaeaa96a5d5cd37db3bda1ec45a704 \
+    util-linux:do_packagedata:3e2ce709701d6c8b81ee14749732c865 \
     util-linux:do_patch:21916dec2c8e81392e62a36b3ce65383 \
     util-linux:do_populate_lic:802385e3ff915bc443e74e55063577ef \
     util-linux:do_populate_sysroot:af7baf0f1471a882223c5f059dc4b7d1 \
