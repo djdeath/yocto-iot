@@ -398,4 +398,5 @@ class HobHandler(gobject.GObject):
         params["staging_dir_native"] = self.runCommand(["getVariable", "STAGING_DIR_NATIVE"]) or ""
         params["staging_kernel_dir"] = self.runCommand(["getVariable", "STAGING_KERNEL_DIR"]) or ""
         params["tmpdir"] = self.runCommand(["getVariable", "TMPDIR"]) or ""
+        params["distro"] = self.runCommand(["getVariable", "DISTRO"]) or ""
         return params

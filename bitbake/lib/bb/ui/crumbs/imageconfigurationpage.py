@@ -173,7 +173,8 @@ class ImageConfigurationPage (HobPage):
     def image_combo_changed_idle_cb(self, selected_image, selected_recipes, selected_packages):
         self.builder.update_recipe_model(selected_image, selected_recipes)
         self.builder.update_package_model(selected_packages)
-        self.builder.window_sensitive(True)
+        if not self.builder.request_pkg_info:
+            self.builder.window_sensitive(True)
 
     def image_combo_changed_cb(self, combo):
         self.builder.window_sensitive(False)
@@ -185,6 +186,10 @@ class ImageConfigurationPage (HobPage):
 
             image_path = self.builder.recipe_model.pn_path[selected_image]
             image_iter = self.builder.recipe_model.get_iter(image_path)
+
+            distro = self.builder.parameters.image_list[selected_image]
+            self.builder.set_distro_packages(distro)
+
             selected_packages = self.builder.recipe_model.get_value(image_iter, self.builder.recipe_model.COL_INSTALL).split()
             self.update_image_desc()
 
