@@ -720,6 +720,7 @@ class Builder(gtk.Window):
             else:
                 linkname = selected_image + '-' + self.configuration.curr_mach
             image_extension = self.get_image_extension()
+            self.parameters.image_addr = self.handler.runCommand(["getVariable", "DEPLOY_DIR_IMAGE"]) or ""
             for image_type in self.parameters.image_types:
                 if image_type in image_extension:
                     real_types = image_extension[image_type]
