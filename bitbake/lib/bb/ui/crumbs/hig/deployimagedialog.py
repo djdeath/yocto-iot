@@ -227,7 +227,7 @@ class DeployImageDialog (CrumbsDialog):
                 if cmdline:
                     cmdline += "\"source " + self.builder.parameters.core_base +"/iot-devkit-init-build-env " + \
                                 self.builder.parameters.build_dir + " && wic create iot-devkit " + \
-                                " -r " + self.builder.parameters.tmpdir + "/work/clanton-iotkit-linux/" + self.image + "/1.0-r0/rootfs" + \
+                                " -r " + self.builder.parameters.tmpdir + "/work/clanton-poky-linux/" + self.image + "/1.0-r0/rootfs" + \
                                 " -k " + self.builder.parameters.staging_kernel_dir + \
                                 " -n " + self.builder.parameters.staging_dir_native + \
                                 " -b " + self.builder.parameters.image_addr + "\""
