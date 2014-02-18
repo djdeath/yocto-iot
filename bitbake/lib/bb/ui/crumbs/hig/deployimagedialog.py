@@ -28,6 +28,7 @@ import re
 import shlex
 import subprocess
 import tempfile
+import time
 from bb.ui.crumbs.hobwidget import hic, HobButton
 from bb.ui.crumbs.progressbar import HobProgressBar
 import bb.ui.crumbs.utils
@@ -36,6 +37,7 @@ from bb.ui.crumbs.hig.crumbsdialog import CrumbsDialog
 from bb.ui.crumbs.hig.crumbsmessagedialog import CrumbsMessageDialog
 from bb.ui.crumbs.hobwidget import HobAltButton
 from bb.ui.crumbs.hobwidget import HobIconChecker
+import glib
 
 """
 The following are convenience classes for implementing GNOME HIG compliant
@@ -217,6 +219,7 @@ class DeployImageDialog (CrumbsDialog):
     def response_cb(self, dialog, response_id):
         if response_id == gtk.RESPONSE_YES:
             lbl = ''
+            dialogtype = gtk.STOCK_DIALOG_INFO
             if len(self.devices) == 1:
                 item = "/dev/" + str(self.devices[0])
             else:
@@ -224,33 +227,79 @@ class DeployImageDialog (CrumbsDialog):
             if item and self.image:
                 cmdline = bb.ui.crumbs.utils.which_terminal()
 
+                f = tempfile.NamedTemporaryFile(delete=False)
+                resultfn = f.name
+                f.close()
+
+                logpath = os.path.join(self.builder.parameters.tmpdir, 'log', 'hob-iot')
+                bb.utils.mkdirhier(logpath)
+                logfn = os.path.join(logpath, 'deploy-%s-%d.log' % (os.path.basename(item), int(time.time())))
+
+                outimage = ''
+
                 if cmdline:
                     cmdline += "\"source " + self.builder.parameters.core_base +"/iot-devkit-init-build-env " + \
-                                self.builder.parameters.build_dir + " && wic create iot-devkit " + \
+                                self.builder.parameters.build_dir + \
+                                " && { printf '\nCreating an image suitable for the device using wic:\n'" + \
+                                " ; export PYTHONUNBUFFERED=1 " + \
+                                " ; wic create iot-devkit " + \
                                 " -r " + self.builder.parameters.tmpdir + "/work/clanton-poky-linux/" + self.image + "/1.0-r0/rootfs" + \
                                 " -k " + self.builder.parameters.staging_kernel_dir + \
                                 " -n " + self.builder.parameters.staging_dir_native + \
-                                " -b " + self.builder.parameters.image_addr + "\""
+                                " -b " + self.builder.parameters.image_addr + \
+                                " 2>&1 ; echo $? > " + resultfn + " ; } | tee " + logfn + "\""
+
                     dialog.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
                     bb.ui.crumbs.utils.wait(0.1)
                     subprocess.call(shlex.split(cmdline))
 
-                cmdline = bb.ui.crumbs.utils.which_terminal()
-                if cmdline:
-                    tmpfile = tempfile.NamedTemporaryFile()
-                    details_file = glob.glob('/var/tmp/wic/build/*.direct')[0]
-                    cmdline += "\"sudo dd if=" + details_file + \
-                                " of=" + item + "; echo $? > " + tmpfile.name + "\""
-                    subprocess.call(shlex.split(cmdline))
-                    dialog.window.set_cursor(None)
+                    with open(logfn, 'r') as f:
+                        output = f.read()
 
-                    if int(tmpfile.readline().strip()) == 0:
-                        lbl = "<b>Image deployed to external storage device</b>"
-                    else:
-                        lbl = "<b>Failed to deploy image.</b>\nPlease check image <b>%s</b> exists and USB device <b>%s</b> is writable." % (self.image, item)
-                    tmpfile.close()
+                    with open(resultfn, 'r') as f:
+                        result = f.readline().strip()
+                        if result != '0':
+                            lbl = "<b>Failed to create final image to deploy:</b>\n\n%s" % glib.markup_escape_text(output)
+                            dialogtype = gtk.STOCK_DIALOG_ERROR
+                        else:
+                            for line in output.splitlines():
+                                if '.direct' in line:
+                                    outimage = line.strip()
+                                    break
+
+                    with open(logfn, 'a') as f:
+                        f.write('\n\nwic command was:\n%s\n' % cmdline)
+
+                    if not outimage:
+                        lbl = "<b>Unable to determine output image from wic output:</b>\n\n%s" % glib.markup_escape_text(output)
+                        dialogtype = gtk.STOCK_DIALOG_ERROR
+                else:
+                    lbl = "<b>Failed to find terminal to run</b>"
+                    dialogtype = gtk.STOCK_DIALOG_ERROR
+
+                if not lbl:
+                    cmdline = bb.ui.crumbs.utils.which_terminal()
+                    if cmdline:
+                        tmpfile = tempfile.NamedTemporaryFile()
+                        cmdline += "\"printf 'Writing final image:\n  " + outimage + "\nto storage device:\n  " + item + \
+                                    "\n\n(This requires elevated privileges - you may be prompted for your password.)\n\n'" + \
+                                    " ; sudo dd if=" + outimage + " of=" + item + "; echo $? > " + tmpfile.name + "\""
+                        subprocess.call(shlex.split(cmdline))
+                        dialog.window.set_cursor(None)
+
+                        result = tmpfile.readline().strip()
+
+                        if result == '0':
+                            lbl = "<b>Image deployed to external storage device</b>"
+                        elif not result:
+                            lbl = "<b>Image writing cancelled</b>"
+                            dialogtype = gtk.STOCK_DIALOG_WARNING
+                        else:
+                            lbl = "<b>Failed to deploy image.</b>\nPlease check image <b>%s</b> exists and storage device <b>%s</b> is writable." % (self.image, item)
+                            dialogtype = gtk.STOCK_DIALOG_ERROR
+                        tmpfile.close()
             if len(lbl):
-                crumbs_dialog = CrumbsMessageDialog(self, lbl, gtk.STOCK_DIALOG_INFO)
+                crumbs_dialog = CrumbsMessageDialog(self, lbl, dialogtype)
                 button = crumbs_dialog.add_button("Close", gtk.RESPONSE_OK)
                 HobButton.style_button(button)
                 crumbs_dialog.run()
