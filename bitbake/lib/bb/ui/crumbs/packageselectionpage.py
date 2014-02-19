@@ -199,9 +199,9 @@ class PackageSelectionPage (HobPage):
         show_missing_pkg_dialog = False
         lbl = "<b>Missing important packages</b>\n\nYour list of included "
         lbl = lbl + " packages is missing:\n\n"
-        if 'eglibc' not in selected_pkgs:
+        if not ('eglibc' in selected_pkgs or 'uclibc' in selected_pkgs):
             show_missing_pkg_dialog = True
-            lbl = lbl + "-A C library (choose eglibc)\n\n"
+            lbl = lbl + "-A C library (choose eglibc or uclibc)\n\n"
         if not ('bash' in selected_pkgs or 'busybox'  in selected_pkgs):
             show_missing_pkg_dialog = True
             lbl = lbl + "-A shell provider (choose bash or busybox)\n\n"
