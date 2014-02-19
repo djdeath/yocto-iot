@@ -1,0 +1,46 @@
+Intel IoT Devkit for Galileo
+============================
+
+This repository contains the metadata supporting the Intel IoT DevKit for
+the Galileo board. It is a combination of other repositories constructed 
+using the combo-layer tool.
+
+The Yocto Project has extensive documentation about the underlying build
+system including a reference manual which can be found at:
+    http://yoctoproject.org/documentation
+
+Where to Send Patches
+=====================
+
+As an integration layer consisting of several upstream projects such as 
+BitBake, OpenEmbedded-Core, Yocto Project documentation and so on, patches 
+against the various components should be sent to their respective upstreams.
+
+bitbake/*
+    BitBake
+    bitbake-devel@lists.openembedded.org
+
+meta/*
+meta-hob/*
+scripts/*
+   OpenEmbedded Core
+   openembedded-core@lists.openembedded.org
+
+meta-yocto/*
+    poky@yoctoproject.org
+
+meta-oe/*
+    Meta-OpenEmbedded Layer
+    openembedded-devel@lists.openembedded.org
+    
+meta-intel/*
+meta-iot-devkit/*
+meta-clanton-bsp/*
+meta-galileo/*
+    Intel Specific Layers
+    meta-intel@lists.yoctoproject.org
+    
+documentation/*
+    Yocto Project Documentation
+    yocto@lists.yoctoproject.org
+
