@@ -149,7 +149,15 @@ rm $ENVDATA_FILE
 
 if [ "$OUTDIR" != "." ] ; then
     # Tidy up repository
+    BRANCHNAME=devkit-mwc
     git remote rm origin
+    git remote add origin git://git.yoctoproject.org/meta-intel-iot-devkit
+    git checkout -b $BRANCHNAME
+    git config --remove-section branch.master > /dev/null 2>&1 || true
+    git config --replace-all branch.master.remote origin
+    git config --replace-all branch.master.merge refs/heads/master
+    git config --replace-all branch.$BRANCHNAME.remote origin
+    git config --replace-all branch.$BRANCHNAME.merge refs/heads/$BRANCHNAME
     git gc
     cd ..
     rm -rf build
