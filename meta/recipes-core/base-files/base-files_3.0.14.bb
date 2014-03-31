@@ -60,7 +60,7 @@ conffiles = "${sysconfdir}/debian_version ${sysconfdir}/host.conf \
 #
 # set standard hostname, might be a candidate for a DISTRO variable? :M:
 #
-hostname = "openembedded"
+hostname = "galileo"
 
 BASEFILESISSUEINSTALL ?= "do_install_basefilesissue"
 
