@@ -7217,7 +7217,7 @@ exports.getComponent = function(metadata) {
 };
 
 });
-require.register("noflo-noflo-core/index.js", function(exports, require, module){
+require.register("djdeath-noflo-core/index.js", function(exports, require, module){
 /*
  * This file can be used for general library features of core.
  *
@@ -7226,10 +7226,10 @@ require.register("noflo-noflo-core/index.js", function(exports, require, module)
  */
 
 });
-require.register("noflo-noflo-core/component.json", function(exports, require, module){
+require.register("djdeath-noflo-core/component.json", function(exports, require, module){
 module.exports = JSON.parse('{"name":"noflo-core","description":"NoFlo Essentials","repo":"noflo/noflo-core","version":"0.1.0","author":{"name":"Henri Bergius","email":"henri.bergius@iki.fi"},"contributors":[{"name":"Kenneth Kan","email":"kenhkan@gmail.com"},{"name":"Ryan Shaw","email":"ryanshaw@unc.edu"}],"keywords":[],"dependencies":{"noflo/noflo":"*","component/underscore":"*"},"scripts":["components/Callback.js","components/DisconnectAfterPacket.js","components/Drop.js","components/Group.js","components/Kick.js","components/Merge.js","components/Output.js","components/Repeat.js","components/RepeatAsync.js","components/Split.js","components/RunInterval.js","components/RunTimeout.js","components/MakeFunction.js","index.js"],"json":["component.json"],"noflo":{"components":{"Callback":"components/Callback.js","DisconnectAfterPacket":"components/DisconnectAfterPacket.js","Drop":"components/Drop.js","Group":"components/Group.js","Kick":"components/Kick.js","Merge":"components/Merge.js","Output":"components/Output.js","Repeat":"components/Repeat.js","RepeatAsync":"components/RepeatAsync.js","Split":"components/Split.js","RunInterval":"components/RunInterval.js","RunTimeout":"components/RunTimeout.js","MakeFunction":"components/MakeFunction.js"}}}');
 });
-require.register("noflo-noflo-core/components/Callback.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/Callback.js", function(exports, require, module){
 var Callback, noflo, _,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7292,7 +7292,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/DisconnectAfterPacket.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/DisconnectAfterPacket.js", function(exports, require, module){
 var DisconnectAfterPacket, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7340,7 +7340,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/Drop.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/Drop.js", function(exports, require, module){
 var Drop, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7370,7 +7370,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/Group.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/Group.js", function(exports, require, module){
 var Group, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7463,7 +7463,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/Kick.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/Kick.js", function(exports, require, module){
 var Kick, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7543,7 +7543,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/Merge.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/Merge.js", function(exports, require, module){
 var Merge, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7608,7 +7608,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/Output.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/Output.js", function(exports, require, module){
 var Output, noflo, util,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7697,7 +7697,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/Repeat.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/Repeat.js", function(exports, require, module){
 var Repeat, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7754,7 +7754,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/RepeatAsync.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/RepeatAsync.js", function(exports, require, module){
 var RepeatAsync, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7817,7 +7817,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/Split.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/Split.js", function(exports, require, module){
 var Split, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7874,7 +7874,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/RunInterval.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/RunInterval.js", function(exports, require, module){
 var RunInterval, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7952,7 +7952,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/RunTimeout.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/RunTimeout.js", function(exports, require, module){
 var RunTimeout, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -7983,7 +7983,8 @@ RunTimeout = (function(_super) {
         if (_this.timer != null) {
           clearTimeout(_this.timer);
           return _this.timer = setTimeout(function() {
-            return _this.outPorts.out.send(true);
+            _this.outPorts.out.send(true);
+            return _this.outPorts.out.disconnect();
           }, _this.time);
         }
       };
@@ -8027,7 +8028,7 @@ exports.getComponent = function() {
 };
 
 });
-require.register("noflo-noflo-core/components/MakeFunction.js", function(exports, require, module){
+require.register("djdeath-noflo-core/components/MakeFunction.js", function(exports, require, module){
 var MakeFunction, noflo,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -17972,12 +17973,12 @@ var Pwm, noflo, pins,
 noflo = require('noflo');
 
 pins = {
-  pwm1: 1,
   pwm3: 3,
-  pwm4: 4,
   pwm5: 5,
   pwm6: 6,
-  pwm7: 7
+  pwm9: 1,
+  pwm10: 7,
+  pwm11: 4
 };
 
 Pwm = (function(_super) {
@@ -20914,7 +20915,7 @@ module.exports = require("/noflo");
 
 });
 require.register("noflo-iot/component.json", function(exports, require, module){
-module.exports = JSON.parse('{"name":"noflo-iot","description":"NoFlo IoT components","author":{"name":"Lionel Landwerlin","email":"lionel.g.landwerlin@linux.intel.com"},"repo":"djdeath/noflo-iot","version":"0.0.1","keywords":[],"dependencies":{"jashkenas/underscore":"*","noflo/noflo":"*","noflo/noflo-core":"*","noflo/noflo-strings":"*","noflo/noflo-packets":"*","noflo/noflo-objects":"*","noflo/noflo-routers":"*","noflo/noflo-groups":"*","noflo/noflo-flow":"*","noflo/fbp":"*","djdeath/noflo-xml":"*","djdeath/noflo-filesystem":"*","djdeath/noflo-math":"iot","djdeath/noflo-galileo":"*","djdeath/noflo-micro":"*","djdeath/noflo-tween":"*","djdeath/noflo-runtime-websocket":"componentization"},"scripts":["index.js"],"json":["component.json"]}');
+module.exports = JSON.parse('{"name":"noflo-iot","description":"NoFlo IoT components","author":{"name":"Lionel Landwerlin","email":"lionel.g.landwerlin@linux.intel.com"},"repo":"djdeath/noflo-iot","version":"0.0.1","keywords":[],"dependencies":{"jashkenas/underscore":"*","noflo/noflo":"*","djdeath/noflo-core":"missing-disconnect","noflo/noflo-strings":"*","noflo/noflo-packets":"*","noflo/noflo-objects":"*","noflo/noflo-routers":"*","noflo/noflo-groups":"*","noflo/noflo-flow":"*","noflo/fbp":"*","djdeath/noflo-xml":"*","djdeath/noflo-filesystem":"*","djdeath/noflo-math":"iot","djdeath/noflo-galileo":"*","djdeath/noflo-micro":"*","djdeath/noflo-tween":"*","djdeath/noflo-runtime-websocket":"componentization"},"scripts":["index.js"],"json":["component.json"]}');
 });
 
 
@@ -20968,7 +20969,7 @@ module.exports = {
   }
 }
 });
-require.register("noflo-noflo-core/component.json", function(exports, require, module){
+require.register("djdeath-noflo-core/component.json", function(exports, require, module){
 module.exports = {
   "name": "noflo-core",
   "description": "NoFlo Essentials",
@@ -21628,40 +21629,40 @@ require.alias("noflo-fbp/lib/fbp.js", "noflo-noflo/deps/fbp/lib/fbp.js");
 require.alias("noflo-fbp/lib/fbp.js", "noflo-noflo/deps/fbp/index.js");
 require.alias("noflo-fbp/lib/fbp.js", "noflo-fbp/index.js");
 require.alias("noflo-noflo/src/lib/NoFlo.js", "noflo-noflo/index.js");
-require.alias("noflo-noflo-core/components/Callback.js", "noflo-iot/deps/noflo-core/components/Callback.js");
-require.alias("noflo-noflo-core/components/DisconnectAfterPacket.js", "noflo-iot/deps/noflo-core/components/DisconnectAfterPacket.js");
-require.alias("noflo-noflo-core/components/Drop.js", "noflo-iot/deps/noflo-core/components/Drop.js");
-require.alias("noflo-noflo-core/components/Group.js", "noflo-iot/deps/noflo-core/components/Group.js");
-require.alias("noflo-noflo-core/components/Kick.js", "noflo-iot/deps/noflo-core/components/Kick.js");
-require.alias("noflo-noflo-core/components/Merge.js", "noflo-iot/deps/noflo-core/components/Merge.js");
-require.alias("noflo-noflo-core/components/Output.js", "noflo-iot/deps/noflo-core/components/Output.js");
-require.alias("noflo-noflo-core/components/Repeat.js", "noflo-iot/deps/noflo-core/components/Repeat.js");
-require.alias("noflo-noflo-core/components/RepeatAsync.js", "noflo-iot/deps/noflo-core/components/RepeatAsync.js");
-require.alias("noflo-noflo-core/components/Split.js", "noflo-iot/deps/noflo-core/components/Split.js");
-require.alias("noflo-noflo-core/components/RunInterval.js", "noflo-iot/deps/noflo-core/components/RunInterval.js");
-require.alias("noflo-noflo-core/components/RunTimeout.js", "noflo-iot/deps/noflo-core/components/RunTimeout.js");
-require.alias("noflo-noflo-core/components/MakeFunction.js", "noflo-iot/deps/noflo-core/components/MakeFunction.js");
-require.alias("noflo-noflo-core/index.js", "noflo-iot/deps/noflo-core/index.js");
-require.alias("noflo-noflo-core/index.js", "noflo-core/index.js");
-require.alias("noflo-noflo/src/lib/Graph.js", "noflo-noflo-core/deps/noflo/src/lib/Graph.js");
-require.alias("noflo-noflo/src/lib/InternalSocket.js", "noflo-noflo-core/deps/noflo/src/lib/InternalSocket.js");
-require.alias("noflo-noflo/src/lib/BasePort.js", "noflo-noflo-core/deps/noflo/src/lib/BasePort.js");
-require.alias("noflo-noflo/src/lib/InPort.js", "noflo-noflo-core/deps/noflo/src/lib/InPort.js");
-require.alias("noflo-noflo/src/lib/OutPort.js", "noflo-noflo-core/deps/noflo/src/lib/OutPort.js");
-require.alias("noflo-noflo/src/lib/Ports.js", "noflo-noflo-core/deps/noflo/src/lib/Ports.js");
-require.alias("noflo-noflo/src/lib/Port.js", "noflo-noflo-core/deps/noflo/src/lib/Port.js");
-require.alias("noflo-noflo/src/lib/ArrayPort.js", "noflo-noflo-core/deps/noflo/src/lib/ArrayPort.js");
-require.alias("noflo-noflo/src/lib/Component.js", "noflo-noflo-core/deps/noflo/src/lib/Component.js");
-require.alias("noflo-noflo/src/lib/AsyncComponent.js", "noflo-noflo-core/deps/noflo/src/lib/AsyncComponent.js");
-require.alias("noflo-noflo/src/lib/LoggingComponent.js", "noflo-noflo-core/deps/noflo/src/lib/LoggingComponent.js");
-require.alias("noflo-noflo/src/lib/ComponentLoader.js", "noflo-noflo-core/deps/noflo/src/lib/ComponentLoader.js");
-require.alias("noflo-noflo/src/lib/NoFlo.js", "noflo-noflo-core/deps/noflo/src/lib/NoFlo.js");
-require.alias("noflo-noflo/src/lib/Network.js", "noflo-noflo-core/deps/noflo/src/lib/Network.js");
-require.alias("noflo-noflo/src/lib/Platform.js", "noflo-noflo-core/deps/noflo/src/lib/Platform.js");
-require.alias("noflo-noflo/src/lib/Journal.js", "noflo-noflo-core/deps/noflo/src/lib/Journal.js");
-require.alias("noflo-noflo/src/lib/Utils.js", "noflo-noflo-core/deps/noflo/src/lib/Utils.js");
-require.alias("noflo-noflo/src/components/Graph.js", "noflo-noflo-core/deps/noflo/src/components/Graph.js");
-require.alias("noflo-noflo/src/lib/NoFlo.js", "noflo-noflo-core/deps/noflo/index.js");
+require.alias("djdeath-noflo-core/components/Callback.js", "noflo-iot/deps/noflo-core/components/Callback.js");
+require.alias("djdeath-noflo-core/components/DisconnectAfterPacket.js", "noflo-iot/deps/noflo-core/components/DisconnectAfterPacket.js");
+require.alias("djdeath-noflo-core/components/Drop.js", "noflo-iot/deps/noflo-core/components/Drop.js");
+require.alias("djdeath-noflo-core/components/Group.js", "noflo-iot/deps/noflo-core/components/Group.js");
+require.alias("djdeath-noflo-core/components/Kick.js", "noflo-iot/deps/noflo-core/components/Kick.js");
+require.alias("djdeath-noflo-core/components/Merge.js", "noflo-iot/deps/noflo-core/components/Merge.js");
+require.alias("djdeath-noflo-core/components/Output.js", "noflo-iot/deps/noflo-core/components/Output.js");
+require.alias("djdeath-noflo-core/components/Repeat.js", "noflo-iot/deps/noflo-core/components/Repeat.js");
+require.alias("djdeath-noflo-core/components/RepeatAsync.js", "noflo-iot/deps/noflo-core/components/RepeatAsync.js");
+require.alias("djdeath-noflo-core/components/Split.js", "noflo-iot/deps/noflo-core/components/Split.js");
+require.alias("djdeath-noflo-core/components/RunInterval.js", "noflo-iot/deps/noflo-core/components/RunInterval.js");
+require.alias("djdeath-noflo-core/components/RunTimeout.js", "noflo-iot/deps/noflo-core/components/RunTimeout.js");
+require.alias("djdeath-noflo-core/components/MakeFunction.js", "noflo-iot/deps/noflo-core/components/MakeFunction.js");
+require.alias("djdeath-noflo-core/index.js", "noflo-iot/deps/noflo-core/index.js");
+require.alias("djdeath-noflo-core/index.js", "noflo-core/index.js");
+require.alias("noflo-noflo/src/lib/Graph.js", "djdeath-noflo-core/deps/noflo/src/lib/Graph.js");
+require.alias("noflo-noflo/src/lib/InternalSocket.js", "djdeath-noflo-core/deps/noflo/src/lib/InternalSocket.js");
+require.alias("noflo-noflo/src/lib/BasePort.js", "djdeath-noflo-core/deps/noflo/src/lib/BasePort.js");
+require.alias("noflo-noflo/src/lib/InPort.js", "djdeath-noflo-core/deps/noflo/src/lib/InPort.js");
+require.alias("noflo-noflo/src/lib/OutPort.js", "djdeath-noflo-core/deps/noflo/src/lib/OutPort.js");
+require.alias("noflo-noflo/src/lib/Ports.js", "djdeath-noflo-core/deps/noflo/src/lib/Ports.js");
+require.alias("noflo-noflo/src/lib/Port.js", "djdeath-noflo-core/deps/noflo/src/lib/Port.js");
+require.alias("noflo-noflo/src/lib/ArrayPort.js", "djdeath-noflo-core/deps/noflo/src/lib/ArrayPort.js");
+require.alias("noflo-noflo/src/lib/Component.js", "djdeath-noflo-core/deps/noflo/src/lib/Component.js");
+require.alias("noflo-noflo/src/lib/AsyncComponent.js", "djdeath-noflo-core/deps/noflo/src/lib/AsyncComponent.js");
+require.alias("noflo-noflo/src/lib/LoggingComponent.js", "djdeath-noflo-core/deps/noflo/src/lib/LoggingComponent.js");
+require.alias("noflo-noflo/src/lib/ComponentLoader.js", "djdeath-noflo-core/deps/noflo/src/lib/ComponentLoader.js");
+require.alias("noflo-noflo/src/lib/NoFlo.js", "djdeath-noflo-core/deps/noflo/src/lib/NoFlo.js");
+require.alias("noflo-noflo/src/lib/Network.js", "djdeath-noflo-core/deps/noflo/src/lib/Network.js");
+require.alias("noflo-noflo/src/lib/Platform.js", "djdeath-noflo-core/deps/noflo/src/lib/Platform.js");
+require.alias("noflo-noflo/src/lib/Journal.js", "djdeath-noflo-core/deps/noflo/src/lib/Journal.js");
+require.alias("noflo-noflo/src/lib/Utils.js", "djdeath-noflo-core/deps/noflo/src/lib/Utils.js");
+require.alias("noflo-noflo/src/components/Graph.js", "djdeath-noflo-core/deps/noflo/src/components/Graph.js");
+require.alias("noflo-noflo/src/lib/NoFlo.js", "djdeath-noflo-core/deps/noflo/index.js");
 require.alias("component-emitter/index.js", "noflo-noflo/deps/emitter/index.js");
 
 require.alias("component-underscore/index.js", "noflo-noflo/deps/underscore/index.js");
@@ -21670,7 +21671,7 @@ require.alias("noflo-fbp/lib/fbp.js", "noflo-noflo/deps/fbp/lib/fbp.js");
 require.alias("noflo-fbp/lib/fbp.js", "noflo-noflo/deps/fbp/index.js");
 require.alias("noflo-fbp/lib/fbp.js", "noflo-fbp/index.js");
 require.alias("noflo-noflo/src/lib/NoFlo.js", "noflo-noflo/index.js");
-require.alias("component-underscore/index.js", "noflo-noflo-core/deps/underscore/index.js");
+require.alias("component-underscore/index.js", "djdeath-noflo-core/deps/underscore/index.js");
 
 require.alias("noflo-noflo-strings/components/CompileString.js", "noflo-iot/deps/noflo-strings/components/CompileString.js");
 require.alias("noflo-noflo-strings/components/Filter.js", "noflo-iot/deps/noflo-strings/components/Filter.js");
