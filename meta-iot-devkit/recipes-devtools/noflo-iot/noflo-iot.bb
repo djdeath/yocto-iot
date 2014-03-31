@@ -52,7 +52,7 @@ RDEPENDS_${PN}_class-native = ""
 
 inherit update-rc.d
 
-INITSCRIPT_NAME = "noflo-nodejs"
+INITSCRIPT_NAME = "noflo-iot"
 INITSCRIPT_PARAMS = "defaults 99"
 
 FILES_${PN} += "/noflo \
