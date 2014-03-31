@@ -26,6 +26,7 @@ ARCHFLAGS ?= ""
 
 NOFLO_COMMON_DEPS = "fs.extra \
 		     git://github.com/djdeath/GpiO.git \
+		     mimetype \
 		     pwm \
 		     owl-deepcopy \
 		     websocket"
