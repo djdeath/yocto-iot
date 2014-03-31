@@ -36,6 +36,8 @@ IMAGE_INSTALL += "wireless-tools"
 IMAGE_INSTALL += "wpa-supplicant"
 IMAGE_INSTALL += "openssh"
 IMAGE_INSTALL += "nodejs"
+IMAGE_INSTALL += "noflo-iot"
+IMAGE_INSTALL += "noflo-ui"
 
 IMAGE_INSTALL += "linux-firmware-iwlwifi-6000g2a-6"
 IMAGE_INSTALL += "linux-firmware-iwlwifi-135-6"
