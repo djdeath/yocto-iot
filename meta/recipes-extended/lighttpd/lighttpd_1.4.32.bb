@@ -51,7 +51,6 @@ do_install_append() {
 	install -d ${D}${sysconfdir}/init.d ${D}/www/logs ${D}/www/pages/dav ${D}/www/var
 	install -m 0755 ${WORKDIR}/lighttpd ${D}${sysconfdir}/init.d
 	install -m 0755 ${WORKDIR}/lighttpd.conf ${D}${sysconfdir}
-	install -m 0644 ${WORKDIR}/index.html.lighttpd ${D}/www/pages/index.html
 
 	install -d ${D}${systemd_unitdir}/system
 	install -m 0644 ${WORKDIR}/lighttpd.service ${D}${systemd_unitdir}/system
