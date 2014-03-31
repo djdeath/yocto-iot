@@ -44,7 +44,7 @@ IMAGE_INSTALL += "bluez4"
 IMAGE_INSTALL += "avahi"
 
 IMAGE_INSTALL += "lighttpd"
-IMAGE_INSTALL += "naui"
+#IMAGE_INSTALL += "naui"
 IMAGE_INSTALL += "libhd44780"
 
 IMAGE_INSTALL += "iotkit-agent"
