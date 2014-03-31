@@ -1,0 +1,15 @@
+#!/bin/sh
+main()
+{
+    while true; do
+    	 cd /noflo && ln -sf /noflo/lib/node_modules && node noflo-iot-bin.js
+    done & exit 0
+}
+
+die()
+{
+    [ -c "$tty" ] && echo "exiting: $@" > $tty
+    exit 1
+}
+
+main "$@"
