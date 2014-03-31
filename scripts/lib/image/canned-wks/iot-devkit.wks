@@ -5,4 +5,4 @@
 part /boot --source iot-devkit --size 50 --ondisk mmcblkp0 --fstype=msdos --label msdos --active --align 1024
 
 # this assumes that your SD card is 7.05GB+
-part / --source rootfs --size 7000 --ondisk mmcblkp0 --fstype=ext3 --label platform --align 1024
+part / --source rootfs --size 1500 --ondisk mmcblkp0 --fstype=ext3 --label platform --align 1024
